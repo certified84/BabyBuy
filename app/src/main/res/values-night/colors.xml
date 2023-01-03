@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="primary">#57D6F6</color>
+    <color name="onPrimary">#003641</color>
+    <color name="primaryContainer">#004E5D</color>
+    <color name="onPrimaryContainer">#AFECFF</color>
+
+    <color name="secondary">#B2CBD3</color>
+    <color name="onSecondary">#1D343A</color>
+    <color name="secondaryContainer">#344A51</color>
+    <color name="onSecondaryContainer">#CEE7EF</color>
+
+    <color name="tertiary">#C0C4EB</color>
+    <color name="onTertiary">#292E4D</color>
+    <color name="tertiaryContainer">#404565</color>
+    <color name="onTertiaryContainer">#DEE0FF</color>
+
+    <color name="error">#FFB4AB</color>
+    <color name="onError">#690005</color>
+    <color name="errorContainer">#93000A</color>
+    <color name="onErrorContainer">#FFDAD6</color>
+
+    <color name="background">#191C1D</color>
+    <color name="onBackground">#E1E3E4</color>
+    <color name="surface">#191C1D</color>
+    <color name="onSurface">#E1E3E4</color>
+
+    <color name="surface1">#1C2528</color>
+    <color name="surface2">#1E2B2E</color>
+    <color name="surface3">#203035</color>
+    <color name="surface4">#203237</color>
+    <color name="surface5">#22363B</color>
+</resources>
