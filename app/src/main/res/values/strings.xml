@@ -35,7 +35,15 @@
     <string name="me">Me</string>
     <string name="bottom_navigation_view">Bottom Navigation View</string>
     <string name="and">and</string>
+    <string name="back_button">Back button</string>
     <string name="or">OR</string>
     <string name="read_about_our">Read about our</string>
     <string name="password_requirement">Password must be at least 8 characters\nand have at least a:\n Uppercase letter e.g A\n Special character e.g @\n Number e.g 1</string>
+    <string name="notifications">Notifications</string>
+    <string name="attachment_button">Attachment Button</string>
+    <string name="floating_action_button">Floating Action Button</string>
+    <string name="protect_yourself">Protect yourself:</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="password_recovery">Password Recovery</string>
+    <string name="password_recovery_summary">Hi there, Kindly enter your email to reset your password</string>
 </resources>
