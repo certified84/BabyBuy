@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/signupFragment">
     <fragment
         android:id="@+id/onboardingFragment"
         android:name="com.certified.babybuy.ui.auth.OnboardingFragment"
@@ -18,4 +18,9 @@
         android:name="com.certified.babybuy.ui.auth.login.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/signupFragment"
+        android:name="com.certified.babybuy.ui.auth.signup.SignupFragment"
+        android:label="SignupFragment"
+        tools:layout="@layout/fragment_signup" />
 </navigation>
