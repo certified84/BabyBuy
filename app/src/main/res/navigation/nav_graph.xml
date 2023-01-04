@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/passwordRecoveryFragment">
+    app:startDestination="@id/homeFragment">
     <fragment
         android:id="@+id/onboardingFragment"
         android:name="com.certified.babybuy.ui.auth.OnboardingFragment"
@@ -28,4 +28,9 @@
         android:name="com.certified.babybuy.ui.auth.passwordRecovery.PasswordRecoveryFragment"
         android:label="PasswordRecoveryFragment"
         tools:layout="@layout/fragment_password_recovery" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.certified.babybuy.ui.main.home.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home" />
 </navigation>

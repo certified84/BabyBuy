@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <!--        <import type="androidx.databinding.ObservableField" />-->
+
+        <!--        <import type="com.certified.covid19response.util.UIState" />-->
+
+        <!--        <variable-->
+        <!--            name="uiState"-->
+        <!--            type="ObservableField&lt;UIState>" />-->
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/primary"
+        tools:context=".ui.main.home.HomeFragment">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_24sdp"
+            android:background="@null"
+            android:contentDescription="@string/notification_button"
+            android:padding="@dimen/_4sdp"
+            android:src="@drawable/ic_close"
+            app:layout_constraintEnd_toStartOf="@+id/content"
+            app:layout_constraintTop_toTopOf="@+id/content" />
+
+        <ScrollView
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/surface1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/_16sdp">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="@dimen/_16sdp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="@dimen/_16sdp" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/btn_drawer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_24sdp"
+                    android:background="@null"
+                    android:contentDescription="@string/drawer_button"
+                    android:padding="@dimen/_4sdp"
+                    android:src="@drawable/ic_drawer"
+                    app:layout_constraintStart_toStartOf="@+id/guideline5"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/btn_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_24sdp"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    android:background="@null"
+                    android:contentDescription="@string/search_button"
+                    android:padding="@dimen/_4sdp"
+                    android:src="@drawable/ic_search"
+                    app:layout_constraintEnd_toStartOf="@+id/btn_notification"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/btn_notification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_24sdp"
+                    android:background="@null"
+                    android:contentDescription="@string/notification_button"
+                    android:padding="@dimen/_4sdp"
+                    android:src="@drawable/ic_notification"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline6"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/materialTextView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_24sdp"
+                    android:fontFamily="@font/space_grotesk_semi_bold"
+                    android:text="@string/hey"
+                    android:textColor="@color/onSurface"
+                    android:textSize="@dimen/_18ssp"
+                    app:layout_constraintStart_toStartOf="@+id/guideline5"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_drawer" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/materialTextView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/space_grotesk_semi_bold"
+                    android:text="Sammie 🤴"
+                    android:textColor="@color/onSurface"
+                    android:textSize="@dimen/_18ssp"
+                    app:layout_constraintStart_toStartOf="@+id/guideline5"
+                    app:layout_constraintTop_toBottomOf="@+id/materialTextView6" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/appCompatImageButton"
+                    android:layout_width="@dimen/_16sdp"
+                    android:layout_height="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_32sdp"
+                    android:background="@null"
+                    android:contentDescription="@string/notification_button"
+                    android:padding="@dimen/_4sdp"
+                    android:src="@drawable/ic_category"
+                    app:layout_constraintStart_toStartOf="@+id/guideline5"
+                    app:layout_constraintTop_toBottomOf="@+id/materialTextView7" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:fontFamily="@font/space_grotesk_regular"
+                    android:text="@string/categories"
+                    android:textColor="@color/onSurface"
+                    android:textSize="@dimen/_14ssp"
+                    app:layout_constraintBottom_toBottomOf="@+id/appCompatImageButton"
+                    app:layout_constraintStart_toEndOf="@+id/appCompatImageButton"
+                    app:layout_constraintTop_toTopOf="@+id/appCompatImageButton" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

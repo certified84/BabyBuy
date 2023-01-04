@@ -46,4 +46,9 @@
     <string name="reset_password">Reset Password</string>
     <string name="password_recovery">Password Recovery</string>
     <string name="password_recovery_summary">Hi there, Kindly enter your email to reset your password</string>
+    <string name="hey">Hey 👋,</string>
+    <string name="drawer_button">Drawer button</string>
+    <string name="search_button">Search button</string>
+    <string name="notification_button">Notification button</string>
+    <string name="categories">Categories</string>
 </resources>
