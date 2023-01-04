@@ -35,6 +35,7 @@
     <string name="me">Me</string>
     <string name="bottom_navigation_view">Bottom Navigation View</string>
     <string name="and">and</string>
+    <string name="or">OR</string>
     <string name="read_about_our">Read about our</string>
     <string name="password_requirement">Password must be at least 8 characters\nand have at least a:\n Uppercase letter e.g A\n Special character e.g @\n Number e.g 1</string>
 </resources>
