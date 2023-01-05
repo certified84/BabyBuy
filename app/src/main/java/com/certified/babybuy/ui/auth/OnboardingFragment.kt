@@ -1,12 +1,11 @@
 package com.certified.babybuy.ui.auth
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.certified.babybuy.R
 import com.certified.babybuy.databinding.FragmentOnboardingBinding
 
 class OnboardingFragment : Fragment() {
@@ -28,7 +27,10 @@ class OnboardingFragment : Fragment() {
 
         binding.apply {
             btnLogin.setOnClickListener {
-//                findNavController().navigate(OnboardingFragmentDirections.actionOnboardingFragmentToLoginFragment())
+                findNavController().navigate(OnboardingFragmentDirections.actionOnboardingFragmentToLoginFragment())
+            }
+            btnSignup.setOnClickListener {
+                findNavController().navigate(OnboardingFragmentDirections.actionOnboardingFragmentToSignupFragment())
             }
         }
     }

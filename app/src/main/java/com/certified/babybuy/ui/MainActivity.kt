@@ -2,6 +2,7 @@ package com.certified.babybuy.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import com.certified.babybuy.databinding.ActivityMainBinding
 
@@ -14,6 +15,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
+        installSplashScreen().apply {
+            
+        }
         setContentView(binding.root)
 
 //        val navController = findNavController(R.id.nav_host_fragment)
