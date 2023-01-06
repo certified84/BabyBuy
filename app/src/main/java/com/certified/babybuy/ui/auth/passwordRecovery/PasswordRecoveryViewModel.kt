@@ -1,6 +1,5 @@
-package com.certified.babybuy.ui.auth.login
+package com.certified.babybuy.ui.auth.passwordRecovery
 
-import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,7 +13,8 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
+class PasswordRecoveryViewModel @Inject constructor(private val repository: Repository) :
+    ViewModel() {
 
     val uiState = ObservableField(UIState.EMPTY)
 
@@ -24,28 +24,23 @@ class LoginViewModel @Inject constructor(private val repository: Repository) : V
     val _success = MutableLiveData<Boolean>()
     val success: LiveData<Boolean> get() = _success
 
-    fun signInWithEmailAndPassword(email: String, password: String) {
+    fun sendPasswordResetEmail(email: String) {
         viewModelScope.launch {
             try {
-                val response = repository.signInWithEmailAndPassword(email, password)
+                val response = repository.sendPasswordResetEmail(email)
                 response.await()
                 _success.value = response.isSuccessful
                 if (response.isSuccessful) {
-                    Log.d("TAG", "signInWithEmailAndPassword: Success: Welcome $email")
                     uiState.set(UIState.SUCCESS)
+                    _message.value = "An email reset link has been to sent to $email"
                 } else {
-                    _message.value = response.exception?.message
-                    Log.d(
-                        "TAG",
-                        "signInWithEmailAndPassword: Failure: Welcome ${response.exception?.message}"
-                    )
                     uiState.set(UIState.FAILURE)
+                    _message.value = response.exception?.localizedMessage
                 }
             } catch (e: Exception) {
                 uiState.set(UIState.FAILURE)
+                _message.value = "An error occurred: ${e.localizedMessage}"
                 _success.value = false
-                _message.value = "Authentication failed: ${e.localizedMessage}"
-                Log.d("TAG", "signInWithEmailAndPassword: Exception: ${e.localizedMessage}")
             }
         }
     }

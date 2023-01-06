@@ -48,6 +48,7 @@ class LoginFragment : Fragment() {
             }
             success.observe(viewLifecycleOwner) {
                 if (it) {
+                    _success.postValue(false)
                     val user = Firebase.auth.currentUser!!
                     if (user.isEmailVerified) {
                         findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
@@ -78,7 +79,7 @@ class LoginFragment : Fragment() {
                 val password = etPassword.text.toString()
 
                 if (email.isBlank()) {
-                    etEmailLayout.error = "Name is required"
+                    etEmailLayout.error = "Email is required"
                     etEmail.requestFocus()
                     return@setOnClickListener
                 }

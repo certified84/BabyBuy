@@ -20,4 +20,6 @@ class Repository @Inject constructor() {
 
     fun signInWithEmailAndPassword(email: String, password: String) =
         Firebase.auth.signInWithEmailAndPassword(email, password)
+
+    fun sendPasswordResetEmail(email: String) = Firebase.auth.sendPasswordResetEmail(email)
 }
