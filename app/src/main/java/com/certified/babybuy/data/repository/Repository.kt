@@ -17,4 +17,7 @@ class Repository @Inject constructor() {
 
     fun signInWithCredential(firebaseCredential: AuthCredential) =
         Firebase.auth.signInWithCredential(firebaseCredential)
+
+    fun signInWithEmailAndPassword(email: String, password: String) =
+        Firebase.auth.signInWithEmailAndPassword(email, password)
 }

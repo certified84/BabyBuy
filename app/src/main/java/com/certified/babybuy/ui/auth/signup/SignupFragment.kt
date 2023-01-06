@@ -193,8 +193,10 @@ class SignupFragment : Fragment() {
                     return@setOnClickListener
                 etPasswordLayout.error = null
 
-                viewModel.uiState.set(UIState.LOADING)
-                viewModel.createUserWithEmailAndPassword(email, password)
+                with(viewModel) {
+                    uiState.set(UIState.LOADING)
+                    createUserWithEmailAndPassword(email, password)
+                }
             }
         }
     }
