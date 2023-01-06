@@ -17,6 +17,7 @@ import com.certified.babybuy.BuildConfig
 import com.certified.babybuy.R
 import com.certified.babybuy.data.model.User
 import com.certified.babybuy.databinding.FragmentSignupBinding
+import com.certified.babybuy.util.Extensions.showActionDialog
 import com.certified.babybuy.util.Extensions.showSnackbar
 import com.certified.babybuy.util.UIState
 import com.certified.babybuy.util.verifyPassword
@@ -139,9 +140,14 @@ class SignupFragment : Fragment() {
                             updateProfile(profileChangeRequest)
                             sendEmailVerification()
                         }
-                        signOut()
                     }
-                    findNavController().navigate(SignupFragmentDirections.actionSignupFragmentToLoginFragment())
+                    showActionDialog(
+                        "Success",
+                        "Account created successfully. We sent a verification link to ${auth.currentUser?.email}. You can ignore the link if you used Google Sign In.",
+                    ) {
+                        auth.signOut()
+                        findNavController().navigate(SignupFragmentDirections.actionSignupFragmentToLoginFragment())
+                    }
                 }
             }
         }

@@ -3,6 +3,7 @@ package com.certified.babybuy.util
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 
 object Extensions {
@@ -16,4 +17,16 @@ object Extensions {
                 .setAction("Dismiss") { }
                 .show()
         }
+
+    fun Fragment.showActionDialog(title: String, message: String, action: (() -> Unit)?) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("Ok") { dialog, _ ->
+                dialog.dismiss()
+                action?.invoke()
+            }
+            .setCancelable(false)
+            .show()
+    }
 }

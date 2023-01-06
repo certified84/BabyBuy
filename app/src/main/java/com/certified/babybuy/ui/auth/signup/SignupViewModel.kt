@@ -72,18 +72,16 @@ class SignupViewModel @Inject constructor(private val repository: Repository) : 
             try {
                 val response = repository.uploadDetails(user)
                 response.await()
-                if (response.isSuccessful)
+                if (response.isSuccessful) {
                     uiState.set(UIState.SUCCESS)
-                else
-                    uiState.set(UIState.FAILURE)
-                _uploadSuccess.value = response.isSuccessful
-                _message.value =
-                    if (response.isSuccessful)
-                        "Account created successfully. We sent a verification link to ${user.email}"
-                    else "Account creation failed: ${response.exception?.localizedMessage}"
-                if (response.isSuccessful)
                     Log.d("TAG", "uploadDetails: Success: ${response.result}")
-                else Log.d("TAG", "uploadDetails: Failure: ${response.exception?.localizedMessage}")
+                } else {
+                    uiState.set(UIState.FAILURE)
+                    _message.value =
+                        "Account creation failed: ${response.exception?.localizedMessage}"
+                    Log.d("TAG", "uploadDetails: Failure: ${response.exception?.localizedMessage}")
+                }
+                _uploadSuccess.value = response.isSuccessful
             } catch (e: Exception) {
                 uiState.set(UIState.FAILURE)
                 Log.d("TAG", "uploadDetails: Exception: ${e.localizedMessage}")
