@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.certified.babybuy.data.repository.Repository
 import com.certified.babybuy.util.UIState
+import com.google.firebase.auth.AuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -46,6 +47,25 @@ class LoginViewModel @Inject constructor(private val repository: Repository) : V
                 _success.value = false
                 _message.value = "Authentication failed: ${e.localizedMessage}"
                 Log.d("TAG", "signInWithEmailAndPassword: Exception: ${e.localizedMessage}")
+            }
+        }
+    }
+
+    fun signInWithCredential(firebaseCredential: AuthCredential) {
+        viewModelScope.launch {
+            try {
+                val response = repository.signInWithCredential(firebaseCredential)
+                response.await()
+                _success.value = response.isSuccessful
+                Log.d("TAG", "signInWithCredential: ${response.result}")
+                if (!response.isSuccessful) {
+                    uiState.set(UIState.FAILURE)
+                    _message.value = "Login failed: ${response.exception?.localizedMessage}"
+                }
+            } catch (e: Exception) {
+                uiState.set(UIState.FAILURE)
+                _message.value = "Login failed: ${e.localizedMessage}"
+                _success.value = false
             }
         }
     }
