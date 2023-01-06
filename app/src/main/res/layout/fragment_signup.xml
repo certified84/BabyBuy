@@ -6,17 +6,13 @@
 
     <data>
 
-        <!--        <import type="androidx.databinding.ObservableField" />-->
+                <import type="androidx.databinding.ObservableField" />
 
-        <!--        <import type="com.certified.covid19response.util.UIState" />-->
+                <import type="com.certified.babybuy.util.UIState" />
 
-        <!--        <variable-->
-        <!--            name="uiState"-->
-        <!--            type="ObservableField&lt;UIState>" />-->
-
-        <!--        <variable-->
-        <!--            name="type"-->
-        <!--            type="String" />-->
+                <variable
+                    name="uiState"
+                    type="ObservableField&lt;UIState>" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -258,6 +254,18 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
+
+        <com.certified.customprogressindicatorlibrary.CustomProgressIndicator
+            android:id="@+id/indicator"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="@dimen/_3sdp"
+            app:animate="@{uiState == UIState.LOADING}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:visible="@{uiState == UIState.LOADING}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
