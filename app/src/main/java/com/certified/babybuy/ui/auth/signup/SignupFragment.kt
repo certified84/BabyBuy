@@ -1,20 +1,32 @@
 package com.certified.babybuy.ui.auth.signup
 
+import android.content.IntentSender
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.certified.babybuy.BuildConfig
 import com.certified.babybuy.R
 import com.certified.babybuy.data.model.User
 import com.certified.babybuy.databinding.FragmentSignupBinding
 import com.certified.babybuy.util.Extensions.showSnackbar
 import com.certified.babybuy.util.UIState
 import com.certified.babybuy.util.verifyPassword
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.CommonStatusCodes
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
@@ -26,7 +38,50 @@ class SignupFragment : Fragment() {
     private var _binding: FragmentSignupBinding? = null
     private val binding get() = _binding!!
     private val viewModel: SignupViewModel by viewModels()
-    var name: String = ""
+    private lateinit var auth: FirebaseAuth
+    private var name: String = ""
+
+    private lateinit var oneTapClient: SignInClient
+    private lateinit var signUpRequest: BeginSignInRequest
+    private var showOneTapUI = true
+
+    private val signup =
+        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
+            try {
+                val credential = oneTapClient.getSignInCredentialFromIntent(it.data)
+                val idToken = credential.googleIdToken
+                when {
+                    idToken != null -> {
+                        showOneTapUI = false
+                        val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
+                        name = credential.displayName ?: ""
+                        with(viewModel) {
+                            uiState.set(UIState.LOADING)
+                            signInWithCredential(firebaseCredential)
+                        }
+                    }
+                    else -> {
+                        Log.d("TAG", "No ID token!")
+                    }
+                }
+            } catch (e: ApiException) {
+                when (e.statusCode) {
+                    CommonStatusCodes.CANCELED -> {
+                        Log.d("TAG", "One-tap dialog was closed.")
+                        showOneTapUI = false
+                    }
+                    CommonStatusCodes.NETWORK_ERROR -> {
+                        Log.d("TAG", "One-tap encountered a network error.")
+                    }
+                    else -> {
+                        Log.d(
+                            "TAG", "Couldn't get credential from result." +
+                                    " (${e.localizedMessage})"
+                        )
+                    }
+                }
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +89,7 @@ class SignupFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentSignupBinding.inflate(inflater, container, false)
+        auth = Firebase.auth
         return binding.root
     }
 
@@ -42,6 +98,17 @@ class SignupFragment : Fragment() {
 
         binding.lifecycleOwner = this
         binding.uiState = viewModel.uiState
+
+        oneTapClient = Identity.getSignInClient(requireActivity())
+        signUpRequest = BeginSignInRequest.builder()
+            .setGoogleIdTokenRequestOptions(
+                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                    .setSupported(true)
+                    .setServerClientId(BuildConfig.CLIENT_ID)
+                    .setFilterByAuthorizedAccounts(false)
+                    .build()
+            )
+            .build()
 
         viewModel.apply {
             message.observe(viewLifecycleOwner) {
@@ -53,11 +120,12 @@ class SignupFragment : Fragment() {
             success.observe(viewLifecycleOwner) {
                 if (it) {
                     _success.postValue(false)
-                    val currentUser = Firebase.auth.currentUser!!
+                    val currentUser = auth.currentUser!!
                     val user = User(
                         uid = currentUser.uid,
                         name = name,
                         email = currentUser.email.toString(),
+                        image = currentUser.photoUrl?.toString()
                     )
                     uploadDetails(user)
                 }
@@ -65,7 +133,7 @@ class SignupFragment : Fragment() {
             uploadSuccess.observe(viewLifecycleOwner) {
                 if (it) {
                     _uploadSuccess.postValue(false)
-                    Firebase.auth.apply {
+                    auth.apply {
                         val profileChangeRequest = userProfileChangeRequest { displayName = name }
                         currentUser!!.apply {
                             updateProfile(profileChangeRequest)
@@ -138,6 +206,22 @@ class SignupFragment : Fragment() {
         super.onResume()
         if (binding.indicator.isVisible)
             binding.indicator.startAnimation()
+        if (showOneTapUI) {
+            oneTapClient.beginSignIn(signUpRequest)
+                .addOnSuccessListener(requireActivity()) { result ->
+                    try {
+                        signup.launch(
+                            IntentSenderRequest.Builder(result.pendingIntent.intentSender).build()
+                        )
+                    } catch (e: IntentSender.SendIntentException) {
+                        Log.e("TAG", "Couldn't start One Tap UI: ${e.localizedMessage}")
+                    }
+                }
+                .addOnFailureListener(requireActivity()) { e ->
+                    // No Google Accounts found. Just continue presenting the signed-out UI.
+                    e.localizedMessage?.let { Log.d("TAG", it) }
+                }
+        }
     }
 
     override fun onPause() {

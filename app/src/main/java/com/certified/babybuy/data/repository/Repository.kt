@@ -1,6 +1,7 @@
 package com.certified.babybuy.data.repository
 
 import com.certified.babybuy.data.model.User
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -13,4 +14,7 @@ class Repository @Inject constructor() {
 
     fun uploadDetails(user: User) =
         Firebase.firestore.collection("users").document(user.uid).set(user)
+
+    fun signInWithCredential(firebaseCredential: AuthCredential) =
+        Firebase.auth.signInWithCredential(firebaseCredential)
 }

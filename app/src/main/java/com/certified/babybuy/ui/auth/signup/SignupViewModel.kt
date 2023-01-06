@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.certified.babybuy.data.model.User
 import com.certified.babybuy.data.repository.Repository
 import com.certified.babybuy.util.UIState
+import com.google.firebase.auth.AuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -47,6 +48,25 @@ class SignupViewModel @Inject constructor(private val repository: Repository) : 
         }
     }
 
+    fun signInWithCredential(firebaseCredential: AuthCredential) {
+        viewModelScope.launch {
+            try {
+                val response = repository.signInWithCredential(firebaseCredential)
+                response.await()
+                _success.value = response.isSuccessful
+                Log.d("TAG", "signInWithCredential: ${response.result}")
+                if (!response.isSuccessful) {
+                    uiState.set(UIState.FAILURE)
+                    _message.value = "Registration failed: ${response.exception?.localizedMessage}"
+                }
+            } catch (e: Exception) {
+                uiState.set(UIState.FAILURE)
+                _message.value = "Registration failed: ${e.localizedMessage}"
+                _success.value = false
+            }
+        }
+    }
+
     fun uploadDetails(user: User) {
         viewModelScope.launch {
             try {
@@ -61,8 +81,12 @@ class SignupViewModel @Inject constructor(private val repository: Repository) : 
                     if (response.isSuccessful)
                         "Account created successfully. We sent a verification link to ${user.email}"
                     else "Account creation failed: ${response.exception?.localizedMessage}"
+                if (response.isSuccessful)
+                    Log.d("TAG", "uploadDetails: Success: ${response.result}")
+                else Log.d("TAG", "uploadDetails: Failure: ${response.exception?.localizedMessage}")
             } catch (e: Exception) {
                 uiState.set(UIState.FAILURE)
+                Log.d("TAG", "uploadDetails: Exception: ${e.localizedMessage}")
                 _uploadSuccess.value = false
             }
         }
