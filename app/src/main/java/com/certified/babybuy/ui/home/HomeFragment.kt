@@ -1,4 +1,4 @@
-package com.certified.babybuy.ui.main.home
+package com.certified.babybuy.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.Constraints
-import androidx.core.view.marginStart
 import androidx.fragment.app.Fragment
 import com.certified.babybuy.R
 import com.certified.babybuy.databinding.FragmentHomeBinding

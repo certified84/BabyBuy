@@ -136,7 +136,7 @@ class LoginFragment : Fragment() {
                 setTypeface(R.font.space_grotesk_medium)
                 setProgressIndicatorColor("#001F27")
                 setTrackColor("#AFECFF")
-                setImageResource(R.drawable.ic_app_icon)
+                setImageResource(R.drawable.ic_onboarding_icon)
             }
             btnSignup.setOnClickListener {
                 findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToSignupFragment())
