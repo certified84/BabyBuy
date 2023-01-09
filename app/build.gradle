@@ -87,4 +87,7 @@ dependencies {
 
 //    Coil
     implementation "io.coil-kt:coil:2.2.1"
+
+//    page indicator
+    implementation "com.romandanylyk:pageindicatorview:1.0.3@aar"
 }

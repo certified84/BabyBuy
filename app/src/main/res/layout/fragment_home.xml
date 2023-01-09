@@ -5,13 +5,17 @@
 
     <data>
 
-        <!--        <import type="androidx.databinding.ObservableField" />-->
+        <import type="androidx.databinding.ObservableField" />
 
-        <!--        <import type="com.certified.covid19response.util.UIState" />-->
+        <import type="com.certified.babybuy.util.UIState" />
 
-        <!--        <variable-->
-        <!--            name="uiState"-->
-        <!--            type="ObservableField&lt;UIState>" />-->
+        <variable
+            name="uiState"
+            type="ObservableField&lt;UIState>" />
+
+        <variable
+            name="user"
+            type="com.certified.babybuy.data.model.User" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -123,8 +127,8 @@
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/appCompatImageButton"
-                    android:layout_width="@dimen/_16sdp"
-                    android:layout_height="@dimen/_16sdp"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_32sdp"
                     android:background="@null"
                     android:contentDescription="@string/notification_button"
@@ -134,6 +138,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/materialTextView7" />
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/materialTextView13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_4sdp"
@@ -145,7 +150,50 @@
                     app:layout_constraintStart_toEndOf="@+id/appCompatImageButton"
                     app:layout_constraintTop_toTopOf="@+id/appCompatImageButton" />
 
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/appCompatImageButton" />
+
+                <com.rd.PageIndicatorView
+                    android:id="@+id/indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_16sdp"
+                    android:background="@android:color/transparent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.461"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/view_pager"
+                    app:piv_animationType="worm"
+                    app:piv_count="3"
+                    app:piv_dynamicCount="true"
+                    app:piv_interactiveAnimation="true"
+                    app:piv_padding="@dimen/_4sdp"
+                    app:piv_selectedColor="@color/primary"
+                    app:piv_unselectedColor="@color/black"
+                    app:piv_viewPager="@id/view_pager" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:layout_marginBottom="@dimen/_24sdp"
+            android:backgroundTint="@color/secondaryContainer"
+            android:contentDescription="@string/add_button"
+            app:borderWidth="0dp"
+            app:fabCustomSize="@dimen/_48sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_baseline_add_24"
+            app:tint="@color/onSecondaryContainer" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

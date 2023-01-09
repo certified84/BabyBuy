@@ -2,6 +2,7 @@ package com.certified.babybuy.util
 
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import java.util.*
 import java.util.regex.Pattern
 
 fun verifyPassword(
@@ -52,3 +53,5 @@ fun verifyPassword(
 
     return true
 }
+
+fun currentDate(): Calendar = Calendar.getInstance()

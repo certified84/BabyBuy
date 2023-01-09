@@ -5,6 +5,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import com.certified.babybuy.R
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -26,17 +28,18 @@ class MainActivity : AppCompatActivity() {
         val splashScreen = installSplashScreen()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        navController = findNavController(R.id.nav_host_fragment)
         splashScreen.setKeepOnScreenCondition { viewModel.isLoading.value }
         checkLogin()
-
     }
 
     private fun checkLogin() {
+        val currentDestination = navController.currentDestination?.id
         val navOptions = NavOptions.Builder()
             .setPopUpTo(R.id.nav_graph, true)
             .build()
-        if (Firebase.auth.currentUser != null) {
-            findNavController(R.id.nav_host_fragment).navigate(
+        if (Firebase.auth.currentUser != null && currentDestination == R.id.onboardingFragment) {
+            navController.navigate(
                 R.id.action_onboardingFragment_to_homeFragment,
                 null,
                 navOptions
