@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.Constraints
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,6 +44,7 @@ class HomeFragment : Fragment() {
         binding.apply {
             val params = Constraints.LayoutParams(content.width, content.height)
             params.setMargins(60, 10, 0, 10)
+            fab.setOnClickListener { showHide() }
             btnDrawer.setOnClickListener {
                 btnDrawer.startAnimation(
                     AnimationUtils.loadAnimation(
@@ -120,6 +122,33 @@ class HomeFragment : Fragment() {
             }
             recyclerViewCategories.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        }
+    }
+
+    private fun showHide() {
+        val visible = binding.fabAddCategory.isVisible
+        val fadeInAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in)
+        val fadeOutAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_out)
+        binding.apply {
+            if (visible) {
+                fabAddCategory.apply {
+                    visibility = View.GONE
+                    startAnimation(fadeOutAnim)
+                }
+                fabAddItem.apply {
+                    visibility = View.GONE
+                    startAnimation(fadeOutAnim)
+                }
+            } else {
+                fabAddCategory.apply {
+                    visibility = View.VISIBLE
+                    startAnimation(fadeInAnim)
+                }
+                fabAddItem.apply {
+                    visibility = View.VISIBLE
+                    startAnimation(fadeInAnim)
+                }
+            }
         }
     }
 

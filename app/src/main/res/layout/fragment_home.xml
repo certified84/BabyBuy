@@ -158,13 +158,13 @@
                     android:id="@+id/recycler_view_categories"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:listCategories="@{viewModel.categories}"
-                    tools:listitem="@layout/item_category"
-                    tools:itemCount="1"
                     android:layout_marginTop="@dimen/_8sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/appCompatImageButton" />
+                    app:layout_constraintTop_toBottomOf="@+id/appCompatImageButton"
+                    app:listCategories="@{viewModel.categories}"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_category" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/materialTextView19"
@@ -193,6 +193,7 @@
         </ScrollView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_16sdp"
@@ -205,6 +206,36 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_baseline_add_24"
             app:tint="@color/onSecondaryContainer" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/secondaryContainer"
+            android:visibility="gone"
+            app:fabSize="mini"
+            app:layout_constraintCircle="@id/fab"
+            app:layout_constraintCircleAngle="270"
+            app:layout_constraintCircleRadius="@dimen/_60sdp"
+            app:srcCompat="@drawable/ic_baseline_add_shopping_cart_24"
+            app:tint="@color/onSecondaryContainer"
+            tools:layout_editor_absoluteX="78dp"
+            tools:layout_editor_absoluteY="560dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/secondaryContainer"
+            android:visibility="gone"
+            app:fabSize="mini"
+            app:layout_constraintCircle="@id/fab"
+            app:layout_constraintCircleAngle="360"
+            app:layout_constraintCircleRadius="@dimen/_60sdp"
+            app:srcCompat="@drawable/ic_category"
+            app:tint="@color/onSecondaryContainer"
+            tools:layout_editor_absoluteX="259dp"
+            tools:layout_editor_absoluteY="410dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
