@@ -7,19 +7,22 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.Constraints
 import androidx.fragment.app.Fragment
-import androidx.viewpager2.widget.ViewPager2
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.certified.babybuy.R
-import com.certified.babybuy.adapters.CategoryViewPagerAdapter
+import com.certified.babybuy.adapters.CategoryRecyclerAdapter
+import com.certified.babybuy.adapters.ItemRecyclerAdapter
 import com.certified.babybuy.data.model.Category
-import com.certified.babybuy.data.model.Emoji
+import com.certified.babybuy.data.model.Item
 import com.certified.babybuy.databinding.FragmentHomeBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private lateinit var categories: List<Category>
+    private val viewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,6 +35,11 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.lifecycleOwner = this
+        binding.uiState = viewModel.uiState
+        binding.viewModel = viewModel
+
         binding.apply {
             val params = Constraints.LayoutParams(content.width, content.height)
             params.setMargins(60, 10, 0, 10)
@@ -93,33 +101,25 @@ class HomeFragment : Fragment() {
                     y = 0f
                 }
             }
-        }
 
-        setUpSliderItem()
-        setUpViewPager()
-    }
+            recyclerViewItems.adapter = ItemRecyclerAdapter().apply {
+                setOnItemClickedListener(object : ItemRecyclerAdapter.OnItemClickedListener {
+                    override fun onItemClick(item: Item) {
 
-    private fun setUpSliderItem() {
-        categories = arrayListOf(
-            Category("Bag", "List of bags for my kids", "#1234AF", 40, 12, Emoji("\uD83C\uDF92")),
-            Category("Dress", "List of dress for my kids", "#AF1283", 40, 28, Emoji("\uD83D\uDC57")),
-            Category("Shoes", "List of shoes for my kids", "#86AF12", 20, 9, Emoji("\uD83D\uDC5F")),
-        )
-    }
-
-    private fun setUpViewPager() {
-        binding.apply {
-            viewPager.adapter = CategoryViewPagerAdapter(categories)
-            viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    indicator.selection = position
-                    if (position == categories.size - 1) {
-                        indicator.count = categories.size
-                        indicator.selection = position
                     }
-                }
-            })
+                })
+            }
+            recyclerViewItems.layoutManager = LinearLayoutManager(context)
+
+            recyclerViewCategories.adapter = CategoryRecyclerAdapter().apply {
+                setOnItemClickedListener(object : CategoryRecyclerAdapter.OnItemClickedListener {
+                    override fun onItemClick(category: Category) {
+
+                    }
+                })
+            }
+            recyclerViewCategories.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
     }
 

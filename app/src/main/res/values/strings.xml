@@ -53,4 +53,5 @@
     <string name="categories">Categories</string>
     <string name="add_button">Add button</string>
     <string name="progress">Progress</string>
+    <string name="recently_added">Recently Added</string>
 </resources>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.certified.babybuy.data.model.Item" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_100sdp"
+        app:cardCornerRadius="@dimen/_10sdp"
+        app:cardElevation="@dimen/_4sdp"
+        app:cardUseCompatPadding="true"
+        app:strokeWidth="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/onPrimary">
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="match_parent"
+                app:color="@{item.category.hex}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView20"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginEnd="@dimen/_14sdp"
+                android:text="@{item.title}"
+                android:textColor="@color/onSurface"
+                android:textSize="@dimen/_14ssp"
+                app:fontFamily="@font/space_grotesk_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/view"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Jansport Bag" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView22"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_14sdp"
+                android:alpha=".7"
+                android:textColor="@color/onSurface"
+                android:textSize="@dimen/_12ssp"
+                app:fontFamily="@font/space_grotesk_regular"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/view"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView20"
+                app:reminder="@{item.reminder}"
+                tools:text="Reminder: 12/02/2023" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

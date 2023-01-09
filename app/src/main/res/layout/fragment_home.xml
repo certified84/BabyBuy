@@ -16,6 +16,10 @@
         <variable
             name="user"
             type="com.certified.babybuy.data.model.User" />
+
+        <variable
+            name="viewModel"
+            type="com.certified.babybuy.ui.home.HomeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -142,7 +146,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_4sdp"
-                    android:fontFamily="@font/space_grotesk_regular"
+                    android:fontFamily="@font/space_grotesk_medium"
                     android:text="@string/categories"
                     android:textColor="@color/onSurface"
                     android:textSize="@dimen/_14ssp"
@@ -150,33 +154,40 @@
                     app:layout_constraintStart_toEndOf="@+id/appCompatImageButton"
                     app:layout_constraintTop_toTopOf="@+id/appCompatImageButton" />
 
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/view_pager"
-                    android:layout_width="match_parent"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_categories"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:listCategories="@{viewModel.categories}"
+                    tools:listitem="@layout/item_category"
+                    tools:itemCount="1"
                     android:layout_marginTop="@dimen/_8sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/appCompatImageButton" />
 
-                <com.rd.PageIndicatorView
-                    android:id="@+id/indicator"
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/materialTextView19"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/_16sdp"
-                    android:background="@android:color/transparent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.461"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/view_pager"
-                    app:piv_animationType="worm"
-                    app:piv_count="3"
-                    app:piv_dynamicCount="true"
-                    app:piv_interactiveAnimation="true"
-                    app:piv_padding="@dimen/_4sdp"
-                    app:piv_selectedColor="@color/primary"
-                    app:piv_unselectedColor="@color/black"
-                    app:piv_viewPager="@id/view_pager" />
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:text="@string/recently_added"
+                    android:textColor="@color/onSurface"
+                    android:textSize="@dimen/_14ssp"
+                    app:fontFamily="@font/space_grotesk_medium"
+                    app:layout_constraintStart_toStartOf="@+id/guideline5"
+                    app:layout_constraintTop_toBottomOf="@+id/recycler_view_categories" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_items"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline6"
+                    app:layout_constraintStart_toStartOf="@+id/guideline5"
+                    app:layout_constraintTop_toBottomOf="@+id/materialTextView19"
+                    app:listItems="@{viewModel.items}"
+                    tools:listitem="@layout/item_layout" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
