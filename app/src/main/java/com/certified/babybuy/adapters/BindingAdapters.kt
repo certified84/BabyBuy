@@ -3,6 +3,7 @@ package com.certified.babybuy.adapters
 import android.graphics.Color
 import android.util.Log
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.certified.babybuy.data.model.Category
@@ -27,6 +28,11 @@ fun CustomProgressIndicator.animate(visible: Boolean) {
 @BindingAdapter("backgroundColor")
 fun MaterialCardView.backgroundColor(hex: String) {
     setCardBackgroundColor(Color.parseColor(hex))
+}
+
+@BindingAdapter("constraintBackgroundColor")
+fun ConstraintLayout.backgroundColor(hex: String) {
+    setBackgroundColor(Color.parseColor(hex))
 }
 
 @BindingAdapter("itemCount")
@@ -54,6 +60,11 @@ fun MaterialTextView.reminder(reminder: Long?) {
             SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(reminder)
         }"
     }
+}
+
+@BindingAdapter("category")
+fun MaterialTextView.category(title: String) {
+    text = if (title == "" ) "Enter new category" else "Edit category"
 }
 
 @BindingAdapter("listItems")

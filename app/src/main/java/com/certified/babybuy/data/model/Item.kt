@@ -1,7 +1,10 @@
 package com.certified.babybuy.data.model
 
 import com.certified.babybuy.util.currentDate
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Item(
     val id: String = "",
     val title: String = "",
@@ -11,6 +14,6 @@ data class Item(
     val delegate: Contact = Contact(),
     val purchased: Boolean = false,
     val location: Location? = null,
-    val reminder: Long = 0L,
+    val reminder: Long? = null,
     val category: Category = Category()
-)
+) : Parcelable

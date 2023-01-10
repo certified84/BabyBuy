@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.Constraints
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.certified.babybuy.R
 import com.certified.babybuy.adapters.CategoryRecyclerAdapter
@@ -116,7 +117,7 @@ class HomeFragment : Fragment() {
             recyclerViewCategories.adapter = CategoryRecyclerAdapter().apply {
                 setOnItemClickedListener(object : CategoryRecyclerAdapter.OnItemClickedListener {
                     override fun onItemClick(category: Category) {
-
+                        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToEditCategoryFragment(category))
                     }
                 })
             }

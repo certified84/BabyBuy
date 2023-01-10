@@ -33,4 +33,6 @@
     <color name="surface3">#DFECF0</color>
     <color name="surface4">#DDEAEE</color>
     <color name="surface5">#D8E7EC</color>
+
+    <color name="hintColor">#888888</color>
 </resources>

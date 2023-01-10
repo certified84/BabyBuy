@@ -29,4 +29,17 @@ object Extensions {
             .setCancelable(false)
             .show()
     }
+
+    fun Fragment.showYesNoDialog(title: String, message: String, action: (() -> Unit)?) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("Yes") { dialog, _ ->
+                dialog.dismiss()
+                action?.invoke()
+            }
+            .setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
+            .setCancelable(false)
+            .show()
+    }
 }
