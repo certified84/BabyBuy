@@ -95,10 +95,12 @@
             tools:visibility="visible" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/shapeableImageView"
+            android:id="@+id/iv_item_image"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/_24sdp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
             app:alpha="@{uiState == UIState.EDITING}"
             app:editItemImage="@{item.image}"
             app:layout_constraintDimensionRatio="2:1"
@@ -117,10 +119,10 @@
             android:textSize="@dimen/_14ssp"
             app:fontFamily="@font/space_grotesk_medium"
             app:invisible="@{uiState == UIState.EDITING}"
-            app:layout_constraintBottom_toBottomOf="@+id/shapeableImageView"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_item_image"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
-            app:layout_constraintStart_toStartOf="@+id/shapeableImageView"
-            app:layout_constraintTop_toTopOf="@+id/shapeableImageView" />
+            app:layout_constraintStart_toStartOf="@+id/iv_item_image"
+            app:layout_constraintTop_toTopOf="@+id/iv_item_image" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/et_name_layout"
@@ -139,7 +141,7 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toBottomOf="@+id/shapeableImageView">
+            app:layout_constraintTop_toBottomOf="@+id/iv_item_image">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_name"
@@ -165,16 +167,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_24sdp"
+            android:paddingStart="@dimen/_4sdp"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingEnd="@dimen/_4sdp"
+            android:paddingBottom="@dimen/_8sdp"
             android:textColor="#908C8C"
             android:textSize="@dimen/_14ssp"
-            android:paddingStart="@dimen/_4sdp"
-            android:paddingEnd="@dimen/_4sdp"
-            android:paddingTop="@dimen/_8sdp"
-            android:paddingBottom="@dimen/_8sdp"
-            app:chipCornerRadius="@dimen/_10sdp"
-            app:chipIconSize="@dimen/_16sdp"
             app:chipBackgroundColor="@color/surface1"
+            app:chipCornerRadius="@dimen/_10sdp"
             app:chipIcon="@drawable/ic_calendar"
+            app:chipIconSize="@dimen/_16sdp"
             app:chipIconTint="#908C8C"
             app:layout_constraintEnd_toStartOf="@+id/appCompatImageView"
             app:layout_constraintHorizontal_bias="0.5"

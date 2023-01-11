@@ -10,7 +10,7 @@ data class Item(
     val name: String = "",
     val created: Long = currentDate().timeInMillis,
     val modified: Long = currentDate().timeInMillis,
-    val image: String = "",
+    val image: String? = null,
     val delegate: Contact = Contact(),
     val purchased: Boolean = false,
     val location: Location? = null,
