@@ -119,7 +119,8 @@
             <com.google.android.material.progressindicator.LinearProgressIndicator
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:indicatorColor="@color/black"
+                app:indicatorColor="@color/onSurface"
+                app:trackColor="@color/surface"
                 app:layout_constraintEnd_toStartOf="@+id/guideline6"
                 app:layout_constraintStart_toStartOf="@+id/guideline5"
                 app:layout_constraintTop_toBottomOf="@+id/materialTextView17"

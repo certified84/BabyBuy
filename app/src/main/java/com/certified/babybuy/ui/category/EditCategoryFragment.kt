@@ -42,10 +42,18 @@ class EditCategoryFragment : Fragment() {
                         "Discard Changes",
                         "Are you sure you want to discard changes?"
                     ) {
-                        findNavController().navigate(EditCategoryFragmentDirections.actionEditCategoryFragmentToHomeFragment())
+                        findNavController().navigate(
+                            EditCategoryFragmentDirections.actionEditCategoryFragmentToCategoryDetailFragment(
+                                args.category
+                            )
+                        )
                     }
                 } else
-                    findNavController().navigate(EditCategoryFragmentDirections.actionEditCategoryFragmentToHomeFragment())
+                    findNavController().navigate(
+                        EditCategoryFragmentDirections.actionEditCategoryFragmentToCategoryDetailFragment(
+                            args.category
+                        )
+                    )
             }
         }
     }

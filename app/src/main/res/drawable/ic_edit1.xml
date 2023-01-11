@@ -1,11 +1,11 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="28dp"
-    android:height="28dp"
+    android:width="@dimen/_24sdp"
+    android:height="@dimen/_24sdp"
     android:viewportWidth="28"
     android:viewportHeight="28">
   <path
       android:pathData="M14,14m-14,0a14,14 0,1 1,28 0a14,14 0,1 1,-28 0"
-      android:fillColor="#86AF12"/>
+      android:fillColor="@color/secondaryContainer"/>
   <group>
     <clip-path
         android:pathData="M7,6h15v15h-15z"/>
@@ -14,7 +14,7 @@
         android:strokeLineJoin="round"
         android:strokeWidth="1.25"
         android:fillColor="#00000000"
-        android:strokeColor="#ffffff"
+        android:strokeColor="@color/onSecondaryContainer"
         android:strokeLineCap="round"/>
   </group>
 </vector>

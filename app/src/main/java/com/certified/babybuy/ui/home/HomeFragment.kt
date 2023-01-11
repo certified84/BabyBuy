@@ -117,7 +117,7 @@ class HomeFragment : Fragment() {
             recyclerViewCategories.adapter = CategoryRecyclerAdapter().apply {
                 setOnItemClickedListener(object : CategoryRecyclerAdapter.OnItemClickedListener {
                     override fun onItemClick(category: Category) {
-                        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToEditCategoryFragment(category))
+                        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToCategoryDetailFragment(category))
                     }
                 })
             }

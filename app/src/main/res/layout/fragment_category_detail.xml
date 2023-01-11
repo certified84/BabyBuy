@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="category"
+            type="com.certified.babybuy.data.model.Category" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/surface1"
+        android:orientation="vertical"
+        tools:context=".ui.category.CategoryDetailFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/_16sdp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/_16sdp" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_24sdp"
+                android:background="@null"
+                android:contentDescription="@string/drawer_button"
+                android:padding="@dimen/_4sdp"
+                android:src="@drawable/ic_back"
+                app:layout_constraintStart_toStartOf="@+id/guideline5"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btn_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_24sdp"
+                android:layout_marginEnd="@dimen/_4sdp"
+                android:background="@null"
+                android:contentDescription="@string/search_button"
+                android:padding="@dimen/_4sdp"
+                android:src="@drawable/ic_edit1"
+                app:layout_constraintEnd_toStartOf="@+id/btn_more"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btn_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_24sdp"
+                android:background="@null"
+                android:contentDescription="@string/notification_button"
+                android:padding="@dimen/_4sdp"
+                android:src="@drawable/ic_notification"
+                app:layout_constraintEnd_toStartOf="@+id/guideline6"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:alpha="@{true}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:viewBackgroundColor="@{category._hex}"
+                tools:background="@color/colorPrimary" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{category.emoji.emoji}"
+                android:textSize="@dimen/_24ssp"
+                app:fontFamily="@font/space_grotesk_medium"
+                app:layout_constraintBottom_toTopOf="@+id/materialTextView25"
+                app:layout_constraintEnd_toStartOf="@+id/guideline6"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/guideline5"
+                app:layout_constraintTop_toTopOf="@+id/btn_back"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="🎒" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="@{category.title}"
+                android:textColor="@color/onSurface"
+                android:textSize="@dimen/_24ssp"
+                app:fontFamily="@font/space_grotesk_medium"
+                app:layout_constraintBottom_toTopOf="@+id/materialTextView26"
+                app:layout_constraintEnd_toStartOf="@+id/guideline6"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/guideline5"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView24"
+                tools:text="Bags" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView26"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha=".7"
+                android:text="@{category.desc}"
+                android:textColor="@color/onSurface"
+                android:textSize="@dimen/_16ssp"
+                app:fontFamily="@font/space_grotesk_regular"
+                app:layout_constraintBottom_toTopOf="@+id/appCompatImageView5"
+                app:layout_constraintEnd_toStartOf="@+id/guideline6"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/guideline5"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView25"
+                tools:text="A collection of bags for my kids" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/appCompatImageView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                app:layout_constraintBottom_toTopOf="@+id/materialTextView27"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView26"
+                app:srcCompat="@drawable/ic_done2" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView27"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/onSurface"
+                android:textSize="@dimen/_18ssp"
+                app:fontFamily="@font/space_grotesk_medium"
+                app:itemCount="@{category.itemCount}"
+                app:layout_constraintBottom_toTopOf="@+id/materialTextView29"
+                app:layout_constraintEnd_toStartOf="@+id/guideline6"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/guideline5"
+                app:layout_constraintTop_toBottomOf="@+id/appCompatImageView5"
+                tools:text="40 Items" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView29"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/progress"
+                android:textColor="@color/onSurface"
+                android:textSize="@dimen/_14ssp"
+                app:fontFamily="@font/space_grotesk_medium"
+                app:layout_constraintBottom_toTopOf="@+id/linearProgressIndicator2"
+                app:layout_constraintStart_toStartOf="@+id/guideline5"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView27" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/onSurface"
+                android:textSize="@dimen/_14ssp"
+                app:fontFamily="@font/space_grotesk_medium"
+                app:layout_constraintEnd_toStartOf="@+id/guideline6"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView27"
+                app:progress="@{category}"
+                tools:text="74.5%" />
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/linearProgressIndicator2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_16sdp"
+                app:indicatorColor="@color/onSurface"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline6"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/guideline5"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView29"
+                app:percent="@{category}"
+                app:trackColor="@color/surface" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16sdp"
+            tools:listitem="@layout/item_layout" />
+
+    </LinearLayout>
+</layout>

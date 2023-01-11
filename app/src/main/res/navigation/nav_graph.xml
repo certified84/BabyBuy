@@ -90,8 +90,8 @@
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_homeFragment_to_editCategoryFragment"
-            app:destination="@id/editCategoryFragment"
+            android:id="@+id/action_homeFragment_to_categoryDetailFragment"
+            app:destination="@id/categoryDetailFragment"
             app:enterAnim="@anim/slide_in"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -113,11 +113,13 @@
             android:name="category"
             app:argType="com.certified.babybuy.data.model.Category" />
         <action
-            android:id="@+id/action_editCategoryFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
+            android:id="@+id/action_editCategoryFragment_to_categoryDetailFragment"
+            app:destination="@id/categoryDetailFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out"
-            app:popUpTo="@id/nav_graph"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out"
+            app:popUpTo="@id/categoryDetailFragment"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -125,6 +127,15 @@
         android:name="com.certified.babybuy.ui.item.EditItemFragment"
         android:label="EditItemFragment"
         tools:layout="@layout/fragment_edit_item">
+        <action
+            android:id="@+id/action_editItemFragment_to_categoryDetailFragment"
+            app:destination="@id/categoryDetailFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out"
+            app:popUpTo="@id/categoryDetailFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_editItemFragment_to_homeFragment"
             app:destination="@id/homeFragment"
@@ -135,5 +146,36 @@
         <argument
             android:name="item"
             app:argType="com.certified.babybuy.data.model.Item" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoryDetailFragment"
+        android:name="com.certified.babybuy.ui.category.CategoryDetailFragment"
+        android:label="CategoryDetailFragment"
+        tools:layout="@layout/fragment_category_detail">
+        <action
+            android:id="@+id/action_categoryDetailFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_categoryDetailFragment_to_editItemFragment"
+            app:destination="@id/editItemFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out" />
+        <action
+            android:id="@+id/action_categoryDetailFragment_to_editCategoryFragment"
+            app:destination="@id/editCategoryFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out" />
+        <argument
+            android:name="category"
+            app:argType="com.certified.babybuy.data.model.Category" />
+
     </fragment>
 </navigation>

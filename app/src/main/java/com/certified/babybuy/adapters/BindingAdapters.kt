@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -16,7 +15,6 @@ import com.certified.babybuy.util.currentDate
 import com.certified.customprogressindicatorlibrary.CustomProgressIndicator
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
-import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textview.MaterialTextView
 import java.text.SimpleDateFormat
@@ -42,8 +40,8 @@ fun MaterialCardView.backgroundColor(hex: String) {
     setCardBackgroundColor(Color.parseColor(hex))
 }
 
-@BindingAdapter("constraintBackgroundColor")
-fun ConstraintLayout.backgroundColor(hex: String) {
+@BindingAdapter("viewBackgroundColor")
+fun View.viewBackgroundColor(hex: String) {
     setBackgroundColor(Color.parseColor(hex))
 }
 
@@ -54,14 +52,14 @@ fun MaterialTextView.itemCount(itemCount: Int) {
 
 @BindingAdapter("progress")
 fun MaterialTextView.progress(category: Category) {
-    val progress = (category.purchasedCount / category.itemCount) * 100.0
+    val progress = ((1.0 * category.purchasedCount) / category.itemCount) * 100.0
     Log.d("TAG", "progress: $progress")
-    text = "$progress %"
+    text = "${"%.2f".format(progress)} %"
 }
 
 @BindingAdapter("percent")
 fun LinearProgressIndicator.percent(category: Category) {
-    val progress = (category.purchasedCount / category.itemCount) * 100.0
+    val progress = ((1.0 * category.purchasedCount) / category.itemCount) * 100.0
     setProgress(progress.toInt())
 }
 
@@ -122,6 +120,6 @@ fun Chip.reminderText(reminder: Long?) {
 }
 
 @BindingAdapter("alpha")
-fun ShapeableImageView.alpha(state: Boolean) {
+fun View.alpha(state: Boolean) {
     alpha = if (state) .4f else 1f
 }
