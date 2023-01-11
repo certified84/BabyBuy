@@ -39,7 +39,7 @@
                 android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_16sdp"
                 android:layout_marginEnd="@dimen/_14sdp"
-                android:text="@{item.title}"
+                android:text="@{item.name}"
                 android:textColor="@color/onSurface"
                 android:textSize="@dimen/_14ssp"
                 app:fontFamily="@font/space_grotesk_medium"

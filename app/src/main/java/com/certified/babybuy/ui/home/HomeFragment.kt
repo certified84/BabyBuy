@@ -108,7 +108,7 @@ class HomeFragment : Fragment() {
             recyclerViewItems.adapter = ItemRecyclerAdapter().apply {
                 setOnItemClickedListener(object : ItemRecyclerAdapter.OnItemClickedListener {
                     override fun onItemClick(item: Item) {
-
+                        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToEditItemFragment(item))
                     }
                 })
             }

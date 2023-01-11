@@ -6,4 +6,8 @@
     </style>
 
     <style name="Theme.BabyBuy" parent="Base.Theme.BabyBuy" />
+
+    <style name="ShapeAppearanceOverlay.BabyBuy" parent="">
+        <item name="cornerSize">15%</item>
+    </style>
 </resources>

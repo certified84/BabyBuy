@@ -36,7 +36,7 @@ class HomeViewModel @Inject constructor(private val repository: Repository) : Vi
             _items.value = listOf(
                 Item(
                     id = "1",
-                    title = "Jansport Bag",
+                    name = "Jansport Bag",
                     reminder = currentDate().timeInMillis,
                     category =
                     Category(
@@ -51,7 +51,7 @@ class HomeViewModel @Inject constructor(private val repository: Repository) : Vi
                 ),
                 Item(
                     id = "2",
-                    title = "Air Jordan 4",
+                    name = "Air Jordan 4",
                     category =
                     Category(
                         "2",
@@ -65,7 +65,7 @@ class HomeViewModel @Inject constructor(private val repository: Repository) : Vi
                 ),
                 Item(
                     id = "3",
-                    title = "Off-white Hoodie",
+                    name = "Off-white Hoodie",
                     reminder = currentDate().timeInMillis,
                     category =
                     Category(

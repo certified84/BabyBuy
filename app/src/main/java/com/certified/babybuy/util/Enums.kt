@@ -5,5 +5,6 @@ enum class UIState {
     HAS_DATA,
     EMPTY,
     SUCCESS,
-    FAILURE
+    FAILURE,
+    EDITING
 }

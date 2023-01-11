@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Item(
     val id: String = "",
-    val title: String = "",
+    val name: String = "",
     val created: Long = currentDate().timeInMillis,
     val modified: Long = currentDate().timeInMillis,
     val image: String = "",
