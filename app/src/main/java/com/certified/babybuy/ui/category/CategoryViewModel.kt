@@ -27,7 +27,7 @@ class CategoryViewModel @Inject constructor(private val repository: Repository) 
     val _uploadSuccess = MutableStateFlow(false)
     val uploadSuccess = _uploadSuccess.asStateFlow()
 
-    private val _category = MutableStateFlow<Category?>(Category())
+    private val _category = MutableStateFlow<Category?>(null)
     val category = _category.asStateFlow()
 
     fun updateCategory(category: Category) {

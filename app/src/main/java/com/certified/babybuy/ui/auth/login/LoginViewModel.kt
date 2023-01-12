@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.certified.babybuy.data.model.User
 import com.certified.babybuy.data.repository.Repository
 import com.certified.babybuy.util.UIState
 import com.google.firebase.auth.AuthCredential
@@ -24,6 +25,9 @@ class LoginViewModel @Inject constructor(private val repository: Repository) : V
 
     val _success = MutableLiveData<Boolean>()
     val success: LiveData<Boolean> get() = _success
+
+    val _uploadSuccess = MutableLiveData<Boolean>()
+    val uploadSuccess: LiveData<Boolean> get() = _uploadSuccess
 
     fun signInWithEmailAndPassword(email: String, password: String) {
         viewModelScope.launch {
@@ -66,6 +70,29 @@ class LoginViewModel @Inject constructor(private val repository: Repository) : V
                 uiState.set(UIState.FAILURE)
                 _message.value = "Login failed: ${e.localizedMessage}"
                 _success.value = false
+            }
+        }
+    }
+
+    fun uploadDetails(user: User) {
+        viewModelScope.launch {
+            try {
+                val response = repository.uploadDetails(user)
+                response.await()
+                if (response.isSuccessful) {
+                    uiState.set(UIState.SUCCESS)
+                    Log.d("TAG", "uploadDetails: Success: ${response.result}")
+                } else {
+                    uiState.set(UIState.FAILURE)
+                    _message.value =
+                        "Account creation failed: ${response.exception?.localizedMessage}"
+                    Log.d("TAG", "uploadDetails: Failure: ${response.exception?.localizedMessage}")
+                }
+                _uploadSuccess.value = response.isSuccessful
+            } catch (e: Exception) {
+                uiState.set(UIState.FAILURE)
+                Log.d("TAG", "uploadDetails: Exception: ${e.localizedMessage}")
+                _uploadSuccess.value = false
             }
         }
     }

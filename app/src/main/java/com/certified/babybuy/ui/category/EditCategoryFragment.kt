@@ -39,8 +39,6 @@ class EditCategoryFragment : Fragment() {
 
         binding.lifecycleOwner = this
         binding.uiState = viewModel.uiState
-//        binding.viewModel = viewModel
-        binding.category = args.category
 
         viewModel.apply {
             if (categoryResponse.value.isNotBlank()) {
@@ -69,6 +67,7 @@ class EditCategoryFragment : Fragment() {
         }
 
         binding.apply {
+            category = args.category
             etTitle.doOnTextChanged { text, _, _, _ ->
                 if (text.toString().isNotBlank()) etTitleLayout.error = null
             }

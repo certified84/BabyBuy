@@ -15,6 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.certified.babybuy.BuildConfig
 import com.certified.babybuy.R
+import com.certified.babybuy.data.model.User
 import com.certified.babybuy.databinding.FragmentLoginBinding
 import com.certified.babybuy.util.Extensions.showSnackbar
 import com.certified.babybuy.util.UIState
@@ -121,11 +122,23 @@ class LoginFragment : Fragment() {
                     _success.postValue(false)
                     val user = Firebase.auth.currentUser!!
                     if (user.isEmailVerified) {
-                        findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
+                        val user = User(
+                            uid = user.uid,
+                            name = user.displayName,
+                            email = user.email.toString(),
+                            image = user.photoUrl?.toString()
+                        )
+                        uploadDetails(user)
                     } else {
                         Firebase.auth.signOut()
                         showSnackbar("Check your email for verification link")
                     }
+                }
+            }
+            uploadSuccess.observe(viewLifecycleOwner) {
+                if (it) {
+                    _uploadSuccess.postValue(false)
+                    findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
                 }
             }
         }

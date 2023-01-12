@@ -13,7 +13,7 @@ class Repository @Inject constructor() {
         Firebase.auth.createUserWithEmailAndPassword(email, password)
 
     fun uploadDetails(user: User) =
-        Firebase.firestore.collection("users").document(user.uid).set(user)
+        Firebase.firestore.collection("_users").document(user.uid).set(user)
 
     fun signInWithCredential(firebaseCredential: AuthCredential) =
         Firebase.auth.signInWithCredential(firebaseCredential)
