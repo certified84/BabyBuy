@@ -5,6 +5,14 @@
 
     <data>
 
+        <import type="androidx.databinding.ObservableField" />
+
+        <import type="com.certified.babybuy.util.UIState" />
+
+        <variable
+            name="uiState"
+            type="ObservableField&lt;UIState>" />
+
         <variable
             name="category"
             type="com.certified.babybuy.data.model.Category" />
@@ -150,7 +158,7 @@
             app:boxStrokeColor="@null"
             app:boxStrokeWidth="0dp"
             app:hintEnabled="false"
-            app:layout_constraintBottom_toTopOf="@+id/extendedFloatingActionButton"
+            app:layout_constraintBottom_toTopOf="@+id/fab_save"
             app:layout_constraintEnd_toStartOf="@+id/guideline6"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/view3"
@@ -175,15 +183,27 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            app:indicatorColor="@color/primary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:visible="@{uiState == UIState.LOADING}" />
+
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/extendedFloatingActionButton"
+            android:id="@+id/fab_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_24sdp"
-            android:backgroundTint="@color/secondaryContainer"
             android:text="@string/save"
             android:textAllCaps="false"
             android:textSize="@dimen/_14ssp"
+            app:extendedFabBackgroundColor="@{category.hex}"
             app:icon="@drawable/ic_baseline_done_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline6"

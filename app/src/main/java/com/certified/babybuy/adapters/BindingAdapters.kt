@@ -17,6 +17,7 @@ import com.certified.babybuy.util.currentDate
 import com.certified.customprogressindicatorlibrary.CustomProgressIndicator
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textview.MaterialTextView
@@ -39,45 +40,49 @@ fun CustomProgressIndicator.animate(visible: Boolean) {
 }
 
 @BindingAdapter("backgroundColor")
-fun MaterialCardView.backgroundColor(hex: String) {
-    setCardBackgroundColor(Color.parseColor(hex))
+fun MaterialCardView.backgroundColor(hex: String?) {
+    hex?.let { setCardBackgroundColor(Color.parseColor(it)) }
 }
 
 @BindingAdapter("viewBackgroundColor")
-fun View.viewBackgroundColor(hex: String) {
-    setBackgroundColor(Color.parseColor(hex))
+fun View.viewBackgroundColor(hex: String?) {
+    hex?.let { setBackgroundColor(Color.parseColor(it)) }
 }
 
 @BindingAdapter("itemCount")
-fun MaterialTextView.itemCount(itemCount: Int) {
+fun MaterialTextView.itemCount(itemCount: Int?) {
     text = "$itemCount Items"
 }
 
 @BindingAdapter("progress")
-fun MaterialTextView.progress(category: Category) {
-    val progress = ((1.0 * category.purchasedCount) / category.itemCount) * 100.0
-    Log.d("TAG", "progress: $progress")
-    text = "${"%.2f".format(progress)} %"
+fun MaterialTextView.progress(category: Category?) {
+    category?.let {
+        val progress = ((1.0 * it.purchasedCount) / it.itemCount) * 100.0
+        Log.d("TAG", "progress: $progress")
+        text = "${"%.2f".format(progress)} %"
+    }
 }
 
 @BindingAdapter("percent")
-fun LinearProgressIndicator.percent(category: Category) {
-    val progress = ((1.0 * category.purchasedCount) / category.itemCount) * 100.0
-    setProgress(progress.toInt())
+fun LinearProgressIndicator.percent(category: Category?) {
+    category?.let {
+        val progress = ((1.0 * it.purchasedCount) / it.itemCount) * 100.0
+        setProgress(progress.toInt())
+    }
 }
 
 @BindingAdapter("reminder")
 fun MaterialTextView.reminder(reminder: Long?) {
     text = reminder?.let {
         "Reminder: ${
-            SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(reminder)
+            SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(it)
         }"
     }
 }
 
 @BindingAdapter("category")
-fun MaterialTextView.category(title: String) {
-    text = if (title == "") "Enter new category" else "Edit category"
+fun MaterialTextView.category(title: String?) {
+    text = if (title == null || title == "") "Enter new category" else "Edit category"
 }
 
 @BindingAdapter("listItems")
@@ -93,8 +98,8 @@ fun bindCategoryRecyclerView(recyclerView: RecyclerView, data: List<Category>?) 
 }
 
 @BindingAdapter("color")
-fun View.backgroundColor(color: String) {
-    setBackgroundColor(Color.parseColor(color))
+fun View.backgroundColor(color: String?) {
+    color?.let { setBackgroundColor(Color.parseColor(it)) }
 }
 
 @BindingAdapter("editItemImage")
@@ -128,11 +133,16 @@ fun View.alpha(state: Boolean) {
 }
 
 @BindingAdapter("viewTint")
-fun AppCompatImageButton.viewTint(color: String) {
-    imageTintList = ColorStateList.valueOf(Color.parseColor(color))
+fun AppCompatImageButton.viewTint(color: String?) {
+    color?.let { imageTintList = ColorStateList.valueOf(Color.parseColor(it)) }
 }
 
 @BindingAdapter("fabBackgroundColor")
-fun FloatingActionButton.fabBackgroundColor(color: String) {
-    backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
+fun FloatingActionButton.fabBackgroundColor(color: String?) {
+    color?.let { backgroundTintList = ColorStateList.valueOf(Color.parseColor(it)) }
+}
+
+@BindingAdapter("extendedFabBackgroundColor")
+fun ExtendedFloatingActionButton.extendedFabBackgroundColor(color: String?) {
+    color?.let { backgroundTintList = ColorStateList.valueOf(Color.parseColor(it)) }
 }

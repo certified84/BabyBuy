@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="category"
-            type="com.certified.babybuy.data.model.Category" />
+            name="viewModel"
+            type="com.certified.babybuy.ui.category.CategoryViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -48,7 +48,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:viewBackgroundColor="@{category._hex}"
+                app:viewBackgroundColor="@{viewModel.category._hex}"
                 tools:background="@color/colorPrimary" />
 
             <androidx.appcompat.widget.AppCompatImageButton
@@ -63,7 +63,7 @@
                 app:layout_constraintStart_toStartOf="@+id/guideline5"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tintMode="multiply"
-                app:viewTint="@{category.hex}" />
+                app:viewTint="@{viewModel.category.hex}" />
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btn_edit"
@@ -78,7 +78,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/btn_more"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tintMode="multiply"
-                app:viewTint="@{category.hex}" />
+                app:viewTint="@{viewModel.category.hex}" />
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btn_more"
@@ -92,13 +92,13 @@
                 app:layout_constraintEnd_toStartOf="@+id/guideline6"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tintMode="multiply"
-                app:viewTint="@{category.hex}" />
+                app:viewTint="@{viewModel.category.hex}" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/materialTextView24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{category.emoji.emoji}"
+                android:text="@{viewModel.category.emoji.emoji}"
                 android:textSize="@dimen/_24ssp"
                 app:fontFamily="@font/space_grotesk_medium"
                 app:layout_constraintBottom_toTopOf="@+id/materialTextView25"
@@ -114,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:text="@{category.title}"
+                android:text="@{viewModel.category.title}"
                 android:textColor="@color/onSurface"
                 android:textSize="@dimen/_24ssp"
                 app:fontFamily="@font/space_grotesk_medium"
@@ -130,7 +130,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha=".7"
-                android:text="@{category.desc}"
+                android:text="@{viewModel.category.desc}"
                 android:textColor="@color/onSurface"
                 android:textSize="@dimen/_16ssp"
                 app:fontFamily="@font/space_grotesk_regular"
@@ -160,7 +160,7 @@
                 android:textColor="@color/onSurface"
                 android:textSize="@dimen/_18ssp"
                 app:fontFamily="@font/space_grotesk_medium"
-                app:itemCount="@{category.itemCount}"
+                app:itemCount="@{viewModel.category.itemCount}"
                 app:layout_constraintBottom_toTopOf="@+id/materialTextView29"
                 app:layout_constraintEnd_toStartOf="@+id/guideline6"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -188,7 +188,7 @@
                 app:fontFamily="@font/space_grotesk_medium"
                 app:layout_constraintEnd_toStartOf="@+id/guideline6"
                 app:layout_constraintTop_toBottomOf="@+id/materialTextView27"
-                app:progress="@{category}"
+                app:progress="@{viewModel.category}"
                 tools:text="74.5%" />
 
             <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -202,7 +202,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/guideline5"
                 app:layout_constraintTop_toBottomOf="@+id/materialTextView29"
-                app:percent="@{category}"
+                app:percent="@{viewModel.category}"
                 app:trackColor="@color/surface" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -224,7 +224,7 @@
             android:layout_marginBottom="@dimen/_24sdp"
             android:contentDescription="@string/add_button"
             app:borderWidth="0dp"
-            app:fabBackgroundColor="@{category.hex}"
+            app:fabBackgroundColor="@{viewModel.category.hex}"
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

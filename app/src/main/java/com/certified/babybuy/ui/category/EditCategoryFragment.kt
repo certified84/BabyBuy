@@ -4,18 +4,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.certified.babybuy.databinding.FragmentEditCategoryBinding
+import com.certified.babybuy.util.Extensions.showSnackbar
 import com.certified.babybuy.util.Extensions.showYesNoDialog
+import com.certified.babybuy.util.UIState
+import com.certified.babybuy.util.currentDate
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class EditCategoryFragment : Fragment() {
 
     private var _binding: FragmentEditCategoryBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: CategoryViewModel by viewModels()
+    private val viewModel: CategoryViewModel by activityViewModels()
     private val args: EditCategoryFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -30,12 +37,44 @@ class EditCategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        binding.lifecycleOwner = this
-//        binding.uiState = viewModel.uiState
+        binding.lifecycleOwner = this
+        binding.uiState = viewModel.uiState
 //        binding.viewModel = viewModel
         binding.category = args.category
 
+        viewModel.apply {
+            if (categoryResponse.value.isNotBlank()) {
+                showSnackbar(categoryResponse.value)
+                _categoryResponse.value = ""
+            }
+            lifecycleScope.launchWhenResumed {
+                uploadSuccess.collect { success ->
+                    if (success) {
+                        _uploadSuccess.value = false
+                        when (args.from) {
+                            "category" ->
+                                findNavController().navigate(
+                                    EditCategoryFragmentDirections.actionEditCategoryFragmentToCategoryDetailFragment(
+                                        args.category.id
+                                    )
+                                )
+                            else ->
+                                findNavController().navigate(
+                                    EditCategoryFragmentDirections.actionEditCategoryFragmentToHomeFragment()
+                                )
+                        }
+                    }
+                }
+            }
+        }
+
         binding.apply {
+            etTitle.doOnTextChanged { text, _, _, _ ->
+                if (text.toString().isNotBlank()) etTitleLayout.error = null
+            }
+            etDescription.doOnTextChanged { text, _, _, _ ->
+                if (text.toString().isNotBlank()) etDescriptionLayout.error = null
+            }
             btnClose.setOnClickListener {
                 if (etTitle.text.toString() != args.category.title || etDescription.text.toString() != args.category.desc) {
                     showYesNoDialog(
@@ -46,7 +85,7 @@ class EditCategoryFragment : Fragment() {
                             "category" ->
                                 findNavController().navigate(
                                     EditCategoryFragmentDirections.actionEditCategoryFragmentToCategoryDetailFragment(
-                                        args.category
+                                        args.category.id
                                     )
                                 )
                             else ->
@@ -60,7 +99,7 @@ class EditCategoryFragment : Fragment() {
                         "category" ->
                             findNavController().navigate(
                                 EditCategoryFragmentDirections.actionEditCategoryFragmentToCategoryDetailFragment(
-                                    args.category
+                                    args.category.id
                                 )
                             )
                         else ->
@@ -68,6 +107,28 @@ class EditCategoryFragment : Fragment() {
                                 EditCategoryFragmentDirections.actionEditCategoryFragmentToHomeFragment()
                             )
                     }
+                }
+            }
+            fabSave.setOnClickListener {
+                val title = etTitle.text.toString()
+                val desc = etDescription.text.toString()
+
+                if (title.isBlank()) {
+                    etTitleLayout.error = "Title is required"
+                    etTitle.requestFocus()
+                    return@setOnClickListener
+                }
+                etTitleLayout.error = null
+
+                with(viewModel) {
+                    uiState.set(UIState.LOADING)
+                    updateCategory(
+                        args.category.copy(
+                            title = title,
+                            desc = desc,
+                            modified = currentDate().timeInMillis
+                        )
+                    )
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.certified.babybuy.ui.home
 
+import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -42,7 +43,7 @@ class HomeViewModel @Inject constructor(private val repository: Repository) : Vi
             val query =
                 Firebase.firestore.collection("_items")
                     .whereEqualTo("uid", userId)
-                    .orderBy("created", Query.Direction.DESCENDING)
+                    .orderBy("modified", Query.Direction.DESCENDING)
             query.addSnapshotListener { value, error ->
                 if (value == null || value.isEmpty || error != null)
                     recentUIState.set(UIState.EMPTY)
@@ -59,8 +60,10 @@ class HomeViewModel @Inject constructor(private val repository: Repository) : Vi
             val query =
                 Firebase.firestore.collection("_categories")
                     .whereEqualTo("uid", userId)
-                    .orderBy("created", Query.Direction.DESCENDING)
+                    .orderBy("modified", Query.Direction.DESCENDING)
             query.addSnapshotListener { value, error ->
+                Log.d("TAG", "getCategories: Error: $error")
+                Log.d("TAG", "getCategories: Value: $value")
                 if (value == null || value.isEmpty || error != null)
                     uiState.set(UIState.EMPTY)
                 else {

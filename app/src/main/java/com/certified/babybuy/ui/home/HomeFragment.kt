@@ -124,7 +124,7 @@ class HomeFragment : Fragment() {
                     override fun onItemClick(category: Category) {
                         findNavController().navigate(
                             HomeFragmentDirections.actionHomeFragmentToCategoryDetailFragment(
-                                category
+                                category.id
                             )
                         )
                     }

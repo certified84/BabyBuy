@@ -18,6 +18,7 @@ data class Category(
     val emoji: Emoji? = null,
     var _hex: String = "",
     val created: Long = currentDate().timeInMillis,
+    val modified: Long = currentDate().timeInMillis,
     val uid: String? = Firebase.auth.currentUser?.uid
 ) : Parcelable {
     init {
