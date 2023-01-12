@@ -97,6 +97,13 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out" />
         <action
+            android:id="@+id/action_homeFragment_to_editCategoryFragment"
+            app:destination="@id/editCategoryFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out" />
+        <action
             android:id="@+id/action_homeFragment_to_editItemFragment"
             app:destination="@id/editItemFragment"
             app:enterAnim="@anim/slide_in"
@@ -121,6 +128,18 @@
             app:popExitAnim="@anim/slide_out"
             app:popUpTo="@id/categoryDetailFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_editCategoryFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="from"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/editItemFragment"

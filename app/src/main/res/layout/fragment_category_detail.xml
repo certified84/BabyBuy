@@ -10,7 +10,7 @@
             type="com.certified.babybuy.data.model.Category" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/surface1"
@@ -18,8 +18,12 @@
         tools:context=".ui.category.CategoryDetailFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline5"
@@ -35,6 +39,18 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_end="@dimen/_16sdp" />
 
+            <View
+                android:id="@+id/view4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:alpha="@{true}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:viewBackgroundColor="@{category._hex}"
+                tools:background="@color/colorPrimary" />
+
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btn_back"
                 android:layout_width="wrap_content"
@@ -45,7 +61,9 @@
                 android:padding="@dimen/_4sdp"
                 android:src="@drawable/ic_back"
                 app:layout_constraintStart_toStartOf="@+id/guideline5"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:tintMode="multiply"
+                app:viewTint="@{category.hex}" />
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btn_edit"
@@ -58,7 +76,9 @@
                 android:padding="@dimen/_4sdp"
                 android:src="@drawable/ic_edit1"
                 app:layout_constraintEnd_toStartOf="@+id/btn_more"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:tintMode="multiply"
+                app:viewTint="@{category.hex}" />
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btn_more"
@@ -68,21 +88,11 @@
                 android:background="@null"
                 android:contentDescription="@string/notification_button"
                 android:padding="@dimen/_4sdp"
-                android:src="@drawable/ic_notification"
+                android:src="@drawable/ic_more"
                 app:layout_constraintEnd_toStartOf="@+id/guideline6"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <View
-                android:id="@+id/view4"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:alpha="@{true}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:viewBackgroundColor="@{category._hex}"
-                tools:background="@color/colorPrimary" />
+                app:tintMode="multiply"
+                app:viewTint="@{category.hex}" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/materialTextView24"
@@ -201,8 +211,25 @@
             android:id="@+id/recycler_view_items"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_16sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
             tools:listitem="@layout/item_layout" />
 
-    </LinearLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:layout_marginBottom="@dimen/_24sdp"
+            android:contentDescription="@string/add_button"
+            app:borderWidth="0dp"
+            app:fabBackgroundColor="@{category.hex}"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_baseline_add_24"
+            app:tint="@color/onSecondaryContainer" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

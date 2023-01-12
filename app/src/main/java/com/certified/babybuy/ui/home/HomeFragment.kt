@@ -108,7 +108,11 @@ class HomeFragment : Fragment() {
             recyclerViewItems.adapter = ItemRecyclerAdapter().apply {
                 setOnItemClickedListener(object : ItemRecyclerAdapter.OnItemClickedListener {
                     override fun onItemClick(item: Item) {
-                        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToEditItemFragment(item))
+                        findNavController().navigate(
+                            HomeFragmentDirections.actionHomeFragmentToEditItemFragment(
+                                item
+                            )
+                        )
                     }
                 })
             }
@@ -117,12 +121,32 @@ class HomeFragment : Fragment() {
             recyclerViewCategories.adapter = CategoryRecyclerAdapter().apply {
                 setOnItemClickedListener(object : CategoryRecyclerAdapter.OnItemClickedListener {
                     override fun onItemClick(category: Category) {
-                        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToCategoryDetailFragment(category))
+                        findNavController().navigate(
+                            HomeFragmentDirections.actionHomeFragmentToCategoryDetailFragment(
+                                category
+                            )
+                        )
                     }
                 })
             }
             recyclerViewCategories.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+            fabAddCategory.setOnClickListener {
+                findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToEditCategoryFragment(
+                        Category(), "home"
+                    )
+                )
+            }
+
+            fabAddItem.setOnClickListener {
+                findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToEditItemFragment(
+                        Item()
+                    )
+                )
+            }
         }
     }
 

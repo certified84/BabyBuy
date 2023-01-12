@@ -13,9 +13,17 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:viewBackgroundColor="@{category._hex}"
-        tools:background="@color/primary"
+        android:background="@color/surface1"
         tools:context=".ui.category.EditCategoryFragment">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:viewBackgroundColor="@{category._hex}" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/et_title_layout"
@@ -176,7 +184,7 @@
             android:text="@string/save"
             android:textAllCaps="false"
             android:textSize="@dimen/_14ssp"
-            app:icon="@drawable/ic_baseline_add_24"
+            app:icon="@drawable/ic_baseline_done_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline6"
             app:tint="@color/onSecondaryContainer" />

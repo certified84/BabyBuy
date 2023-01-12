@@ -32,7 +32,7 @@ class CategoryDetailFragment : Fragment() {
             btnEdit.setOnClickListener {
                 findNavController().navigate(
                     CategoryDetailFragmentDirections.actionCategoryDetailFragmentToEditCategoryFragment(
-                        args.category
+                        args.category, "category"
                     )
                 )
             }

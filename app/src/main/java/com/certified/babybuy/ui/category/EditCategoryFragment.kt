@@ -42,18 +42,33 @@ class EditCategoryFragment : Fragment() {
                         "Discard Changes",
                         "Are you sure you want to discard changes?"
                     ) {
-                        findNavController().navigate(
-                            EditCategoryFragmentDirections.actionEditCategoryFragmentToCategoryDetailFragment(
-                                args.category
-                            )
-                        )
+                        when (args.from) {
+                            "category" ->
+                                findNavController().navigate(
+                                    EditCategoryFragmentDirections.actionEditCategoryFragmentToCategoryDetailFragment(
+                                        args.category
+                                    )
+                                )
+                            else ->
+                                findNavController().navigate(
+                                    EditCategoryFragmentDirections.actionEditCategoryFragmentToHomeFragment()
+                                )
+                        }
                     }
-                } else
-                    findNavController().navigate(
-                        EditCategoryFragmentDirections.actionEditCategoryFragmentToCategoryDetailFragment(
-                            args.category
-                        )
-                    )
+                } else {
+                    when (args.from) {
+                        "category" ->
+                            findNavController().navigate(
+                                EditCategoryFragmentDirections.actionEditCategoryFragmentToCategoryDetailFragment(
+                                    args.category
+                                )
+                            )
+                        else ->
+                            findNavController().navigate(
+                                EditCategoryFragmentDirections.actionEditCategoryFragmentToHomeFragment()
+                            )
+                    }
+                }
             }
         }
     }

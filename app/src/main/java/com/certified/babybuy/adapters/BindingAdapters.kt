@@ -1,9 +1,11 @@
 package com.certified.babybuy.adapters
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -15,6 +17,7 @@ import com.certified.babybuy.util.currentDate
 import com.certified.customprogressindicatorlibrary.CustomProgressIndicator
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textview.MaterialTextView
 import java.text.SimpleDateFormat
@@ -122,4 +125,14 @@ fun Chip.reminderText(reminder: Long?) {
 @BindingAdapter("alpha")
 fun View.alpha(state: Boolean) {
     alpha = if (state) .4f else 1f
+}
+
+@BindingAdapter("viewTint")
+fun AppCompatImageButton.viewTint(color: String) {
+    imageTintList = ColorStateList.valueOf(Color.parseColor(color))
+}
+
+@BindingAdapter("fabBackgroundColor")
+fun FloatingActionButton.fabBackgroundColor(color: String) {
+    backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
 }

@@ -129,7 +129,11 @@ class EditItemFragment : Fragment() {
             val fadeInAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in)
             val fadeOutAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_out)
 
-            etName.keyListener = null
+            if (args.item.name.isBlank())
+                viewModel.uiState.set(UIState.EDITING)
+            else
+                etName.keyListener = null
+
             btnEdit.setOnClickListener {
                 viewModel.uiState.set(UIState.EDITING)
                 etName.keyListener = keyListener
@@ -175,6 +179,15 @@ class EditItemFragment : Fragment() {
             dialog.dismiss()
         }
         builder.show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (args.item.name.isBlank())
+            binding.etName.apply {
+                post { setSelection(text.toString().length) }
+                requestFocus()
+            }
     }
 
     override fun onDestroyView() {
