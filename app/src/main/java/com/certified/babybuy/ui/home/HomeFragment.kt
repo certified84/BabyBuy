@@ -40,6 +40,7 @@ class HomeFragment : Fragment() {
 
         binding.lifecycleOwner = this
         binding.uiState = viewModel.uiState
+        binding.recentUIState = viewModel.recentUIState
         binding.viewModel = viewModel
 
         binding.apply {

@@ -2,6 +2,8 @@ package com.certified.babybuy.data.model
 
 import com.certified.babybuy.util.currentDate
 import android.os.Parcelable
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -15,5 +17,6 @@ data class Item(
     val purchased: Boolean = false,
     val location: Location? = null,
     val reminder: Long? = null,
-    val category: Category = Category()
+    val category: Category = Category(),
+    val uid: String? = Firebase.auth.currentUser?.uid
 ) : Parcelable
