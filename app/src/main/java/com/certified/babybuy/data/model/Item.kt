@@ -15,7 +15,7 @@ data class Item(
     val price: Double = 0.0,
     val created: Long = currentDate().timeInMillis,
     val modified: Long = currentDate().timeInMillis,
-    val image: String? = null,
+    var image: String? = null,
     val delegate: Contact? = null,
     val purchased: Boolean = false,
     val location: Location? = null,

@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/surface1"
+        android:layout_marginBottom="@dimen/_24sdp"
         android:orientation="vertical"
         tools:context=".ui.category.CategoryDetailFragment">
 
@@ -225,7 +226,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_16sdp"
-            android:layout_marginBottom="@dimen/_24sdp"
             android:contentDescription="@string/add_button"
             app:borderWidth="0dp"
             app:fabBackgroundColor="@{viewModel.category.hex}"

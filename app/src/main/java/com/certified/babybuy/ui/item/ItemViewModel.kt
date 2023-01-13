@@ -1,5 +1,6 @@
 package com.certified.babybuy.ui.item
 
+import android.net.Uri
 import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
@@ -11,6 +12,7 @@ import com.certified.babybuy.util.UIState
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -55,13 +57,21 @@ class ItemViewModel @Inject constructor(private val repository: Repository) : Vi
         }
     }
 
-    fun updateItem(item: Item) {
+    fun updateItem(item: Item, uri: Uri?) {
         viewModelScope.launch {
             try {
                 val db = Firebase.firestore
                 val itemsRef = if (item.id.isBlank()) db.collection("_items")
                     .document() else db.collection("_items").document(item.id)
-                Log.d("TAG", "updateItem: Item: ${item.copy(id = itemsRef.id)}")
+
+                if (uri != null) {
+                    val path = "itemImages/${Firebase.auth.currentUser!!.uid}/${itemsRef.id}.jpg"
+                    val imageRef = Firebase.storage.reference.child(path)
+                    imageRef.putFile(uri).await()
+                    val downloadUrl = imageRef.downloadUrl.await()
+                    item.image = downloadUrl.toString()
+                }
+
                 val response = itemsRef.set(item.copy(id = itemsRef.id))
                 response.await()
                 _uploadSuccess.value = response.isSuccessful

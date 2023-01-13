@@ -1,6 +1,7 @@
 package com.certified.babybuy.ui.item
 
 import android.app.Activity
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
@@ -33,6 +34,7 @@ import com.certified.babybuy.util.UIState
 import com.certified.babybuy.util.currentDate
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
 import java.io.FileNotFoundException
 
 
@@ -47,6 +49,7 @@ class EditItemFragment : Fragment() {
     private var category: Category? = null
     private var delegate: Contact? = null
     private var location: Location? = null
+    private var imageUri: Uri? = null
 
     private val getContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -74,7 +77,12 @@ class EditItemFragment : Fragment() {
                         binding.ivItemImage.load(bitmap) {
                             transformations(RoundedCornersTransformation(20f))
                         }
-//                    uploadImage(scaledBitmap)
+                        requireContext().openFileOutput("item_image", Context.MODE_PRIVATE).use {
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
+                        }
+                        val file = File(requireContext().filesDir, "item_image")
+                        viewModel.uiState.set(UIState.LOADING)
+                        imageUri = Uri.fromFile(file)
                     }
                 }
             } catch (e: FileNotFoundException) {
@@ -107,7 +115,13 @@ class EditItemFragment : Fragment() {
                             binding.ivItemImage.load(bitmap) {
                                 transformations(RoundedCornersTransformation(20f))
                             }
-//                    uploadImage(scaledBitmap)
+                            requireContext().openFileOutput("item_image", Context.MODE_PRIVATE)
+                                .use {
+                                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
+                                }
+                            val file = File(requireContext().filesDir, "item_image")
+                            viewModel.uiState.set(UIState.LOADING)
+                            imageUri = Uri.fromFile(file)
                         }
                     }
                 } catch (e: FileNotFoundException) {
@@ -133,6 +147,13 @@ class EditItemFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.uiState = viewModel.uiState
         binding.item = args.item
+
+        viewModel.apply {
+            if (itemResponse.value.isNotBlank()) {
+                showSnackbar(itemResponse.value)
+                _itemResponse.value = ""
+            }
+        }
 
         binding.apply {
 
@@ -206,12 +227,12 @@ class EditItemFragment : Fragment() {
                             description = description,
                             price = price.toDouble(),
                             modified = currentDate().timeInMillis,
-                            delegate = delegate,
-                            location = location,
+                            delegate = delegate ?: args.item.delegate,
+                            location = location ?: args.item.location,
                             categoryId = category?.id,
                             categoryTitle = category?.title,
                             hex = category?.hex
-                        )
+                        ), imageUri
                     )
                 }
 
