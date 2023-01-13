@@ -124,6 +124,16 @@ fun bindEditItemImageView(imageView: ImageView, imageUrl: String?) {
         }
 }
 
+@BindingAdapter("itemImage")
+fun bindItemImageView(imageView: ImageView, imageUrl: String?) {
+    if (imageUrl?.isBlank() == true || imageUrl == null)
+        imageView.load(R.drawable.ic_onboarding_icon)
+    else
+        imageView.load(imageUrl) {
+            placeholder(R.drawable.ic_onboarding_icon)
+        }
+}
+
 @BindingAdapter("reminderText")
 fun Chip.reminderText(reminder: Long?) {
     val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())

@@ -8,7 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.certified.babybuy.adapters.ItemRecyclerAdapter
+import com.certified.babybuy.data.model.Item
 import com.certified.babybuy.databinding.FragmentCategoryDetailBinding
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,7 +30,10 @@ class CategoryDetailFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentCategoryDetailBinding.inflate(layoutInflater, container, false)
-        args.id?.let { viewModel.getCategory(it) }
+        args.id?.let {
+            viewModel.getCategory(it)
+            viewModel.getItems(Firebase.auth.currentUser!!.uid, it)
+        }
         return binding.root
     }
 
@@ -50,6 +58,25 @@ class CategoryDetailFragment : Fragment() {
                     CategoryDetailFragmentDirections.actionCategoryDetailFragmentToHomeFragment()
                 )
             }
+            fabAddItem.setOnClickListener {
+                findNavController().navigate(
+                    CategoryDetailFragmentDirections.actionCategoryDetailFragmentToEditItemFragment(
+                        Item(), "category"
+                    )
+                )
+            }
+            recyclerViewItems.adapter = ItemRecyclerAdapter("category").apply {
+                setOnItemClickedListener(object : ItemRecyclerAdapter.OnItemClickedListener {
+                    override fun onItemClick(item: Item) {
+                        findNavController().navigate(
+                            CategoryDetailFragmentDirections.actionCategoryDetailFragmentToEditItemFragment(
+                                item, "category"
+                            )
+                        )
+                    }
+                })
+            }
+            recyclerViewItems.layoutManager = LinearLayoutManager(context)
         }
     }
 

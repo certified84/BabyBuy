@@ -35,6 +35,7 @@
         <entry key="app/src/main/res/layout/fragment_password_recovery.xml" value="0.2692307692307692" />
         <entry key="app/src/main/res/layout/fragment_signup.xml" value="0.28465397155817357" />
         <entry key="app/src/main/res/layout/item_category.xml" value="0.313433837890625" />
+        <entry key="app/src/main/res/layout/item_category_layout.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_layout.xml" value="0.3721298217773437" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.101" />
       </map>

@@ -5,6 +5,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.certified.babybuy.data.model.Category
+import com.certified.babybuy.data.model.Item
 import com.certified.babybuy.data.repository.Repository
 import com.certified.babybuy.util.UIState
 import com.google.firebase.firestore.ktx.firestore
@@ -29,6 +30,9 @@ class CategoryViewModel @Inject constructor(private val repository: Repository) 
 
     private val _category = MutableStateFlow<Category?>(null)
     val category = _category.asStateFlow()
+
+    private val _items = MutableStateFlow<List<Item>>(emptyList())
+    val items = _items.asStateFlow()
 
     fun updateCategory(category: Category) {
         viewModelScope.launch {
@@ -65,6 +69,21 @@ class CategoryViewModel @Inject constructor(private val repository: Repository) 
                     _categoryResponse.value = "An error occurred: ${error?.localizedMessage}"
                 else
                     _category.value = value.toObject(Category::class.java)
+            }
+        }
+    }
+
+    fun getItems(userId: String, categoryId: String) {
+        viewModelScope.launch {
+            val query = repository.getItems(userId)
+            query.addSnapshotListener { value, error ->
+                if (value == null || value.isEmpty || error != null)
+                    uiState.set(UIState.EMPTY)
+                else {
+                    uiState.set(UIState.HAS_DATA)
+                    val allItems = value.toObjects(Item::class.java)
+                    _items.value = allItems.filter { it.categoryId == categoryId }
+                }
             }
         }
     }
