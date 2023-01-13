@@ -61,7 +61,7 @@ class CategoryDetailFragment : Fragment() {
             fabAddItem.setOnClickListener {
                 findNavController().navigate(
                     CategoryDetailFragmentDirections.actionCategoryDetailFragmentToEditItemFragment(
-                        Item(), "category"
+                        Item(), "category", args.id
                     )
                 )
             }
@@ -70,7 +70,7 @@ class CategoryDetailFragment : Fragment() {
                     override fun onItemClick(item: Item) {
                         findNavController().navigate(
                             CategoryDetailFragmentDirections.actionCategoryDetailFragmentToEditItemFragment(
-                                item, "category"
+                                item, "category", null
                             )
                         )
                     }

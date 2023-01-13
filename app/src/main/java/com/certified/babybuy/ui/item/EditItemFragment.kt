@@ -18,7 +18,9 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
@@ -34,6 +36,8 @@ import com.certified.babybuy.util.UIState
 import com.certified.babybuy.util.currentDate
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileNotFoundException
 
@@ -61,12 +65,7 @@ class EditItemFragment : Fragment() {
                             it
                         )
                     }
-                Log.d("TAG", "onActivityResult: Actual Size: ${bitmap?.byteCount?.div(1048576)} MB")
                 val scaledBitmap = bitmap?.let { ImageResizer.reduceBitmapSize(it, 240000) }
-                Log.d(
-                    "TAG",
-                    "onActivityResult: Scaled Size: ${scaledBitmap?.byteCount?.div(1048576)} MB"
-                )
                 when {
                     bitmap != null && bitmap.byteCount > (1048576 * 50) -> {
                         showSnackbar("Image too large. Max size is 5MB")
@@ -81,7 +80,6 @@ class EditItemFragment : Fragment() {
                             bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
                         }
                         val file = File(requireContext().filesDir, "item_image")
-                        viewModel.uiState.set(UIState.LOADING)
                         imageUri = Uri.fromFile(file)
                     }
                 }
@@ -96,15 +94,7 @@ class EditItemFragment : Fragment() {
                 val intent = result.data
                 try {
                     val bitmap = intent?.extras!!["data"] as Bitmap?
-                    Log.d(
-                        "TAG",
-                        "onActivityResult: Actual Size: ${bitmap?.byteCount?.div(1048576)} MB"
-                    )
                     val scaledBitmap = bitmap?.let { ImageResizer.reduceBitmapSize(it, 240000) }
-                    Log.d(
-                        "TAG",
-                        "onActivityResult: Scaled Size: ${scaledBitmap?.byteCount?.div(1048576)} MB"
-                    )
                     when {
                         bitmap != null && bitmap.byteCount > (1048576 * 50) -> {
                             showSnackbar("Image too large. Max size is 5MB")
@@ -120,7 +110,6 @@ class EditItemFragment : Fragment() {
                                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
                                 }
                             val file = File(requireContext().filesDir, "item_image")
-                            viewModel.uiState.set(UIState.LOADING)
                             imageUri = Uri.fromFile(file)
                         }
                     }
@@ -148,10 +137,24 @@ class EditItemFragment : Fragment() {
         binding.uiState = viewModel.uiState
         binding.item = args.item
 
-        viewModel.apply {
-            if (itemResponse.value.isNotBlank()) {
-                showSnackbar(itemResponse.value)
-                _itemResponse.value = ""
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.itemResponse.collect {
+                        if (it.isNotBlank()) {
+                            showSnackbar(it)
+                            viewModel._itemResponse.value = ""
+                        }
+                    }
+                }
+                launch {
+                    viewModel.categories.collect {
+                        if (args.categoryId != null) {
+                            category = it.find { it1 -> it1.id == args.categoryId }
+                            binding.etCategoryTitle.setText(category?.title)
+                        }
+                    }
+                }
             }
         }
 
@@ -163,13 +166,9 @@ class EditItemFragment : Fragment() {
             val fadeInAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in)
             val fadeOutAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_out)
 
-            if (args.item.name.isBlank()) {
-                viewModel.uiState.set(UIState.EDITING)
-            } else {
-                etName.keyListener = null
-                etDescription.keyListener = null
-                etPrice.keyListener = null
-            }
+            etName.keyListener = null
+            etDescription.keyListener = null
+            etPrice.keyListener = null
 
             btnEdit.setOnClickListener {
                 this@EditItemFragment.viewModel.uiState.set(UIState.EDITING)
@@ -282,11 +281,6 @@ class EditItemFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (args.item.name.isBlank())
-            binding.etName.apply {
-                post { setSelection(text.toString().length) }
-                requestFocus()
-            }
 
         val categoryList = mutableListOf<String>()
         lifecycleScope.launchWhenResumed {

@@ -60,15 +60,19 @@ class CategoryViewModel @Inject constructor(private val repository: Repository) 
 
     fun getCategory(id: String) {
         viewModelScope.launch {
-            val query =
-                Firebase.firestore.collection("_categories").document(id)
-            query.addSnapshotListener { value, error ->
-                Log.d("TAG", "getCategory: Value: $value")
-                Log.d("TAG", "getCategory: Error: $error")
-                if (value == null || error != null)
-                    _categoryResponse.value = "An error occurred: ${error?.localizedMessage}"
-                else
-                    _category.value = value.toObject(Category::class.java)
+            try {
+                val query =
+                    Firebase.firestore.collection("_categories").document(id)
+                query.addSnapshotListener { value, error ->
+                    Log.d("TAG", "getCategory: Value: $value")
+                    Log.d("TAG", "getCategory: Error: $error")
+                    if (value == null || error != null)
+                        _categoryResponse.value = "An error occurred: ${error?.localizedMessage}"
+                    else
+                        _category.value = value.toObject(Category::class.java)
+                }
+            } catch (e: Exception) {
+                _categoryResponse.value = "An error occurred: ${e.localizedMessage}"
             }
         }
     }
