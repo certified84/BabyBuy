@@ -85,6 +85,11 @@ fun MaterialTextView.category(title: String?) {
     text = if (title == null || title == "") "Enter new category" else "Edit category"
 }
 
+@BindingAdapter("item")
+fun MaterialTextView.item(title: String?) {
+    text = if (title == null || title == "") "Enter new item" else "Edit item"
+}
+
 @BindingAdapter("listItems")
 fun bindItemRecyclerView(recyclerView: RecyclerView, data: List<Item>?) {
     val adapter = recyclerView.adapter as ItemRecyclerAdapter

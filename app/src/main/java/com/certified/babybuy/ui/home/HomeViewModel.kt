@@ -9,8 +9,6 @@ import com.certified.babybuy.data.model.Item
 import com.certified.babybuy.data.repository.Repository
 import com.certified.babybuy.util.UIState
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,10 +38,7 @@ class HomeViewModel @Inject constructor(private val repository: Repository) : Vi
 
     private fun getItems(userId: String) {
         viewModelScope.launch {
-            val query =
-                Firebase.firestore.collection("_items")
-                    .whereEqualTo("uid", userId)
-                    .orderBy("modified", Query.Direction.DESCENDING)
+            val query = repository.getItems(userId)
             query.addSnapshotListener { value, error ->
                 if (value == null || value.isEmpty || error != null)
                     recentUIState.set(UIState.EMPTY)
@@ -57,10 +52,7 @@ class HomeViewModel @Inject constructor(private val repository: Repository) : Vi
 
     private fun getCategories(userId: String) {
         viewModelScope.launch {
-            val query =
-                Firebase.firestore.collection("_categories")
-                    .whereEqualTo("uid", userId)
-                    .orderBy("modified", Query.Direction.DESCENDING)
+            val query = repository.getCategories(userId)
             query.addSnapshotListener { value, error ->
                 Log.d("TAG", "getCategories: Error: $error")
                 Log.d("TAG", "getCategories: Value: $value")

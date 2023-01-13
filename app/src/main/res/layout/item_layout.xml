@@ -27,7 +27,7 @@
                 android:id="@+id/view"
                 android:layout_width="@dimen/_10sdp"
                 android:layout_height="match_parent"
-                app:color="@{item.category.hex}"
+                app:color="@{item.hex}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

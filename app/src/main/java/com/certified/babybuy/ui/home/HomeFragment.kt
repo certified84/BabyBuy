@@ -111,7 +111,7 @@ class HomeFragment : Fragment() {
                     override fun onItemClick(item: Item) {
                         findNavController().navigate(
                             HomeFragmentDirections.actionHomeFragmentToEditItemFragment(
-                                item
+                                item, "home"
                             )
                         )
                     }
@@ -144,7 +144,7 @@ class HomeFragment : Fragment() {
             fabAddItem.setOnClickListener {
                 findNavController().navigate(
                     HomeFragmentDirections.actionHomeFragmentToEditItemFragment(
-                        Item()
+                        Item(), "home"
                     )
                 )
             }

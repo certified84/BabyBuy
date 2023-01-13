@@ -165,6 +165,9 @@
         <argument
             android:name="item"
             app:argType="com.certified.babybuy.data.model.Item" />
+        <argument
+            android:name="from"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/categoryDetailFragment"

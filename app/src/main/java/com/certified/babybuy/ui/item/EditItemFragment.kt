@@ -12,22 +12,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.ArrayAdapter
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.certified.babybuy.R
+import com.certified.babybuy.data.model.Category
+import com.certified.babybuy.data.model.Contact
+import com.certified.babybuy.data.model.Location
 import com.certified.babybuy.databinding.FragmentEditItemBinding
 import com.certified.babybuy.util.Extensions.showSnackbar
 import com.certified.babybuy.util.ImageResizer
 import com.certified.babybuy.util.UIState
+import com.certified.babybuy.util.currentDate
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.FileNotFoundException
+
 
 @AndroidEntryPoint
 class EditItemFragment : Fragment() {
@@ -36,6 +43,10 @@ class EditItemFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: ItemViewModel by viewModels()
     private val args: EditItemFragmentArgs by navArgs()
+
+    private var category: Category? = null
+    private var delegate: Contact? = null
+    private var location: Location? = null
 
     private val getContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -125,18 +136,25 @@ class EditItemFragment : Fragment() {
 
         binding.apply {
 
-            val keyListener = etName.keyListener
+            val nameKeyListener = etName.keyListener
+            val descriptionKeyListener = etDescription.keyListener
+            val priceKeyListener = etPrice.keyListener
             val fadeInAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in)
             val fadeOutAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_out)
 
-            if (args.item.name.isBlank())
+            if (args.item.name.isBlank()) {
                 viewModel.uiState.set(UIState.EDITING)
-            else
+            } else {
                 etName.keyListener = null
+                etDescription.keyListener = null
+                etPrice.keyListener = null
+            }
 
             btnEdit.setOnClickListener {
-                viewModel.uiState.set(UIState.EDITING)
-                etName.keyListener = keyListener
+                this@EditItemFragment.viewModel.uiState.set(UIState.EDITING)
+                etName.keyListener = nameKeyListener
+                etDescription.keyListener = descriptionKeyListener
+                etPrice.keyListener = priceKeyListener
                 etName.apply {
                     post { etName.setSelection(etName.text.toString().length) }
                     requestFocus()
@@ -147,15 +165,75 @@ class EditItemFragment : Fragment() {
                 tvClickChange.startAnimation(fadeInAnim)
             }
             btnDone.setOnClickListener {
-                viewModel.uiState.set(UIState.HAS_DATA)
+
+                val name = etName.text.toString()
+                val description = etDescription.text.toString()
+                val price = etPrice.text.toString()
+
+                if (name.isBlank()) {
+                    etNameLayout.error = "Name is required"
+                    etName.requestFocus()
+                    return@setOnClickListener
+                }
+                etNameLayout.error = null
+
+                if (description.isBlank()) {
+                    etDescriptionLayout.error = "Description is required"
+                    etDescription.requestFocus()
+                    return@setOnClickListener
+                }
+                etDescriptionLayout.error = null
+
+                if (price.isBlank()) {
+                    etPriceLayout.error = "Price is required"
+                    etPrice.requestFocus()
+                    return@setOnClickListener
+                }
+                etPriceLayout.error = null
+
+                if (category == null) {
+                    etCategoryTitleLayout.error = "Category is required"
+                    etCategoryTitle.requestFocus()
+                    return@setOnClickListener
+                }
+                etCategoryTitleLayout.error = null
+
+                with(viewModel) {
+                    uiState.set(UIState.LOADING)
+                    updateItem(
+                        args.item.copy(
+                            name = name,
+                            description = description,
+                            price = price.toDouble(),
+                            modified = currentDate().timeInMillis,
+                            delegate = delegate,
+                            location = location,
+                            categoryId = category?.id,
+                            categoryTitle = category?.title,
+                            hex = category?.hex
+                        )
+                    )
+                }
+
                 etName.keyListener = null
+                etDescription.keyListener = null
+                etPrice.keyListener = null
                 btnEdit.startAnimation(fadeInAnim)
                 btnClose.startAnimation(fadeInAnim)
                 btnDone.startAnimation(fadeOutAnim)
                 tvClickChange.startAnimation(fadeOutAnim)
             }
             btnClose.setOnClickListener {
-                findNavController().navigate(EditItemFragmentDirections.actionEditItemFragmentToHomeFragment())
+                when (args.from) {
+                    "home" ->
+                        findNavController().navigate(EditItemFragmentDirections.actionEditItemFragmentToHomeFragment())
+                    else ->
+                        findNavController().navigate(
+                            EditItemFragmentDirections.actionEditItemFragmentToCategoryDetailFragment(
+                                args.item.categoryId
+                            )
+                        )
+                }
             }
             ivItemImage.setOnClickListener {
                 if (viewModel.uiState.get() == UIState.EDITING)
@@ -188,6 +266,21 @@ class EditItemFragment : Fragment() {
                 post { setSelection(text.toString().length) }
                 requestFocus()
             }
+
+        val categoryList = mutableListOf<String>()
+        lifecycleScope.launchWhenResumed {
+            viewModel.categories.collect { categoryList.addAll(it.map { it1 -> it1.title }) }
+        }
+        val arrayAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item, categoryList
+        )
+        binding.etCategoryTitle.setAdapter(arrayAdapter)
+
+        binding.etCategoryTitle.setOnItemClickListener { _, _, i, _ ->
+            category = viewModel.categories.value[i]
+            Log.d("TAG", "onResume: Category: $category")
+        }
     }
 
     override fun onDestroyView() {
