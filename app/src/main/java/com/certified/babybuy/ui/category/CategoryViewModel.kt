@@ -100,6 +100,10 @@ class CategoryViewModel @Inject constructor(private val repository: Repository) 
             try {
                 val response = repository.deleteItem(id)
                 response.await()
+                _category.value?.let {
+                    val map = mapOf("itemCount" to it.itemCount - 1)
+                    updateCategory(it.id, map)
+                }
                 _updateSuccess.value = response.isSuccessful
                 if (response.isSuccessful) {
                     _message.value = "Item deleted successfully"
@@ -118,9 +122,12 @@ class CategoryViewModel @Inject constructor(private val repository: Repository) 
             try {
                 val db = Firebase.firestore
                 val itemsRef = db.collection("_items").document(id)
-
                 val response = itemsRef.update("purchased", purchased)
                 response.await()
+                _category.value?.let {
+                    val map = mapOf("purchasedCount" to it.purchasedCount + 1)
+                    updateCategory(it.id, map)
+                }
                 _updateSuccess.value = response.isSuccessful
                 if (response.isSuccessful) {
                     _message.value = "Item marked as purchased"
@@ -132,6 +139,17 @@ class CategoryViewModel @Inject constructor(private val repository: Repository) 
             } catch (e: Exception) {
                 _message.value = "An error occurred: ${e.localizedMessage}"
                 _updateSuccess.value = false
+            }
+        }
+    }
+
+    private fun updateCategory(id: String, map: Map<String, Any>) {
+        viewModelScope.launch {
+            try {
+                val categoryRef = Firebase.firestore.collection("_categories").document(id)
+                categoryRef.update(map).await()
+            } catch (e: Exception) {
+                _message.value = "An error occurred: ${e.localizedMessage}"
             }
         }
     }

@@ -210,6 +210,11 @@ class HomeFragment : Fragment() {
                         { viewModel.deleteItem(item.id) })
                     { itemAdapter.notifyDataSetChanged() }
                 } else {
+                    if (item.purchased) {
+                        showSnackbar("Item already marked as purchased")
+                        itemAdapter.notifyDataSetChanged()
+                        return
+                    }
                     showYesNoDialog(
                         "Mark item as purchased",
                         "Are you sure you want to mark ${item.name} as purchased?",

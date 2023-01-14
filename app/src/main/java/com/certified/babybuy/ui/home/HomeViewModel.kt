@@ -77,8 +77,13 @@ class HomeViewModel @Inject constructor(private val repository: Repository) : Vi
     fun deleteItem(id: String) {
         viewModelScope.launch {
             try {
+                val categoryId = _items.value.find { it.id == id }?.categoryId
                 val response = repository.deleteItem(id)
                 response.await()
+                _categories.value.find { it.id == categoryId }?.let {
+                    val map = mapOf("itemCount" to it.itemCount - 1)
+                    updateCategory(it.id, map)
+                }
                 _updateSuccess.value = response.isSuccessful
                 _message.value = if (response.isSuccessful) "Item deleted successfully"
                 else "Error deleting item"
@@ -96,12 +101,28 @@ class HomeViewModel @Inject constructor(private val repository: Repository) : Vi
                 val itemsRef = db.collection("_items").document(id)
                 val response = itemsRef.update("purchased", purchased)
                 response.await()
+                val categoryId = _items.value.find { it.id == id }?.categoryId
+                _categories.value.find { it.id == categoryId }?.let {
+                    val map = mapOf("purchasedCount" to it.purchasedCount + 1)
+                    updateCategory(it.id, map)
+                }
                 _updateSuccess.value = response.isSuccessful
                 _message.value = if (response.isSuccessful) "Item marked as purchased"
                 else "Failed to mark item as purchased"
             } catch (e: Exception) {
                 _message.value = "An error occurred: ${e.localizedMessage}"
                 _updateSuccess.value = false
+            }
+        }
+    }
+
+    private fun updateCategory(id: String, map: Map<String, Any>) {
+        viewModelScope.launch {
+            try {
+                val categoryRef = Firebase.firestore.collection("_categories").document(id)
+                categoryRef.update(map).await()
+            } catch (e: Exception) {
+                _message.value = "An error occurred: ${e.localizedMessage}"
             }
         }
     }
