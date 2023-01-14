@@ -25,8 +25,8 @@ class ItemViewModel @Inject constructor(private val repository: Repository) : Vi
 
     val uiState = ObservableField(UIState.EDITING)
 
-    val _itemResponse = MutableStateFlow("")
-    val itemResponse = _itemResponse.asStateFlow()
+    val _message = MutableStateFlow("")
+    val message = _message.asStateFlow()
 
     val _uploadSuccess = MutableStateFlow(false)
     val uploadSuccess = _uploadSuccess.asStateFlow()
@@ -60,6 +60,7 @@ class ItemViewModel @Inject constructor(private val repository: Repository) : Vi
     fun updateItem(item: Item, uri: Uri?) {
         viewModelScope.launch {
             try {
+                val isNew = item.id.isBlank()
                 val db = Firebase.firestore
                 val itemsRef = if (item.id.isBlank()) db.collection("_items")
                     .document() else db.collection("_items").document(item.id)
@@ -76,14 +77,16 @@ class ItemViewModel @Inject constructor(private val repository: Repository) : Vi
                 response.await()
                 _uploadSuccess.value = response.isSuccessful
                 if (response.isSuccessful) {
-                    _itemResponse.value = "Item added successfully"
+                    _message.value =
+                        if (isNew) "Item added successfully" else "Item updated successfully"
                     uiState.set(UIState.SUCCESS)
                 } else {
-                    _itemResponse.value = "Failed to add item"
+                    _message.value =
+                        if (isNew) "Failed to add item" else "Failed to update item"
                     uiState.set(UIState.FAILURE)
                 }
             } catch (e: Exception) {
-                _itemResponse.value = "An error occurred: ${e.localizedMessage}"
+                _message.value = "An error occurred: ${e.localizedMessage}"
                 _uploadSuccess.value = false
             }
         }

@@ -9,6 +9,7 @@ import com.certified.babybuy.data.model.Item
 import com.certified.babybuy.data.repository.Repository
 import com.certified.babybuy.util.UIState
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,8 +33,8 @@ class HomeViewModel @Inject constructor(private val repository: Repository) : Vi
     val _message = MutableStateFlow<String?>(null)
     val message = _message.asStateFlow()
 
-    val _deleteSuccess = MutableStateFlow(false)
-    val deleteSuccess = _deleteSuccess.asStateFlow()
+    val _updateSuccess = MutableStateFlow(false)
+    val updateSuccess = _updateSuccess.asStateFlow()
 
     init {
         val uid = Firebase.auth.currentUser?.uid
@@ -78,15 +79,29 @@ class HomeViewModel @Inject constructor(private val repository: Repository) : Vi
             try {
                 val response = repository.deleteItem(id)
                 response.await()
-                _deleteSuccess.value = response.isSuccessful
-                if (response.isSuccessful) {
-                    _message.value = "Item deleted successfully"
-                } else {
-                    _message.value = "Error deleting item"
-                }
+                _updateSuccess.value = response.isSuccessful
+                _message.value = if (response.isSuccessful) "Item deleted successfully"
+                else "Error deleting item"
             } catch (e: Exception) {
-                _deleteSuccess.value = false
+                _updateSuccess.value = false
                 _message.value = "An error occurred: ${e.localizedMessage}"
+            }
+        }
+    }
+
+    fun updateItem(id: String, purchased: Boolean) {
+        viewModelScope.launch {
+            try {
+                val db = Firebase.firestore
+                val itemsRef = db.collection("_items").document(id)
+                val response = itemsRef.update("purchased", purchased)
+                response.await()
+                _updateSuccess.value = response.isSuccessful
+                _message.value = if (response.isSuccessful) "Item marked as purchased"
+                else "Failed to mark item as purchased"
+            } catch (e: Exception) {
+                _message.value = "An error occurred: ${e.localizedMessage}"
+                _updateSuccess.value = false
             }
         }
     }

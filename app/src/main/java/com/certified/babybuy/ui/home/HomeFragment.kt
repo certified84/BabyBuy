@@ -1,6 +1,7 @@
 package com.certified.babybuy.ui.home
 
 import android.graphics.Canvas
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -65,10 +66,10 @@ class HomeFragment : Fragment() {
                     }
                 }
                 launch {
-                    viewModel.deleteSuccess.collect {
+                    viewModel.updateSuccess.collect {
                         if (it) {
                             itemAdapter.notifyDataSetChanged()
-                            viewModel._deleteSuccess.value = false
+                            viewModel._updateSuccess.value = false
                         }
                     }
                 }
@@ -193,17 +194,19 @@ class HomeFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val item = itemAdapter.currentList[viewHolder.absoluteAdapterPosition]
                 if (direction == ItemTouchHelper.LEFT) {
-                    val item = itemAdapter.currentList[viewHolder.absoluteAdapterPosition]
                     showYesNoDialog(
                         "Delete Item",
                         "Are you sure you want to delete ${item.name}?",
                         { viewModel.deleteItem(item.id) })
                     { itemAdapter.notifyDataSetChanged() }
-//                    viewModel.deleteItem(itemAdapter.getItemAt(viewHolder.absoluteAdapterPosition).id)
-//                    viewModel.deleteItem(itemAdapter.currentList[viewHolder.absoluteAdapterPosition].id)
                 } else {
-//                    mark as purchased
+                    showYesNoDialog(
+                        "Mark item as purchased",
+                        "Are you sure you want to mark ${item.name} as purchased?",
+                        { viewModel.updateItem(item.id, true) })
+                    { itemAdapter.notifyDataSetChanged() }
                 }
             }
 
@@ -232,13 +235,14 @@ class HomeFragment : Fragment() {
                             R.color.red
                         )
                     )
-                    .addSwipeRightActionIcon(R.drawable.ic_done1)
+                    .addSwipeRightActionIcon(R.drawable.ic_done2)
                     .addSwipeRightBackgroundColor(
                         ContextCompat.getColor(
                             requireContext(),
                             R.color.green
                         )
                     )
+                    .setActionIconTint(Color.WHITE)
                     .create()
                     .decorate()
                 super.onChildDraw(

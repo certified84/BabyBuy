@@ -36,7 +36,6 @@ import com.certified.babybuy.util.UIState
 import com.certified.babybuy.util.currentDate
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileNotFoundException
@@ -140,10 +139,10 @@ class EditItemFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.itemResponse.collect {
+                    viewModel.message.collect {
                         if (it.isNotBlank()) {
                             showSnackbar(it)
-                            viewModel._itemResponse.value = ""
+                            viewModel._message.value = ""
                         }
                     }
                 }
