@@ -121,17 +121,6 @@
                     app:layout_constraintStart_toStartOf="@+id/guideline5"
                     app:layout_constraintTop_toBottomOf="@+id/btn_drawer" />
 
-<!--                <com.google.android.material.textview.MaterialTextView-->
-<!--                    android:id="@+id/tv_name"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:fontFamily="@font/space_grotesk_semi_bold"-->
-<!--                    android:text="Sammie 🤴"-->
-<!--                    android:textColor="@color/onSurface"-->
-<!--                    android:textSize="@dimen/_18ssp"-->
-<!--                    app:layout_constraintStart_toStartOf="@+id/guideline5"-->
-<!--                    app:layout_constraintTop_toBottomOf="@+id/tv_name" />-->
-
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/appCompatImageButton"
                     android:layout_width="@dimen/_20sdp"

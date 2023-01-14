@@ -147,6 +147,12 @@ class HomeFragment : Fragment() {
                 }
             }
 
+            btnNotification.setOnClickListener {
+                findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToNotificationFragment()
+                )
+            }
+
             recyclerViewItems.adapter = itemAdapter.apply {
                 setOnItemClickedListener(object : ItemRecyclerAdapter.OnItemClickedListener {
                     override fun onItemClick(item: Item) {
