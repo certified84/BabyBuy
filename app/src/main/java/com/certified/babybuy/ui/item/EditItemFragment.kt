@@ -140,7 +140,7 @@ class EditItemFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.message.collect {
-                        if (it.isNotBlank()) {
+                        it?.let {
                             showSnackbar(it)
                             viewModel._message.value = ""
                         }

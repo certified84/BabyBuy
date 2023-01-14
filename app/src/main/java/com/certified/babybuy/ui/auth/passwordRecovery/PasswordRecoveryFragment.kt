@@ -8,12 +8,16 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.certified.babybuy.R
 import com.certified.babybuy.databinding.FragmentPasswordRecoveryBinding
 import com.certified.babybuy.util.Extensions.showSnackbar
 import com.certified.babybuy.util.UIState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class PasswordRecoveryFragment : Fragment() {
@@ -37,17 +41,23 @@ class PasswordRecoveryFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.uiState = viewModel.uiState
 
-        viewModel.apply {
-            message.observe(viewLifecycleOwner) {
-                if (it != null) {
-                    showSnackbar(it)
-                    _message.postValue(null)
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.message.collect {
+                        it?.let {
+                            showSnackbar(it)
+                            viewModel._message.value = null
+                        }
+                    }
                 }
-            }
-            success.observe(viewLifecycleOwner) {
-                if (it) {
-                    _success.postValue(false)
-                    findNavController().navigate(PasswordRecoveryFragmentDirections.actionPasswordRecoveryFragmentToLoginFragment())
+                launch {
+                    viewModel.success.collect {
+                        if (it) {
+                            viewModel._success.value = false
+                            findNavController().navigate(PasswordRecoveryFragmentDirections.actionPasswordRecoveryFragmentToLoginFragment())
+                        }
+                    }
                 }
             }
         }

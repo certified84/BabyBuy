@@ -25,7 +25,7 @@ class ItemViewModel @Inject constructor(private val repository: Repository) : Vi
 
     val uiState = ObservableField(UIState.EDITING)
 
-    val _message = MutableStateFlow("")
+    val _message = MutableStateFlow<String?>(null)
     val message = _message.asStateFlow()
 
     val _uploadSuccess = MutableStateFlow(false)

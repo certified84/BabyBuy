@@ -12,6 +12,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.certified.babybuy.BuildConfig
 import com.certified.babybuy.R
@@ -28,6 +31,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
@@ -110,35 +114,43 @@ class LoginFragment : Fragment() {
             .setAutoSelectEnabled(true)
             .build()
 
-        viewModel.apply {
-            message.observe(viewLifecycleOwner) {
-                if (it != null) {
-                    showSnackbar(it)
-                    _message.postValue(null)
-                }
-            }
-            success.observe(viewLifecycleOwner) {
-                if (it) {
-                    _success.postValue(false)
-                    val user = Firebase.auth.currentUser!!
-                    if (user.isEmailVerified) {
-                        val user = User(
-                            uid = user.uid,
-                            name = user.displayName,
-                            email = user.email.toString(),
-                            image = user.photoUrl?.toString()
-                        )
-                        uploadDetails(user)
-                    } else {
-                        Firebase.auth.signOut()
-                        showSnackbar("Check your email for verification link")
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.message.collect {
+                        it?.let {
+                            showSnackbar(it)
+                            viewModel._message.value = null
+                        }
                     }
                 }
-            }
-            uploadSuccess.observe(viewLifecycleOwner) {
-                if (it) {
-                    _uploadSuccess.postValue(false)
-                    findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
+                launch {
+                    viewModel.success.collect {
+                        if (it) {
+                            viewModel._success.value = false
+                            val currentUser = Firebase.auth.currentUser!!
+                            if (currentUser.isEmailVerified) {
+                                val user = User(
+                                    uid = currentUser.uid,
+                                    name = currentUser.displayName,
+                                    email = currentUser.email.toString(),
+                                    image = currentUser.photoUrl?.toString()
+                                )
+                                viewModel.uploadDetails(user)
+                            } else {
+                                Firebase.auth.signOut()
+                                showSnackbar("Check your email for verification link")
+                            }
+                        }
+                    }
+                }
+                launch {
+                    viewModel.uploadSuccess.collect {
+                        if (it) {
+                            viewModel._uploadSuccess.value = false
+                            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
+                        }
+                    }
                 }
             }
         }

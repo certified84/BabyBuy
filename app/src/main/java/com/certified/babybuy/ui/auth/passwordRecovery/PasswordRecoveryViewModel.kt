@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.certified.babybuy.data.repository.Repository
 import com.certified.babybuy.util.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -18,11 +20,11 @@ class PasswordRecoveryViewModel @Inject constructor(private val repository: Repo
 
     val uiState = ObservableField(UIState.EMPTY)
 
-    val _message = MutableLiveData<String?>()
-    val message: LiveData<String?> get() = _message
+    val _message = MutableStateFlow<String?>(null)
+    val message = _message.asStateFlow()
 
-    val _success = MutableLiveData<Boolean>()
-    val success: LiveData<Boolean> get() = _success
+    val _success = MutableStateFlow(false)
+    val success = _success.asStateFlow()
 
     fun sendPasswordResetEmail(email: String) {
         viewModelScope.launch {

@@ -2,8 +2,6 @@ package com.certified.babybuy.ui.auth.signup
 
 import android.util.Log
 import androidx.databinding.ObservableField
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.certified.babybuy.data.model.User
@@ -11,6 +9,8 @@ import com.certified.babybuy.data.repository.Repository
 import com.certified.babybuy.util.UIState
 import com.google.firebase.auth.AuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -20,14 +20,14 @@ class SignupViewModel @Inject constructor(private val repository: Repository) : 
 
     val uiState = ObservableField(UIState.EMPTY)
 
-    val _message = MutableLiveData<String?>()
-    val message: LiveData<String?> get() = _message
+    val _message = MutableStateFlow<String?>(null)
+    val message = _message.asStateFlow()
 
-    val _success = MutableLiveData<Boolean>()
-    val success: LiveData<Boolean> get() = _success
+    val _success = MutableStateFlow(false)
+    val success = _success.asStateFlow()
 
-    val _uploadSuccess = MutableLiveData<Boolean>()
-    val uploadSuccess: LiveData<Boolean> get() = _uploadSuccess
+    val _uploadSuccess = MutableStateFlow<Boolean>(false)
+    val uploadSuccess = _uploadSuccess.asStateFlow()
 
     fun createUserWithEmailAndPassword(email: String, password: String) {
         viewModelScope.launch {

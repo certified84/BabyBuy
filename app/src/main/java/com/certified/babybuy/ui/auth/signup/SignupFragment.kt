@@ -12,6 +12,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.certified.babybuy.BuildConfig
 import com.certified.babybuy.R
@@ -32,6 +35,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SignupFragment : Fragment() {
@@ -111,42 +115,51 @@ class SignupFragment : Fragment() {
             )
             .build()
 
-        viewModel.apply {
-            message.observe(viewLifecycleOwner) {
-                if (it != null) {
-                    showSnackbar(it)
-                    _message.postValue(null)
-                }
-            }
-            success.observe(viewLifecycleOwner) {
-                if (it) {
-                    _success.postValue(false)
-                    val currentUser = auth.currentUser!!
-                    val user = User(
-                        uid = currentUser.uid,
-                        name = name,
-                        email = currentUser.email.toString(),
-                        image = currentUser.photoUrl?.toString()
-                    )
-                    uploadDetails(user)
-                }
-            }
-            uploadSuccess.observe(viewLifecycleOwner) {
-                if (it) {
-                    _uploadSuccess.postValue(false)
-                    auth.apply {
-                        val profileChangeRequest = userProfileChangeRequest { displayName = name }
-                        currentUser!!.apply {
-                            updateProfile(profileChangeRequest)
-                            sendEmailVerification()
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.message.collect {
+                        it?.let {
+                            showSnackbar(it)
+                            viewModel._message.value = null
                         }
                     }
-                    showActionDialog(
-                        "Success",
-                        "Account created successfully. We sent a verification link to ${auth.currentUser?.email}. You can ignore the link if you used Google Sign In.",
-                    ) {
-                        auth.signOut()
-                        findNavController().navigate(SignupFragmentDirections.actionSignupFragmentToLoginFragment())
+                }
+                launch {
+                    viewModel.success.collect {
+                        if (it) {
+                            viewModel._success.value = false
+                            val currentUser = auth.currentUser!!
+                            val user = User(
+                                uid = currentUser.uid,
+                                name = name,
+                                email = currentUser.email.toString(),
+                                image = currentUser.photoUrl?.toString()
+                            )
+                            viewModel.uploadDetails(user)
+                        }
+                    }
+                }
+                launch {
+                    viewModel.uploadSuccess.collect {
+                        if (it) {
+                            viewModel._uploadSuccess.value = false
+                            auth.apply {
+                                val profileChangeRequest =
+                                    userProfileChangeRequest { displayName = name }
+                                currentUser!!.apply {
+                                    updateProfile(profileChangeRequest)
+                                    sendEmailVerification()
+                                }
+                            }
+                            showActionDialog(
+                                "Success",
+                                "Account created successfully. We sent a verification link to ${auth.currentUser?.email}. You can ignore the link if you used Google Sign In.",
+                            ) {
+                                auth.signOut()
+                                findNavController().navigate(SignupFragmentDirections.actionSignupFragmentToLoginFragment())
+                            }
+                        }
                     }
                 }
             }
