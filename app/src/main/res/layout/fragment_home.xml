@@ -110,27 +110,27 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/materialTextView6"
+                    android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_24sdp"
                     android:fontFamily="@font/space_grotesk_semi_bold"
-                    android:text="@string/hey"
+                    tools:text="@string/hey"
                     android:textColor="@color/onSurface"
                     android:textSize="@dimen/_18ssp"
                     app:layout_constraintStart_toStartOf="@+id/guideline5"
                     app:layout_constraintTop_toBottomOf="@+id/btn_drawer" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/materialTextView7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/space_grotesk_semi_bold"
-                    android:text="Sammie 🤴"
-                    android:textColor="@color/onSurface"
-                    android:textSize="@dimen/_18ssp"
-                    app:layout_constraintStart_toStartOf="@+id/guideline5"
-                    app:layout_constraintTop_toBottomOf="@+id/materialTextView6" />
+<!--                <com.google.android.material.textview.MaterialTextView-->
+<!--                    android:id="@+id/tv_name"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:fontFamily="@font/space_grotesk_semi_bold"-->
+<!--                    android:text="Sammie 🤴"-->
+<!--                    android:textColor="@color/onSurface"-->
+<!--                    android:textSize="@dimen/_18ssp"-->
+<!--                    app:layout_constraintStart_toStartOf="@+id/guideline5"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/tv_name" />-->
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/appCompatImageButton"
@@ -142,7 +142,7 @@
                     android:padding="@dimen/_4sdp"
                     android:src="@drawable/ic_category"
                     app:layout_constraintStart_toStartOf="@+id/guideline5"
-                    app:layout_constraintTop_toBottomOf="@+id/materialTextView7" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/materialTextView13"

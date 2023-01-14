@@ -62,7 +62,7 @@ class ItemViewModel @Inject constructor(private val repository: Repository) : Vi
             try {
                 val isNew = item.id.isBlank()
                 val db = Firebase.firestore
-                val itemsRef = if (item.id.isBlank()) db.collection("_items")
+                val itemsRef = if (isNew) db.collection("_items")
                     .document() else db.collection("_items").document(item.id)
 
                 if (uri != null) {
@@ -73,8 +73,28 @@ class ItemViewModel @Inject constructor(private val repository: Repository) : Vi
                     item.image = downloadUrl.toString()
                 }
 
+                val category = _categories.value.find { it.id == item.categoryId }
+                if (isNew) {
+                    category?.let {
+                        it.itemCount += 1
+                        if (item.purchased)
+                            it.purchasedCount += 1
+                    }
+                }
+
                 val response = itemsRef.set(item.copy(id = itemsRef.id))
                 response.await()
+                category?.let {
+//                    if (item.purchased)
+//                        it.purchasedCount += 1
+//                    else it.purchasedCount -= 1
+                    val map =
+                        mapOf<String, Any>(
+                            "itemCount" to it.itemCount,
+                            "purchasedCount" to it.purchasedCount
+                        )
+                    item.categoryId?.let { it1 -> updateCategory(it1, map) }
+                }
                 _uploadSuccess.value = response.isSuccessful
                 if (response.isSuccessful) {
                     _message.value =
@@ -88,6 +108,17 @@ class ItemViewModel @Inject constructor(private val repository: Repository) : Vi
             } catch (e: Exception) {
                 _message.value = "An error occurred: ${e.localizedMessage}"
                 _uploadSuccess.value = false
+            }
+        }
+    }
+
+    private fun updateCategory(id: String, map: Map<String, Any>) {
+        viewModelScope.launch {
+            try {
+                val categoryRef = Firebase.firestore.collection("_categories").document(id)
+                categoryRef.update(map).await()
+            } catch (e: Exception) {
+                _message.value = "An error occurred: ${e.localizedMessage}"
             }
         }
     }

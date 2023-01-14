@@ -27,6 +27,9 @@ import com.certified.babybuy.data.model.Item
 import com.certified.babybuy.databinding.FragmentHomeBinding
 import com.certified.babybuy.util.Extensions.showSnackbar
 import com.certified.babybuy.util.Extensions.showYesNoDialog
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.launch
@@ -38,6 +41,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: HomeViewModel by viewModels()
 
+    private lateinit var auth: FirebaseAuth
     private val itemAdapter by lazy { ItemRecyclerAdapter() }
 
     override fun onCreateView(
@@ -46,6 +50,7 @@ class HomeFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        auth = Firebase.auth
         return binding.root
     }
 
@@ -77,6 +82,9 @@ class HomeFragment : Fragment() {
         }
 
         binding.apply {
+            tvName.text =
+                "Hey,\n${auth.currentUser?.displayName?.substringBefore(" ")} \uD83D\uDC4B"
+
             val params = Constraints.LayoutParams(content.width, content.height)
             params.setMargins(60, 10, 0, 10)
             fab.setOnClickListener { showHide() }

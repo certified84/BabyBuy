@@ -104,7 +104,7 @@ class CategoryDetailFragment : Fragment() {
                     override fun onItemClick(item: Item) {
                         findNavController().navigate(
                             CategoryDetailFragmentDirections.actionCategoryDetailFragmentToEditItemFragment(
-                                item, "category", null
+                                item, "category", args.id
                             )
                         )
                     }

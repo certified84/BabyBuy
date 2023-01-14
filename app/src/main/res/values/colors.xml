@@ -35,6 +35,6 @@
     <color name="surface5">#D8E7EC</color>
 
     <color name="hintColor">#888888</color>
-    <color name="red">#B3FF0000</color>
-    <color name="green">#B300FF00</color>
+    <color name="red">#A00101</color>
+    <color name="green">#148D00</color>
 </resources>

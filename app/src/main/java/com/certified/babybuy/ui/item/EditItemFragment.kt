@@ -142,7 +142,7 @@ class EditItemFragment : Fragment() {
                     viewModel.message.collect {
                         it?.let {
                             showSnackbar(it)
-                            viewModel._message.value = ""
+                            viewModel._message.value = null
                         }
                     }
                 }
@@ -249,7 +249,7 @@ class EditItemFragment : Fragment() {
                     else ->
                         findNavController().navigate(
                             EditItemFragmentDirections.actionEditItemFragmentToCategoryDetailFragment(
-                                args.item.categoryId
+                                category?.id ?: args.item.categoryId
                             )
                         )
                 }
