@@ -22,9 +22,6 @@ class CategoryViewModel @Inject constructor(private val repository: Repository) 
 
     val uiState = ObservableField(UIState.EMPTY)
 
-    val _categoryResponse = MutableStateFlow("")
-    val categoryResponse = _categoryResponse.asStateFlow()
-
     val _uploadSuccess = MutableStateFlow(false)
     val uploadSuccess = _uploadSuccess.asStateFlow()
 
@@ -33,6 +30,12 @@ class CategoryViewModel @Inject constructor(private val repository: Repository) 
 
     private val _items = MutableStateFlow<List<Item>>(emptyList())
     val items = _items.asStateFlow()
+
+    val _message = MutableStateFlow<String?>(null)
+    val message = _message.asStateFlow()
+
+    val _deleteSuccess = MutableStateFlow(false)
+    val deleteSuccess = _deleteSuccess.asStateFlow()
 
     fun updateCategory(category: Category) {
         viewModelScope.launch {
@@ -45,14 +48,14 @@ class CategoryViewModel @Inject constructor(private val repository: Repository) 
                 response.await()
                 _uploadSuccess.value = response.isSuccessful
                 if (response.isSuccessful) {
-                    _categoryResponse.value = "Category added successfully"
+                    _message.value = "Category added successfully"
                     uiState.set(UIState.SUCCESS)
                 } else {
-                    _categoryResponse.value = "Failed to add category"
+                    _message.value = "Failed to add category"
                     uiState.set(UIState.FAILURE)
                 }
             } catch (e: Exception) {
-                _categoryResponse.value = "An error occurred: ${e.localizedMessage}"
+                _message.value = "An error occurred: ${e.localizedMessage}"
                 _uploadSuccess.value = false
             }
         }
@@ -67,12 +70,12 @@ class CategoryViewModel @Inject constructor(private val repository: Repository) 
                     Log.d("TAG", "getCategory: Value: $value")
                     Log.d("TAG", "getCategory: Error: $error")
                     if (value == null || error != null)
-                        _categoryResponse.value = "An error occurred: ${error?.localizedMessage}"
+                        _message.value = "An error occurred: ${error?.localizedMessage}"
                     else
                         _category.value = value.toObject(Category::class.java)
                 }
             } catch (e: Exception) {
-                _categoryResponse.value = "An error occurred: ${e.localizedMessage}"
+                _message.value = "An error occurred: ${e.localizedMessage}"
             }
         }
     }
@@ -88,6 +91,24 @@ class CategoryViewModel @Inject constructor(private val repository: Repository) 
                     val allItems = value.toObjects(Item::class.java)
                     _items.value = allItems.filter { it.categoryId == categoryId }
                 }
+            }
+        }
+    }
+
+    fun deleteItem(id: String) {
+        viewModelScope.launch {
+            try {
+                val response = repository.deleteItem(id)
+                response.await()
+                _deleteSuccess.value = response.isSuccessful
+                if (response.isSuccessful) {
+                    _message.value = "Item deleted successfully"
+                } else {
+                    _message.value = "Error deleting item"
+                }
+            } catch (e: Exception) {
+                _deleteSuccess.value = false
+                _message.value = "An error occurred: ${e.localizedMessage}"
             }
         }
     }

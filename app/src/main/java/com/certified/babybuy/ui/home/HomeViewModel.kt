@@ -14,6 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,6 +28,12 @@ class HomeViewModel @Inject constructor(private val repository: Repository) : Vi
 
     private val _categories = MutableStateFlow<List<Category>>(emptyList())
     val categories = _categories.asStateFlow()
+
+    val _message = MutableStateFlow<String?>(null)
+    val message = _message.asStateFlow()
+
+    val _deleteSuccess = MutableStateFlow(false)
+    val deleteSuccess = _deleteSuccess.asStateFlow()
 
     init {
         val uid = Firebase.auth.currentUser?.uid
@@ -62,6 +69,24 @@ class HomeViewModel @Inject constructor(private val repository: Repository) : Vi
                     uiState.set(UIState.HAS_DATA)
                     _categories.value = value.toObjects(Category::class.java)
                 }
+            }
+        }
+    }
+
+    fun deleteItem(id: String) {
+        viewModelScope.launch {
+            try {
+                val response = repository.deleteItem(id)
+                response.await()
+                _deleteSuccess.value = response.isSuccessful
+                if (response.isSuccessful) {
+                    _message.value = "Item deleted successfully"
+                } else {
+                    _message.value = "Error deleting item"
+                }
+            } catch (e: Exception) {
+                _deleteSuccess.value = false
+                _message.value = "An error occurred: ${e.localizedMessage}"
             }
         }
     }

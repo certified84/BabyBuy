@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.certified.babybuy.databinding.FragmentEditCategoryBinding
@@ -16,6 +18,7 @@ import com.certified.babybuy.util.Extensions.showYesNoDialog
 import com.certified.babybuy.util.UIState
 import com.certified.babybuy.util.currentDate
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class EditCategoryFragment : Fragment() {
@@ -40,26 +43,30 @@ class EditCategoryFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.uiState = viewModel.uiState
 
-        viewModel.apply {
-            if (categoryResponse.value.isNotBlank()) {
-                showSnackbar(categoryResponse.value)
-                _categoryResponse.value = ""
-            }
-            lifecycleScope.launchWhenResumed {
-                uploadSuccess.collect { success ->
-                    if (success) {
-                        _uploadSuccess.value = false
-                        when (args.from) {
-                            "category" ->
-                                findNavController().navigate(
-                                    EditCategoryFragmentDirections.actionEditCategoryFragmentToCategoryDetailFragment(
-                                        args.category.id
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.message.collect {
+                        it?.let { showSnackbar(it) }
+                        viewModel._message.value = null
+                    }
+                }
+                launch {
+                    viewModel.uploadSuccess.collect { success ->
+                        if (success) {
+                            viewModel._uploadSuccess.value = false
+                            when (args.from) {
+                                "category" ->
+                                    findNavController().navigate(
+                                        EditCategoryFragmentDirections.actionEditCategoryFragmentToCategoryDetailFragment(
+                                            args.category.id
+                                        )
                                     )
-                                )
-                            else ->
-                                findNavController().navigate(
-                                    EditCategoryFragmentDirections.actionEditCategoryFragmentToHomeFragment()
-                                )
+                                else ->
+                                    findNavController().navigate(
+                                        EditCategoryFragmentDirections.actionEditCategoryFragmentToHomeFragment()
+                                    )
+                            }
                         }
                     }
                 }

@@ -30,7 +30,12 @@ object Extensions {
             .show()
     }
 
-    fun Fragment.showYesNoDialog(title: String, message: String, action: (() -> Unit)?) {
+    fun Fragment.showYesNoDialog(
+        title: String,
+        message: String,
+        action: (() -> Unit)? = null,
+        cancelAction: (() -> Unit)? = null
+    ) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(title)
             .setMessage(message)
@@ -38,7 +43,10 @@ object Extensions {
                 dialog.dismiss()
                 action?.invoke()
             }
-            .setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+                cancelAction?.invoke()
+            }
             .setCancelable(false)
             .show()
     }

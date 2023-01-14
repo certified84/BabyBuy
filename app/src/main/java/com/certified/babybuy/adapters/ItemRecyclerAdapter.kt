@@ -35,8 +35,11 @@ class ItemRecyclerAdapter(private val which: String = "item") :
     }
 
     override fun getItemViewType(position: Int): Int {
-        val currentItem = getItem(position)
         return if (which == "category") 0 else 1
+    }
+
+    fun getItemAt(position: Int): Item {
+        return getItem(position)
     }
 
     inner class ItemViewHolder(val binding: ItemLayoutBinding) :

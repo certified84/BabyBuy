@@ -48,6 +48,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.8.0-beta01'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
@@ -87,6 +88,9 @@ dependencies {
 
 //    Coil
     implementation "io.coil-kt:coil:2.2.1"
+
+//    recyclerViewSwipeDecorator
+    implementation 'it.xabaras.android:recyclerview-swipedecorator:1.4'
 
 //    page indicator
 //    implementation "com.romandanylyk:pageindicatorview:1.0.3@aar"
