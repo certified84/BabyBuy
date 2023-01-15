@@ -48,11 +48,12 @@ class HomeViewModel @Inject constructor(private val repository: Repository) : Vi
         viewModelScope.launch {
             val query = repository.getItems(userId)
             query.addSnapshotListener { value, error ->
-                if (value == null || value.isEmpty || error != null)
+                if (value == null || value.isEmpty || error != null) {
+                    _items.value = emptyList()
                     recentUIState.set(UIState.EMPTY)
-                else {
+                } else {
                     recentUIState.set(UIState.HAS_DATA)
-                    _items.value = value.toObjects(Item::class.java)
+                    _items.value = value.toObjects(Item::class.java).take(10)
                 }
             }
         }
@@ -64,9 +65,10 @@ class HomeViewModel @Inject constructor(private val repository: Repository) : Vi
             query.addSnapshotListener { value, error ->
                 Log.d("TAG", "getCategories: Error: $error")
                 Log.d("TAG", "getCategories: Value: $value")
-                if (value == null || value.isEmpty || error != null)
+                if (value == null || value.isEmpty || error != null) {
+                    _categories.value = emptyList()
                     uiState.set(UIState.EMPTY)
-                else {
+                } else {
                     uiState.set(UIState.HAS_DATA)
                     _categories.value = value.toObjects(Category::class.java)
                 }

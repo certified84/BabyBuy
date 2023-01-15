@@ -84,12 +84,13 @@ class CategoryViewModel @Inject constructor(private val repository: Repository) 
         viewModelScope.launch {
             val query = repository.getItems(userId)
             query.addSnapshotListener { value, error ->
-                if (value == null || value.isEmpty || error != null)
+                if (value == null || value.isEmpty || error != null) {
                     uiState.set(UIState.EMPTY)
-                else {
+                    _items.value = emptyList()
+                } else {
                     uiState.set(UIState.HAS_DATA)
-                    val allItems = value.toObjects(Item::class.java)
-                    _items.value = allItems.filter { it.categoryId == categoryId }
+                    _items.value =
+                        value.toObjects(Item::class.java).filter { it.categoryId == categoryId }
                 }
             }
         }
