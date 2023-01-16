@@ -153,6 +153,8 @@ class HomeFragment : Fragment() {
                 )
             }
 
+            btnSearch.setOnClickListener { showSnackbar("Coming soon...") }
+
             recyclerViewItems.adapter = itemAdapter.apply {
                 setOnItemClickedListener(object : ItemRecyclerAdapter.OnItemClickedListener {
                     override fun onItemClick(item: Item) {

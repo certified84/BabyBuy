@@ -1,13 +1,17 @@
 package com.certified.babybuy.ui.item
 
+import android.Manifest
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.provider.MediaStore
+import android.telephony.SmsManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -28,8 +32,10 @@ import coil.transform.RoundedCornersTransformation
 import com.certified.babybuy.R
 import com.certified.babybuy.data.model.Category
 import com.certified.babybuy.data.model.Contact
+import com.certified.babybuy.data.model.Item
 import com.certified.babybuy.data.model.Location
 import com.certified.babybuy.databinding.FragmentEditItemBinding
+import com.certified.babybuy.util.Extensions.showActionDialog
 import com.certified.babybuy.util.Extensions.showSnackbar
 import com.certified.babybuy.util.ImageResizer
 import com.certified.babybuy.util.UIState
@@ -53,6 +59,37 @@ class EditItemFragment : Fragment() {
     private var delegate: Contact? = null
     private var location: Location? = null
     private var imageUri: Uri? = null
+    private var item = Item()
+
+    private val requestReadContactPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted)
+                startForResultContact.launch(
+                    Intent(
+                        Intent.ACTION_PICK,
+                        ContactsContract.Contacts.CONTENT_URI
+                    ).apply {
+                        type = ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE
+                    })
+            else
+                showActionDialog(
+                    "Permission",
+                    "The READ_CONTACTS and SEND_SMS permission is required to enable the item delegation feature",
+                    null
+                )
+        }
+
+    private val requestSendSmsPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted)
+                sendSms()
+            else
+                showActionDialog(
+                    "Permission",
+                    "The READ_CONTACTS and SEND_SMS permission is required to enable the item delegation feature",
+                    null
+                )
+        }
 
     private val getContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -75,9 +112,10 @@ class EditItemFragment : Fragment() {
                         binding.ivItemImage.load(bitmap) {
                             transformations(RoundedCornersTransformation(20f))
                         }
-                        requireContext().openFileOutput("item_image", Context.MODE_PRIVATE).use {
-                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
-                        }
+                        requireContext().openFileOutput("item_image", Context.MODE_PRIVATE)
+                            .use {
+                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
+                            }
                         val file = File(requireContext().filesDir, "item_image")
                         imageUri = Uri.fromFile(file)
                     }
@@ -93,7 +131,8 @@ class EditItemFragment : Fragment() {
                 val intent = result.data
                 try {
                     val bitmap = intent?.extras!!["data"] as Bitmap?
-                    val scaledBitmap = bitmap?.let { ImageResizer.reduceBitmapSize(it, 240000) }
+                    val scaledBitmap =
+                        bitmap?.let { ImageResizer.reduceBitmapSize(it, 240000) }
                     when {
                         bitmap != null && bitmap.byteCount > (1048576 * 50) -> {
                             showSnackbar("Image too large. Max size is 5MB")
@@ -104,7 +143,10 @@ class EditItemFragment : Fragment() {
                             binding.ivItemImage.load(bitmap) {
                                 transformations(RoundedCornersTransformation(20f))
                             }
-                            requireContext().openFileOutput("item_image", Context.MODE_PRIVATE)
+                            requireContext().openFileOutput(
+                                "item_image",
+                                Context.MODE_PRIVATE
+                            )
                                 .use {
                                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
                                 }
@@ -116,6 +158,39 @@ class EditItemFragment : Fragment() {
                     e.printStackTrace()
                 } catch (t: Throwable) {
                     t.printStackTrace()
+                }
+            }
+        }
+
+    private val startForResultContact =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            Log.d("TAG", "Result: ${result.data}")
+            if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+                val intent = result.data
+                val projection = arrayOf(
+                    ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                    ContactsContract.CommonDataKinds.Phone.NUMBER
+                )
+                val cursor = intent?.data?.let {
+                    requireContext().contentResolver.query(
+                        it, projection, null, null, null
+                    )
+                }
+                try {
+                    if (cursor != null && cursor.moveToFirst()) {
+                        val nameIndex =
+                            cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+                        val numberIndex =
+                            cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                        val number = cursor.getString(numberIndex)
+                        val name = cursor.getString(nameIndex)
+                        delegate = Contact(name, number)
+                        showSnackbar("Name: $name, Number: $number")
+                    }
+                } catch (t: Throwable) {
+                    t.printStackTrace()
+                } finally {
+                    cursor?.close()
                 }
             }
         }
@@ -135,6 +210,7 @@ class EditItemFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.uiState = viewModel.uiState
         binding.item = args.item
+        delegate = args.item.delegate
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -154,6 +230,14 @@ class EditItemFragment : Fragment() {
                         }
                     }
                 }
+                launch {
+                    viewModel.uploadSuccess.collect {
+                        if (it && delegate != null) {
+                            requestSendSmsPermissionLauncher.launch(Manifest.permission.SEND_SMS)
+                            viewModel._uploadSuccess.value = false
+                        }
+                    }
+                }
             }
         }
 
@@ -163,7 +247,8 @@ class EditItemFragment : Fragment() {
             val descriptionKeyListener = etDescription.keyListener
             val priceKeyListener = etPrice.keyListener
             val fadeInAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in)
-            val fadeOutAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_out)
+            val fadeOutAnim =
+                AnimationUtils.loadAnimation(requireContext(), R.anim.fade_out)
 
             etName.keyListener = null
             etDescription.keyListener = null
@@ -217,21 +302,20 @@ class EditItemFragment : Fragment() {
                 }
                 etCategoryTitleLayout.error = null
 
-                with(viewModel) {
+                with(this@EditItemFragment.viewModel) {
                     uiState.set(UIState.LOADING)
-                    updateItem(
-                        args.item.copy(
-                            name = name,
-                            description = description,
-                            price = price.toDouble(),
-                            modified = currentDate().timeInMillis,
-                            delegate = delegate ?: args.item.delegate,
-                            location = location ?: args.item.location,
-                            categoryId = category?.id,
-                            categoryTitle = category?.title,
-                            hex = category?.hex
-                        ), imageUri
+                    this@EditItemFragment.item = args.item.copy(
+                        name = name,
+                        description = description,
+                        price = price.toDouble(),
+                        modified = currentDate().timeInMillis,
+                        delegate = delegate ?: args.item.delegate,
+                        location = location ?: args.item.location,
+                        categoryId = category?.id,
+                        categoryTitle = category?.title,
+                        hex = category?.hex
                     )
+                    updateItem(this@EditItemFragment.item, imageUri)
                 }
 
                 etName.keyListener = null
@@ -255,8 +339,17 @@ class EditItemFragment : Fragment() {
                 }
             }
             ivItemImage.setOnClickListener {
-                if (viewModel.uiState.get() == UIState.EDITING)
+                if (this@EditItemFragment.viewModel.uiState.get() == UIState.EDITING)
                     launchChangeItemImageDialog()
+            }
+            btnDelegate.setOnClickListener {
+                if (this@EditItemFragment.viewModel.uiState.get() == UIState.EDITING) {
+                    requestReadContactPermissionLauncher.launch(Manifest.permission.READ_CONTACTS)
+                } else {
+                    if (delegate == null)
+                        showSnackbar("No contact selected")
+                    else showSnackbar("Name: ${delegate?.name}, number: ${delegate?.phone}")
+                }
             }
         }
     }
@@ -276,6 +369,31 @@ class EditItemFragment : Fragment() {
             dialog.dismiss()
         }
         builder.show()
+    }
+
+    private fun sendSms() {
+        val message = "Item details:\nName: ${item.name}\n" +
+                "Description: ${item.description}\n" +
+                "Price: ${item.price}"
+        try {
+            val smsManager = SmsManager.getDefault()
+            smsManager.sendTextMessage(delegate?.phone, null, message, null, null)
+            showSnackbar("SMS sent")
+        } catch (e: Exception) {
+            showSnackbar("An error occurred. Try again")
+            try {
+                requireActivity().startActivity(Intent(Intent.ACTION_SENDTO).apply {
+                    data = Uri.parse("sms:${delegate?.phone}")
+                    putExtra("sms_body", message)
+                })
+            } catch (e: ActivityNotFoundException) {
+                showSnackbar("No message app found")
+                e.printStackTrace()
+            } catch (e: Exception) {
+                showSnackbar("An error occurred: ${e.localizedMessage}")
+                e.printStackTrace()
+            }
+        }
     }
 
     override fun onResume() {
