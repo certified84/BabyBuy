@@ -207,7 +207,7 @@
             app:icon="@drawable/ic_baseline_done_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline6"
-            app:tint="@color/onSecondaryContainer" />
+            app:tint="@color/onBackground" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
