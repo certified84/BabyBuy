@@ -160,7 +160,7 @@ class HomeFragment : Fragment() {
                     override fun onItemClick(item: Item) {
                         findNavController().navigate(
                             HomeFragmentDirections.actionHomeFragmentToEditItemFragment(
-                                item, "home", null
+                                item, "home", item.categoryId
                             )
                         )
                     }

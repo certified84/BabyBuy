@@ -40,12 +40,17 @@ import com.certified.babybuy.util.Extensions.showSnackbar
 import com.certified.babybuy.util.ImageResizer
 import com.certified.babybuy.util.UIState
 import com.certified.babybuy.util.currentDate
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place.Field
+import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileNotFoundException
-
 
 @AndroidEntryPoint
 class EditItemFragment : Fragment() {
@@ -60,6 +65,7 @@ class EditItemFragment : Fragment() {
     private var location: Location? = null
     private var imageUri: Uri? = null
     private var item = Item()
+    private lateinit var placesClient: PlacesClient
 
     private val requestReadContactPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -94,13 +100,12 @@ class EditItemFragment : Fragment() {
     private val getContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             try {
-                val bitmap =
-                    uri?.let {
-                        MediaStore.Images.Media.getBitmap(
-                            requireActivity().contentResolver,
-                            it
-                        )
-                    }
+                val bitmap = uri?.let {
+                    MediaStore.Images.Media.getBitmap(
+                        requireActivity().contentResolver,
+                        it
+                    )
+                }
                 val scaledBitmap = bitmap?.let { ImageResizer.reduceBitmapSize(it, 240000) }
                 when {
                     bitmap != null && bitmap.byteCount > (1048576 * 50) -> {
@@ -195,12 +200,35 @@ class EditItemFragment : Fragment() {
             }
         }
 
+    private val startForResultMap =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            Log.d("TAG", "Result: ${result.data}")
+            when (result.resultCode) {
+                Activity.RESULT_OK -> {
+                    val place = result.data?.let { Autocomplete.getPlaceFromIntent(it) }
+                    location =
+                        Location(place?.name, place?.latLng?.latitude, place?.latLng?.longitude)
+                    showSnackbar("Selected location: ${place?.name}")
+                    Log.d("TAG", "Place: $place")
+                }
+                AutocompleteActivity.RESULT_ERROR -> {
+                    // TODO: Handle the error.
+                    val status = result.data?.let { Autocomplete.getStatusFromIntent(it) }
+                    status?.statusMessage?.let { Log.d("TAG", it) }
+                }
+                Activity.RESULT_CANCELED -> {
+                    // The user canceled the operation.
+                }
+            }
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentEditItemBinding.inflate(layoutInflater, container, false)
+        placesClient = Places.createClient(requireContext())
         return binding.root
     }
 
@@ -211,6 +239,7 @@ class EditItemFragment : Fragment() {
         binding.uiState = viewModel.uiState
         binding.item = args.item
         delegate = args.item.delegate
+        location = args.item.location
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -247,8 +276,7 @@ class EditItemFragment : Fragment() {
             val descriptionKeyListener = etDescription.keyListener
             val priceKeyListener = etPrice.keyListener
             val fadeInAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in)
-            val fadeOutAnim =
-                AnimationUtils.loadAnimation(requireContext(), R.anim.fade_out)
+            val fadeOutAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_out)
 
             etName.keyListener = null
             etDescription.keyListener = null
@@ -350,6 +378,24 @@ class EditItemFragment : Fragment() {
                         showSnackbar("No contact selected")
                     else showSnackbar("Name: ${delegate?.name}, number: ${delegate?.phone}")
                 }
+            }
+            btnMap.setOnClickListener {
+                if (this@EditItemFragment.viewModel.uiState.get() == UIState.EDITING) {
+                    startForResultMap.launch(
+                        Autocomplete.IntentBuilder(
+                            AutocompleteActivityMode.FULLSCREEN,
+                            listOf(Field.ID, Field.NAME)
+                        )
+                            .build(requireActivity())
+                    )
+                } else if (location != null) {
+                    val gmmIntentUri =
+                        Uri.parse("google.navigation:q=${Uri.encode(location?.name)}")
+                    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                    mapIntent.setPackage("com.google.android.apps.maps")
+                    startActivity(mapIntent)
+                } else
+                    showSnackbar("No location selected")
             }
         }
     }

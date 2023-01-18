@@ -27,14 +27,12 @@
         <entry key="app/src/main/res/drawable/ic_profile.xml" value="0.1935" />
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.1235" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.20648511366762048" />
-        <entry key="app/src/main/res/layout/contacts_list_item.xml" value="0.11524822695035461" />
-        <entry key="app/src/main/res/layout/contacts_list_view.xml" value="0.4907014191694173" />
-        <entry key="app/src/main/res/layout/dialog_contacts.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_category_detail.xml" value="0.3104253133138021" />
         <entry key="app/src/main/res/layout/fragment_edit_category.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_edit_item.xml" value="0.2807807807807808" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.15378289473684212" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.29638061523437503" />
+        <entry key="app/src/main/res/layout/fragment_maps.xml" value="0.11524822695035461" />
         <entry key="app/src/main/res/layout/fragment_notification.xml" value="0.2211975761081862" />
         <entry key="app/src/main/res/layout/fragment_onboarding.xml" value="0.21959075927734378" />
         <entry key="app/src/main/res/layout/fragment_password_recovery.xml" value="0.2692307692307692" />

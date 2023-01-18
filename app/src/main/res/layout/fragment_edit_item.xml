@@ -318,14 +318,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/chip"
-            app:layout_constraintEnd_toStartOf="@+id/appCompatImageView2"
+            app:layout_constraintEnd_toStartOf="@+id/btn_map"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/chip"
             app:layout_constraintTop_toTopOf="@+id/chip"
             app:srcCompat="@drawable/ic_profile" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/appCompatImageView2"
+            android:id="@+id/btn_map"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/chip"
@@ -342,7 +342,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/chip"
             app:layout_constraintEnd_toStartOf="@+id/guideline6"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/appCompatImageView2"
+            app:layout_constraintStart_toEndOf="@+id/btn_map"
             app:layout_constraintTop_toTopOf="@+id/chip"
             app:srcCompat="@drawable/ic_done1" />
 

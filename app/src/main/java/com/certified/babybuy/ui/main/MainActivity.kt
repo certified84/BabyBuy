@@ -8,8 +8,10 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
+import com.certified.babybuy.BuildConfig
 import com.certified.babybuy.R
 import com.certified.babybuy.databinding.ActivityMainBinding
+import com.google.android.libraries.places.api.Places
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         navController = findNavController(R.id.nav_host_fragment)
+        Places.initialize(applicationContext, BuildConfig.MAPS_API_KEY)
         splashScreen.setKeepOnScreenCondition { viewModel.isLoading.value }
         checkLogin()
     }
