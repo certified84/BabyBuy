@@ -10,4 +10,8 @@
     <style name="ShapeAppearanceOverlay.BabyBuy" parent="">
         <item name="cornerSize">15%</item>
     </style>
+
+    <style name="ShapeAppearanceOverlay.Circle.BabyBuy" parent="">
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import androidx.constraintlayout.widget.Constraints
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -84,67 +83,12 @@ class HomeFragment : Fragment() {
         binding.apply {
             tvName.text =
                 "Hey,\n${auth.currentUser?.displayName?.substringBefore(" ")} \uD83D\uDC4B"
-
-            val params = Constraints.LayoutParams(content.width, content.height)
-            params.setMargins(60, 10, 0, 10)
             fab.setOnClickListener { showHide() }
             btnDrawer.setOnClickListener {
-                btnDrawer.startAnimation(
-                    AnimationUtils.loadAnimation(
-                        requireContext(),
-                        R.anim.rotate
-                    )
-                )
-                btnClose.apply {
-                    startAnimation(
-                        AnimationUtils.loadAnimation(
-                            requireContext(),
-                            R.anim.slide_content
-                        )
-                    )
-                    x = 400f
-                    y = 100f
-                }
-                content.apply {
-                    btnDrawer.isEnabled = false
-                    startAnimation(
-                        AnimationUtils.loadAnimation(
-                            requireContext(),
-                            R.anim.slide_content
-                        )
-                    )
-                    x = 600f
-                    y = 100f
-                }
+
             }
             btnClose.setOnClickListener {
-                btnDrawer.startAnimation(
-                    AnimationUtils.loadAnimation(
-                        requireContext(),
-                        R.anim.rotate
-                    )
-                )
-                btnClose.apply {
-//                    startAnimation(
-//                        AnimationUtils.loadAnimation(
-//                            requireContext(),
-//                            R.anim.slide_content
-//                        )
-//                    )
-                    x = 0f
-                    y = 0f
-                }
-                content.apply {
-                    btnDrawer.isEnabled = true
-//                    startAnimation(
-//                        AnimationUtils.loadAnimation(
-//                            requireContext(),
-//                            R.anim.slide_content
-//                        )
-//                    )
-                    x = 0f
-                    y = 0f
-                }
+
             }
 
             btnNotification.setOnClickListener {
