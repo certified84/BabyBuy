@@ -26,12 +26,11 @@
             type="com.certified.babybuy.ui.home.HomeViewModel" />
     </data>
 
-    <androidx.constraintlayout.motion.widget.MotionLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/primary"
-        app:layoutDescription="@xml/fragment_home_scene"
         tools:context=".ui.home.HomeFragment">
 
         <androidx.constraintlayout.widget.Guideline
@@ -446,6 +445,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/secondaryContainer"
+            android:visibility="gone"
             app:fabSize="mini"
             app:layout_constraintCircle="@id/fab"
             app:layout_constraintCircleAngle="270"
@@ -460,6 +460,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/secondaryContainer"
+            android:visibility="gone"
             app:fabSize="mini"
             app:layout_constraintCircle="@id/fab"
             app:layout_constraintCircleAngle="360"
@@ -469,5 +470,5 @@
             tools:layout_editor_absoluteX="259dp"
             tools:layout_editor_absoluteY="410dp" />
 
-    </androidx.constraintlayout.motion.widget.MotionLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

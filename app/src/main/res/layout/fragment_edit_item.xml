@@ -18,341 +18,352 @@
             type="ObservableField&lt;UIState>" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/surface1"
         tools:context=".ui.item.EditItemFragment">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline5"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="@dimen/_16sdp" />
+            android:paddingBottom="@dimen/_16sdp">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_end="@dimen/_16sdp" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent=".1" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent=".9" />
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/btn_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_24sdp"
-            android:background="@null"
-            android:padding="@dimen/_4sdp"
-            android:src="@drawable/ic_close"
-            app:invisible="@{uiState != UIState.EDITING}"
-            app:layout_constraintEnd_toStartOf="@+id/guideline6"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/onSurface"
-            tools:visibility="visible" />
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/btn_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_24sdp"
-            android:layout_marginEnd="@dimen/_8sdp"
-            android:background="@null"
-            android:padding="@dimen/_4sdp"
-            android:src="@drawable/ic_edit"
-            app:invisible="@{uiState != UIState.EDITING}"
-            app:layout_constraintEnd_toStartOf="@+id/btn_close"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible" />
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/btn_done"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_24sdp"
-            android:background="@null"
-            android:padding="@dimen/_4sdp"
-            android:src="@drawable/ic_done"
-            app:invisible="@{uiState == UIState.EDITING}"
-            app:layout_constraintEnd_toStartOf="@+id/guideline6"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/onSurface"
-            tools:visibility="visible" />
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iv_item_image"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/_24sdp"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            app:alpha="@{uiState == UIState.EDITING}"
-            app:editItemImage="@{item.image}"
-            app:layout_constraintDimensionRatio="2:1"
-            app:layout_constraintEnd_toStartOf="@+id/guideline8"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toBottomOf="@+id/btn_close"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.BabyBuy"
-            tools:src="@tools:sample/avatars" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_click_change"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Click to change"
-            android:textSize="@dimen/_14ssp"
-            app:fontFamily="@font/space_grotesk_medium"
-            app:invisible="@{uiState == UIState.EDITING}"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_item_image"
-            app:layout_constraintEnd_toStartOf="@+id/guideline8"
-            app:layout_constraintStart_toStartOf="@+id/iv_item_image"
-            app:layout_constraintTop_toTopOf="@+id/iv_item_image" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/materialTextView21"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_24sdp"
-            android:textColor="@color/onSurface"
-            android:textSize="@dimen/_18ssp"
-            app:fontFamily="@font/space_grotesk_medium"
-            app:item="@{item.name}"
-            app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toBottomOf="@+id/iv_item_image"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:text="Enter new item" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/et_name_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_24sdp"
-            app:boxBackgroundColor="@null"
-            app:boxCornerRadiusBottomEnd="@dimen/_6sdp"
-            app:boxCornerRadiusBottomStart="@dimen/_6sdp"
-            app:boxCornerRadiusTopEnd="@dimen/_6sdp"
-            app:boxCornerRadiusTopStart="@dimen/_6sdp"
-            app:boxStrokeColor="@null"
-            app:boxStrokeWidth="0dp"
-            app:hintEnabled="false"
-            app:layout_constraintEnd_toStartOf="@+id/guideline8"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toBottomOf="@+id/materialTextView21">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_name"
-                android:layout_width="match_parent"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline5"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/space_grotesk_medium"
-                android:hint="Name"
-                android:inputType="textMultiLine"
-                android:paddingStart="@dimen/_8sdp"
-                android:paddingTop="@dimen/_8sdp"
-                android:paddingEnd="0dp"
-                android:paddingBottom="@dimen/_8sdp"
-                android:text="@{item.name}"
-                android:textColor="@color/onSurface"
-                android:textSize="@dimen/_15ssp"
-                tools:text="" />
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/_16sdp" />
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/et_description_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:boxBackgroundColor="@null"
-            app:boxCornerRadiusBottomEnd="@dimen/_6sdp"
-            app:boxCornerRadiusBottomStart="@dimen/_6sdp"
-            app:boxCornerRadiusTopEnd="@dimen/_6sdp"
-            app:boxCornerRadiusTopStart="@dimen/_6sdp"
-            app:boxStrokeColor="@null"
-            app:boxStrokeWidth="0dp"
-            app:hintEnabled="false"
-            app:layout_constraintEnd_toStartOf="@+id/guideline8"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toBottomOf="@+id/et_name_layout">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_description"
-                android:layout_width="match_parent"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline6"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/space_grotesk_medium"
-                android:hint="Description"
-                android:inputType="textMultiLine"
-                android:paddingStart="@dimen/_8sdp"
-                android:paddingTop="@dimen/_8sdp"
-                android:paddingEnd="0dp"
-                android:paddingBottom="@dimen/_8sdp"
-                android:text="@{item.description}"
-                android:textColor="@color/onSurface"
-                android:textSize="@dimen/_15ssp"
-                tools:text="" />
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/_16sdp" />
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/et_price_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_4sdp"
-            app:boxBackgroundColor="@null"
-            app:boxCornerRadiusBottomEnd="@dimen/_6sdp"
-            app:boxCornerRadiusBottomStart="@dimen/_6sdp"
-            app:boxCornerRadiusTopEnd="@dimen/_6sdp"
-            app:boxCornerRadiusTopStart="@dimen/_6sdp"
-            app:boxStrokeColor="@null"
-            app:boxStrokeWidth="0dp"
-            app:hintEnabled="false"
-            app:layout_constraintEnd_toStartOf="@+id/et_category_title_layout"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toBottomOf="@+id/et_description_layout">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_price"
-                android:layout_width="match_parent"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline7"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/space_grotesk_medium"
-                android:hint="Price"
-                android:inputType="textMultiLine"
-                android:paddingStart="@dimen/_8sdp"
-                android:paddingTop="@dimen/_8sdp"
-                android:paddingEnd="0dp"
-                android:paddingBottom="@dimen/_8sdp"
-                android:text="@{String.valueOf(item.price)}"
-                android:textColor="@color/onSurface"
-                android:textSize="@dimen/_15ssp"
-                tools:text="" />
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".1" />
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/et_category_title_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_4sdp"
-            app:boxBackgroundColor="@null"
-            app:boxCornerRadiusBottomEnd="@dimen/_6sdp"
-            app:boxCornerRadiusBottomStart="@dimen/_6sdp"
-            app:boxCornerRadiusTopEnd="@dimen/_6sdp"
-            app:boxCornerRadiusTopStart="@dimen/_6sdp"
-            app:boxStrokeColor="@null"
-            app:boxStrokeWidth="0dp"
-            app:hintEnabled="false"
-            app:layout_constraintBottom_toBottomOf="@+id/et_price_layout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline8"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/et_price_layout"
-            app:layout_constraintTop_toBottomOf="@+id/et_description_layout">
-
-            <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                android:id="@+id/et_category_title"
-                android:layout_width="match_parent"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline8"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/space_grotesk_medium"
-                android:hint="Category"
-                android:inputType="none"
-                android:paddingTop="@dimen/_6sdp"
-                android:paddingBottom="@dimen/_6sdp"
-                android:text="@{item.categoryTitle}"
-                android:textColor="@color/onSurface"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".9" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btn_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_24sdp"
+                android:background="@null"
+                android:padding="@dimen/_4sdp"
+                android:src="@drawable/ic_close"
+                app:invisible="@{uiState != UIState.EDITING}"
+                app:layout_constraintEnd_toStartOf="@+id/guideline6"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/onSurface"
+                tools:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btn_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_24sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:background="@null"
+                android:padding="@dimen/_4sdp"
+                android:src="@drawable/ic_edit"
+                app:invisible="@{uiState != UIState.EDITING}"
+                app:layout_constraintEnd_toStartOf="@+id/btn_close"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btn_done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_24sdp"
+                android:background="@null"
+                android:padding="@dimen/_4sdp"
+                android:src="@drawable/ic_done"
+                app:invisible="@{uiState == UIState.EDITING}"
+                app:layout_constraintEnd_toStartOf="@+id/guideline6"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/onSurface"
+                tools:visibility="visible" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/iv_item_image"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/_24sdp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:alpha="@{uiState == UIState.EDITING}"
+                app:editItemImage="@{item.image}"
+                app:layout_constraintDimensionRatio="2:1"
+                app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline7"
+                app:layout_constraintTop_toBottomOf="@+id/btn_close"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.BabyBuy"
+                tools:src="@tools:sample/avatars" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_click_change"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Click to change"
                 android:textSize="@dimen/_14ssp"
-                tools:text="Bags" />
+                app:fontFamily="@font/space_grotesk_medium"
+                app:invisible="@{uiState == UIState.EDITING}"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_item_image"
+                app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                app:layout_constraintStart_toStartOf="@+id/iv_item_image"
+                app:layout_constraintTop_toTopOf="@+id/iv_item_image" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/materialTextView21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_24sdp"
+                android:textColor="@color/onSurface"
+                android:textSize="@dimen/_18ssp"
+                app:fontFamily="@font/space_grotesk_medium"
+                app:item="@{item.name}"
+                app:layout_constraintStart_toStartOf="@+id/guideline7"
+                app:layout_constraintTop_toBottomOf="@+id/iv_item_image"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="Enter new item" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_24sdp"
-            android:paddingStart="@dimen/_4sdp"
-            android:paddingTop="@dimen/_8sdp"
-            android:paddingEnd="@dimen/_4sdp"
-            android:paddingBottom="@dimen/_8sdp"
-            android:textColor="#908C8C"
-            android:textSize="@dimen/_14ssp"
-            app:chipBackgroundColor="@color/surface1"
-            app:chipCornerRadius="@dimen/_10sdp"
-            app:chipIcon="@drawable/ic_calendar"
-            app:chipIconSize="@dimen/_16sdp"
-            app:chipIconTint="#908C8C"
-            app:layout_constraintEnd_toStartOf="@+id/appCompatImageView"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/guideline5"
-            app:layout_constraintTop_toBottomOf="@+id/et_price_layout"
-            app:reminderText="@{item.reminder}"
-            tools:text="01/01/2023" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/et_name_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_24sdp"
+                app:boxBackgroundColor="@null"
+                app:boxCornerRadiusBottomEnd="@dimen/_6sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_6sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_6sdp"
+                app:boxCornerRadiusTopStart="@dimen/_6sdp"
+                app:boxStrokeColor="@null"
+                app:boxStrokeWidth="0dp"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/guideline7"
+                app:layout_constraintTop_toBottomOf="@+id/materialTextView21">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/appCompatImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/chip"
-            app:layout_constraintEnd_toStartOf="@+id/appCompatImageView2"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/chip"
-            app:layout_constraintTop_toTopOf="@+id/chip"
-            app:srcCompat="@drawable/ic_profile" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/space_grotesk_medium"
+                    android:hint="Name"
+                    android:inputType="textMultiLine"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:paddingTop="@dimen/_8sdp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="@dimen/_8sdp"
+                    android:text="@{item.name}"
+                    android:textColor="@color/onSurface"
+                    android:textSize="@dimen/_15ssp"
+                    tools:text="" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/appCompatImageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/chip"
-            app:layout_constraintEnd_toStartOf="@+id/appCompatImageView4"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/appCompatImageView"
-            app:layout_constraintTop_toTopOf="@+id/chip"
-            app:srcCompat="@drawable/ic_map_pin" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/appCompatImageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/chip"
-            app:layout_constraintEnd_toStartOf="@+id/guideline6"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/appCompatImageView2"
-            app:layout_constraintTop_toTopOf="@+id/chip"
-            app:srcCompat="@drawable/ic_done1" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/et_description_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:boxBackgroundColor="@null"
+                app:boxCornerRadiusBottomEnd="@dimen/_6sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_6sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_6sdp"
+                app:boxCornerRadiusTopStart="@dimen/_6sdp"
+                app:boxStrokeColor="@null"
+                app:boxStrokeWidth="0dp"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/guideline7"
+                app:layout_constraintTop_toBottomOf="@+id/et_name_layout">
 
-        <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            app:indicatorColor="@color/primary"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:visible="@{uiState == UIState.LOADING}" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/space_grotesk_medium"
+                    android:hint="Description"
+                    android:inputType="textMultiLine"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:paddingTop="@dimen/_8sdp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="@dimen/_8sdp"
+                    android:text="@{item.description}"
+                    android:textColor="@color/onSurface"
+                    android:textSize="@dimen/_15ssp"
+                    tools:text="" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/et_price_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_4sdp"
+                app:boxBackgroundColor="@null"
+                app:boxCornerRadiusBottomEnd="@dimen/_6sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_6sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_6sdp"
+                app:boxCornerRadiusTopStart="@dimen/_6sdp"
+                app:boxStrokeColor="@null"
+                app:boxStrokeWidth="0dp"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toStartOf="@+id/et_category_title_layout"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="@+id/guideline7"
+                app:layout_constraintTop_toBottomOf="@+id/et_description_layout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/space_grotesk_medium"
+                    android:hint="Price"
+                    android:inputType="textMultiLine"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:paddingTop="@dimen/_8sdp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="@dimen/_8sdp"
+                    android:text="@{String.valueOf(item.price)}"
+                    android:textColor="@color/onSurface"
+                    android:textSize="@dimen/_15ssp"
+                    tools:text="" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/et_category_title_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_4sdp"
+                app:boxBackgroundColor="@null"
+                app:boxCornerRadiusBottomEnd="@dimen/_6sdp"
+                app:boxCornerRadiusBottomStart="@dimen/_6sdp"
+                app:boxCornerRadiusTopEnd="@dimen/_6sdp"
+                app:boxCornerRadiusTopStart="@dimen/_6sdp"
+                app:boxStrokeColor="@null"
+                app:boxStrokeWidth="0dp"
+                app:hintEnabled="false"
+                app:layout_constraintBottom_toBottomOf="@+id/et_price_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/et_price_layout"
+                app:layout_constraintTop_toBottomOf="@+id/et_description_layout">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/et_category_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/space_grotesk_medium"
+                    android:hint="Category"
+                    android:inputType="none"
+                    android:paddingTop="@dimen/_6sdp"
+                    android:paddingBottom="@dimen/_6sdp"
+                    android:text="@{item.categoryTitle}"
+                    android:textColor="@color/onSurface"
+                    android:textSize="@dimen/_14ssp"
+                    tools:text="Bags" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_24sdp"
+                android:paddingStart="@dimen/_4sdp"
+                android:paddingTop="@dimen/_8sdp"
+                android:paddingEnd="@dimen/_4sdp"
+                android:paddingBottom="@dimen/_8sdp"
+                android:textColor="#908C8C"
+                android:textSize="@dimen/_14ssp"
+                app:chipBackgroundColor="@color/surface1"
+                app:chipCornerRadius="@dimen/_10sdp"
+                app:chipIcon="@drawable/ic_calendar"
+                app:chipIconSize="@dimen/_16sdp"
+                app:chipIconTint="#908C8C"
+                app:layout_constraintEnd_toStartOf="@+id/btn_delegate"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/guideline5"
+                app:layout_constraintTop_toBottomOf="@+id/et_price_layout"
+                app:reminderText="@{item.reminder}"
+                tools:text="01/01/2023" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btn_delegate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="@dimen/_4sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/chip"
+                app:layout_constraintEnd_toStartOf="@+id/btn_map"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/chip"
+                app:layout_constraintTop_toTopOf="@+id/chip"
+                app:srcCompat="@drawable/ic_profile" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btn_map"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="@dimen/_4sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/chip"
+                app:layout_constraintEnd_toStartOf="@+id/appCompatImageView4"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btn_delegate"
+                app:layout_constraintTop_toTopOf="@+id/chip"
+                app:srcCompat="@drawable/ic_map_pin" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/appCompatImageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/chip"
+                app:layout_constraintEnd_toStartOf="@+id/guideline6"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btn_map"
+                app:layout_constraintTop_toTopOf="@+id/chip"
+                app:srcCompat="@drawable/ic_done1" />
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                app:indicatorColor="@color/primary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:visible="@{uiState == UIState.LOADING}" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 </layout>
