@@ -29,6 +29,7 @@
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.1235" />
         <entry key="app/src/main/res/drawable/ic_setting.xml" value="0.1915" />
         <entry key="app/src/main/res/drawable/ic_shield.xml" value="0.1915" />
+        <entry key="app/src/main/res/layout-land/fragment_category_detail.xml" value="0.209375" />
         <entry key="app/src/main/res/layout-land/fragment_home.xml" value="0.2261904761904762" />
         <entry key="app/src/main/res/layout-land/fragment_onboarding.xml" value="0.21145833333333333" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.20648511366762048" />

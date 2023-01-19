@@ -6,14 +6,44 @@
         motion:constraintSetEnd="@+id/end"
         motion:constraintSetStart="@id/start"
         motion:duration="1000">
-                <KeyFrameSet>
-                    <KeyAttribute
-                        android:translationX="@dimen/_200sdp"
-                        android:translationY="@dimen/_35sdp"
-                        motion:framePosition="100"
-                        motion:motionTarget="@+id/content" />
-                </KeyFrameSet>
+        <KeyFrameSet>
+            <KeyAttribute
+                android:translationX="@dimen/_200sdp"
+                android:translationY="@dimen/_35sdp"
+                motion:framePosition="100"
+                motion:motionTarget="@+id/content" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="100"
+                motion:motionTarget="@+id/materialTextView20" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="100"
+                motion:motionTarget="@+id/appCompatImageView8" />
+        </KeyFrameSet>
         <OnClick motion:targetId="@+id/btn_drawer" />
+    </Transition>
+
+    <Transition
+        motion:constraintSetEnd="@+id/start"
+        motion:constraintSetStart="@id/end"
+        motion:duration="1000">
+        <KeyFrameSet>
+            <KeyAttribute
+                android:translationX="0dp"
+                android:translationY="0dp"
+                motion:framePosition="100"
+                motion:motionTarget="@+id/content" />
+            <KeyAttribute
+                android:alpha="1"
+                motion:framePosition="100"
+                motion:motionTarget="@+id/materialTextView20" />
+            <KeyAttribute
+                android:alpha="1"
+                motion:framePosition="100"
+                motion:motionTarget="@+id/appCompatImageView8" />
+        </KeyFrameSet>
+        <OnClick motion:targetId="@+id/btn_close" />
     </Transition>
 
     <ConstraintSet android:id="@+id/start" />

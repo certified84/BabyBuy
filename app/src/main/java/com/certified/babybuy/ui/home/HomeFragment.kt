@@ -3,6 +3,7 @@ package com.certified.babybuy.ui.home
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -227,18 +228,19 @@ class HomeFragment : Fragment() {
     }
 
     private fun showHide() {
+        Log.d("TAG", "showHide: Called")
         val visible = binding.fabAddCategory.isVisible
         val fadeInAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in)
         val fadeOutAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_out)
         binding.apply {
             if (visible) {
                 fabAddCategory.apply {
-                    visibility = View.GONE
                     startAnimation(fadeOutAnim)
+                    visibility = View.GONE
                 }
                 fabAddItem.apply {
-                    visibility = View.GONE
                     startAnimation(fadeOutAnim)
+                    visibility = View.GONE
                 }
             } else {
                 fabAddCategory.apply {
