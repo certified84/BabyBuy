@@ -12,10 +12,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/surface1"
         android:paddingBottom="@dimen/_24sdp"
-        android:orientation="vertical"
         tools:context=".ui.category.CategoryDetailFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout

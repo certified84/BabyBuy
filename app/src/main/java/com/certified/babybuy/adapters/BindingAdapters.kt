@@ -9,6 +9,7 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import com.certified.babybuy.R
 import com.certified.babybuy.data.model.Category
@@ -108,9 +109,9 @@ fun View.backgroundColor(color: String?) {
 }
 
 @BindingAdapter("editItemImage")
-fun bindEditItemImageView(imageView: ImageView, imageUrl: String?) {
+fun ImageView.editItemImage(imageUrl: String?) {
     if (imageUrl?.isBlank() == true || imageUrl == null)
-        imageView.load(R.drawable.ic_onboarding_icon) {
+        this.load(R.drawable.ic_onboarding_icon) {
             transformations(
                 RoundedCornersTransformation(
                     20f
@@ -118,9 +119,20 @@ fun bindEditItemImageView(imageView: ImageView, imageUrl: String?) {
             )
         }
     else
-        imageView.load(imageUrl) {
+        this.load(imageUrl) {
             placeholder(R.drawable.ic_onboarding_icon)
             transformations(RoundedCornersTransformation(20f))
+        }
+}
+
+@BindingAdapter("profileImage")
+fun ImageView.profileImage(imageUrl: String?) {
+    if (imageUrl?.isBlank() == true || imageUrl == null)
+        this.load(R.drawable.ic_onboarding_icon) { transformations(CircleCropTransformation()) }
+    else
+        this.load(imageUrl) {
+            placeholder(R.drawable.ic_onboarding_icon)
+            transformations(CircleCropTransformation())
         }
 }
 

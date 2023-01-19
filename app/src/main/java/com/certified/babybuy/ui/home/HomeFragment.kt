@@ -3,11 +3,11 @@ package com.certified.babybuy.ui.home
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import androidx.constraintlayout.widget.Constraints
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -25,6 +25,7 @@ import com.certified.babybuy.adapters.ItemRecyclerAdapter
 import com.certified.babybuy.data.model.Category
 import com.certified.babybuy.data.model.Item
 import com.certified.babybuy.databinding.FragmentHomeBinding
+import com.certified.babybuy.databinding.FragmentHomeOtherBinding
 import com.certified.babybuy.util.Extensions.showSnackbar
 import com.certified.babybuy.util.Extensions.showYesNoDialog
 import com.google.firebase.auth.FirebaseAuth
@@ -84,67 +85,13 @@ class HomeFragment : Fragment() {
         binding.apply {
             tvName.text =
                 "Hey,\n${auth.currentUser?.displayName?.substringBefore(" ")} \uD83D\uDC4B"
-
-            val params = Constraints.LayoutParams(content.width, content.height)
-            params.setMargins(60, 10, 0, 10)
             fab.setOnClickListener { showHide() }
-            btnDrawer.setOnClickListener {
-                btnDrawer.startAnimation(
-                    AnimationUtils.loadAnimation(
-                        requireContext(),
-                        R.anim.rotate
-                    )
-                )
-                btnClose.apply {
-                    startAnimation(
-                        AnimationUtils.loadAnimation(
-                            requireContext(),
-                            R.anim.slide_content
-                        )
-                    )
-                    x = 400f
-                    y = 100f
-                }
-                content.apply {
-                    btnDrawer.isEnabled = false
-                    startAnimation(
-                        AnimationUtils.loadAnimation(
-                            requireContext(),
-                            R.anim.slide_content
-                        )
-                    )
-                    x = 600f
-                    y = 100f
-                }
+            btnLogout.setOnClickListener {
+                auth.signOut()
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLoginFragment())
             }
             btnClose.setOnClickListener {
-                btnDrawer.startAnimation(
-                    AnimationUtils.loadAnimation(
-                        requireContext(),
-                        R.anim.rotate
-                    )
-                )
-                btnClose.apply {
-//                    startAnimation(
-//                        AnimationUtils.loadAnimation(
-//                            requireContext(),
-//                            R.anim.slide_content
-//                        )
-//                    )
-                    x = 0f
-                    y = 0f
-                }
-                content.apply {
-                    btnDrawer.isEnabled = true
-//                    startAnimation(
-//                        AnimationUtils.loadAnimation(
-//                            requireContext(),
-//                            R.anim.slide_content
-//                        )
-//                    )
-                    x = 0f
-                    y = 0f
-                }
+
             }
 
             btnNotification.setOnClickListener {
@@ -153,12 +100,14 @@ class HomeFragment : Fragment() {
                 )
             }
 
+            btnSearch.setOnClickListener { showSnackbar("Coming soon...") }
+
             recyclerViewItems.adapter = itemAdapter.apply {
                 setOnItemClickedListener(object : ItemRecyclerAdapter.OnItemClickedListener {
                     override fun onItemClick(item: Item) {
                         findNavController().navigate(
                             HomeFragmentDirections.actionHomeFragmentToEditItemFragment(
-                                item, "home", null
+                                item, "home", item.categoryId
                             )
                         )
                     }
@@ -279,18 +228,19 @@ class HomeFragment : Fragment() {
     }
 
     private fun showHide() {
+        Log.d("TAG", "showHide: Called")
         val visible = binding.fabAddCategory.isVisible
         val fadeInAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in)
         val fadeOutAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_out)
         binding.apply {
             if (visible) {
                 fabAddCategory.apply {
-                    visibility = View.GONE
                     startAnimation(fadeOutAnim)
+                    visibility = View.GONE
                 }
                 fabAddItem.apply {
-                    visibility = View.GONE
                     startAnimation(fadeOutAnim)
+                    visibility = View.GONE
                 }
             } else {
                 fabAddCategory.apply {

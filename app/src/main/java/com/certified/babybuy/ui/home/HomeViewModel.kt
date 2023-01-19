@@ -8,6 +8,7 @@ import com.certified.babybuy.data.model.Category
 import com.certified.babybuy.data.model.Item
 import com.certified.babybuy.data.repository.Repository
 import com.certified.babybuy.util.UIState
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -24,6 +25,9 @@ class HomeViewModel @Inject constructor(private val repository: Repository) : Vi
     val uiState = ObservableField(UIState.EMPTY)
     val recentUIState = ObservableField(UIState.EMPTY)
 
+    private val _user = MutableStateFlow<FirebaseUser?>(null)
+    val user = _user.asStateFlow()
+
     private val _items = MutableStateFlow<List<Item>>(emptyList())
     val items = _items.asStateFlow()
 
@@ -37,8 +41,8 @@ class HomeViewModel @Inject constructor(private val repository: Repository) : Vi
     val updateSuccess = _updateSuccess.asStateFlow()
 
     init {
-        val uid = Firebase.auth.currentUser?.uid
-        uid?.let {
+        _user.value = Firebase.auth.currentUser
+        _user.value?.uid?.let {
             getItems(it)
             getCategories(it)
         }
@@ -48,11 +52,12 @@ class HomeViewModel @Inject constructor(private val repository: Repository) : Vi
         viewModelScope.launch {
             val query = repository.getItems(userId)
             query.addSnapshotListener { value, error ->
-                if (value == null || value.isEmpty || error != null)
+                if (value == null || value.isEmpty || error != null) {
+                    _items.value = emptyList()
                     recentUIState.set(UIState.EMPTY)
-                else {
+                } else {
                     recentUIState.set(UIState.HAS_DATA)
-                    _items.value = value.toObjects(Item::class.java)
+                    _items.value = value.toObjects(Item::class.java).take(10)
                 }
             }
         }
@@ -64,9 +69,10 @@ class HomeViewModel @Inject constructor(private val repository: Repository) : Vi
             query.addSnapshotListener { value, error ->
                 Log.d("TAG", "getCategories: Error: $error")
                 Log.d("TAG", "getCategories: Value: $value")
-                if (value == null || value.isEmpty || error != null)
+                if (value == null || value.isEmpty || error != null) {
+                    _categories.value = emptyList()
                     uiState.set(UIState.EMPTY)
-                else {
+                } else {
                     uiState.set(UIState.HAS_DATA)
                     _categories.value = value.toObjects(Category::class.java)
                 }

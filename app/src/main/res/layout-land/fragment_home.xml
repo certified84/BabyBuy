@@ -43,17 +43,16 @@
 
         <ScrollView
             android:id="@+id/nav_drawer"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/_16sdp">
+                android:layout_width="wrap_content"
+                android:paddingBottom="@dimen/_16sdp"
+                android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/btn_close"
@@ -61,10 +60,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_24sdp"
                     android:background="@null"
+                    android:layout_marginStart="@dimen/_24sdp"
                     android:padding="@dimen/_4sdp"
                     android:src="@drawable/ic_close"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/shapeableImageView"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -72,6 +70,7 @@
                     android:id="@+id/shapeableImageView"
                     android:layout_width="@dimen/_90sdp"
                     android:layout_height="0dp"
+                    android:layout_marginStart="@dimen/_16sdp"
                     android:adjustViewBounds="true"
                     android:background="@color/onPrimary"
                     android:scaleType="centerCrop"
@@ -424,7 +423,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:constraint_referenced_ids="materialTextView20,appCompatImageView8"
-            app:visible="@{uiState == UIState.EMPTY}" />
+            app:visible="@{uiState == UIState.EMPTY}"
+            tools:visibility="gone" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
@@ -446,6 +446,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/secondaryContainer"
+            android:visibility="gone"
             app:fabSize="mini"
             app:layout_constraintCircle="@id/fab"
             app:layout_constraintCircleAngle="270"
@@ -460,6 +461,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/secondaryContainer"
+            android:visibility="gone"
             app:fabSize="mini"
             app:layout_constraintCircle="@id/fab"
             app:layout_constraintCircleAngle="360"
