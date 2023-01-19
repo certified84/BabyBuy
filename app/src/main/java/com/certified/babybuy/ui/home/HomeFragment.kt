@@ -24,6 +24,7 @@ import com.certified.babybuy.adapters.ItemRecyclerAdapter
 import com.certified.babybuy.data.model.Category
 import com.certified.babybuy.data.model.Item
 import com.certified.babybuy.databinding.FragmentHomeBinding
+import com.certified.babybuy.databinding.FragmentHomeOtherBinding
 import com.certified.babybuy.util.Extensions.showSnackbar
 import com.certified.babybuy.util.Extensions.showYesNoDialog
 import com.google.firebase.auth.FirebaseAuth
@@ -84,8 +85,9 @@ class HomeFragment : Fragment() {
             tvName.text =
                 "Hey,\n${auth.currentUser?.displayName?.substringBefore(" ")} \uD83D\uDC4B"
             fab.setOnClickListener { showHide() }
-            btnDrawer.setOnClickListener {
-
+            btnLogout.setOnClickListener {
+                auth.signOut()
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLoginFragment())
             }
             btnClose.setOnClickListener {
 
