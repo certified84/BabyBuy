@@ -37,7 +37,6 @@ import com.certified.babybuy.data.model.Location
 import com.certified.babybuy.databinding.FragmentEditItemBinding
 import com.certified.babybuy.util.Extensions.showActionDialog
 import com.certified.babybuy.util.Extensions.showSnackbar
-import com.certified.babybuy.util.ImageResizer
 import com.certified.babybuy.util.UIState
 import com.certified.babybuy.util.currentDate
 import com.google.android.libraries.places.api.Places
@@ -66,6 +65,18 @@ class EditItemFragment : Fragment() {
     private var imageUri: Uri? = null
     private var item = Item()
     private lateinit var placesClient: PlacesClient
+    private val fadeInAnim by lazy {
+        AnimationUtils.loadAnimation(
+            requireContext(),
+            R.anim.fade_in
+        )
+    }
+    private val fadeOutAnim by lazy {
+        AnimationUtils.loadAnimation(
+            requireContext(),
+            R.anim.fade_out
+        )
+    }
 
     private val requestReadContactPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -106,7 +117,7 @@ class EditItemFragment : Fragment() {
                         it
                     )
                 }
-                val scaledBitmap = bitmap?.let { ImageResizer.reduceBitmapSize(it, 240000) }
+//                val scaledBitmap = bitmap?.let { ImageResizer.reduceBitmapSize(it, 240000) }
                 when {
                     bitmap != null && bitmap.byteCount > (1048576 * 50) -> {
                         showSnackbar("Image too large. Max size is 5MB")
@@ -136,8 +147,8 @@ class EditItemFragment : Fragment() {
                 val intent = result.data
                 try {
                     val bitmap = intent?.extras!!["data"] as Bitmap?
-                    val scaledBitmap =
-                        bitmap?.let { ImageResizer.reduceBitmapSize(it, 240000) }
+//                    val scaledBitmap =
+//                        bitmap?.let { ImageResizer.reduceBitmapSize(it, 240000) }
                     when {
                         bitmap != null && bitmap.byteCount > (1048576 * 50) -> {
                             showSnackbar("Image too large. Max size is 5MB")
@@ -235,7 +246,7 @@ class EditItemFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.uiState = viewModel.uiState
         binding.item = args.item
         delegate = args.item.delegate
@@ -296,64 +307,7 @@ class EditItemFragment : Fragment() {
                 btnDone.startAnimation(fadeInAnim)
                 tvClickChange.startAnimation(fadeInAnim)
             }
-            btnDone.setOnClickListener {
-
-                val name = etName.text.toString()
-                val description = etDescription.text.toString()
-                val price = etPrice.text.toString()
-
-                if (name.isBlank()) {
-                    etNameLayout.error = "Name is required"
-                    etName.requestFocus()
-                    return@setOnClickListener
-                }
-                etNameLayout.error = null
-
-                if (description.isBlank()) {
-                    etDescriptionLayout.error = "Description is required"
-                    etDescription.requestFocus()
-                    return@setOnClickListener
-                }
-                etDescriptionLayout.error = null
-
-                if (price.isBlank()) {
-                    etPriceLayout.error = "Price is required"
-                    etPrice.requestFocus()
-                    return@setOnClickListener
-                }
-                etPriceLayout.error = null
-
-                if (category == null) {
-                    etCategoryTitleLayout.error = "Category is required"
-                    etCategoryTitle.requestFocus()
-                    return@setOnClickListener
-                }
-                etCategoryTitleLayout.error = null
-
-                with(this@EditItemFragment.viewModel) {
-                    uiState.set(UIState.LOADING)
-                    this@EditItemFragment.item = args.item.copy(
-                        name = name,
-                        description = description,
-                        price = price.toDouble(),
-                        modified = currentDate().timeInMillis,
-                        delegate = delegate ?: args.item.delegate,
-                        location = location ?: args.item.location,
-                        categoryId = category?.id,
-                        categoryTitle = category?.title,
-                        hex = category?.hex
-                    )
-                    updateItem(this@EditItemFragment.item, imageUri)
-                }
-
-                etName.keyListener = null
-                etDescription.keyListener = null
-                etPrice.keyListener = null
-                btnEdit.startAnimation(fadeInAnim)
-                btnClose.startAnimation(fadeInAnim)
-                btnDone.startAnimation(fadeOutAnim)
-                tvClickChange.startAnimation(fadeOutAnim)
-            }
+            btnDone.setOnClickListener { updateItem() }
             btnClose.setOnClickListener {
                 when (args.from) {
                     "home" ->
@@ -397,6 +351,67 @@ class EditItemFragment : Fragment() {
                 } else
                     showSnackbar("No location selected")
             }
+        }
+    }
+
+    private fun updateItem() {
+        binding.apply {
+
+            val name = etName.text.toString()
+            val description = etDescription.text.toString()
+            val price = etPrice.text.toString()
+
+            if (name.isBlank()) {
+                etNameLayout.error = "Name is required"
+                etName.requestFocus()
+                return
+            }
+            etNameLayout.error = null
+
+            if (description.isBlank()) {
+                etDescriptionLayout.error = "Description is required"
+                etDescription.requestFocus()
+                return
+            }
+            etDescriptionLayout.error = null
+
+            if (price.isBlank()) {
+                etPriceLayout.error = "Price is required"
+                etPrice.requestFocus()
+                return
+            }
+            etPriceLayout.error = null
+
+            if (category == null) {
+                etCategoryTitleLayout.error = "Category is required"
+                etCategoryTitle.requestFocus()
+                return
+            }
+            etCategoryTitleLayout.error = null
+
+            with(this@EditItemFragment.viewModel) {
+                uiState.set(UIState.LOADING)
+                this@EditItemFragment.item = args.item.copy(
+                    name = name,
+                    description = description,
+                    price = price.toDouble(),
+                    modified = currentDate().timeInMillis,
+                    delegate = delegate ?: args.item.delegate,
+                    location = location ?: args.item.location,
+                    categoryId = category?.id,
+                    categoryTitle = category?.title,
+                    hex = category?.hex
+                )
+                updateItem(this@EditItemFragment.item, imageUri)
+            }
+
+            etName.keyListener = null
+            etDescription.keyListener = null
+            etPrice.keyListener = null
+            btnEdit.startAnimation(fadeInAnim)
+            btnClose.startAnimation(fadeInAnim)
+            btnDone.startAnimation(fadeOutAnim)
+            tvClickChange.startAnimation(fadeOutAnim)
         }
     }
 
