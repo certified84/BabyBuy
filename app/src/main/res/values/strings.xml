@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">BabyBuy</string>
+    <string name="version_name">BabyBuy v0.1.0-beta01</string>
+    <string name="version_full_name">BabyBuy v0.1.0-beta01(01022023)</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

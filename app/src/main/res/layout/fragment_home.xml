@@ -54,31 +54,33 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/_16sdp">
 
-                <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/btn_close"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_24sdp"
-                    android:background="@null"
-                    android:padding="@dimen/_4sdp"
-                    android:src="@drawable/ic_close"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/shapeableImageView"
-                    app:layout_constraintTop_toTopOf="parent" />
+                <!--                <androidx.appcompat.widget.AppCompatImageButton-->
+                <!--                    android:id="parent"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginTop="@dimen/_24sdp"-->
+                <!--                    android:background="@null"-->
+                <!--                    android:padding="@dimen/_4sdp"-->
+                <!--                    android:src="@drawable/ic_close"-->
+                <!--                    android:visibility="invisible"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                    app:layout_constraintHorizontal_bias="0.5"-->
+                <!--                    app:layout_constraintStart_toEndOf="@+id/shapeableImageView"-->
+                <!--                    app:layout_constraintTop_toTopOf="parent" />-->
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/shapeableImageView"
                     android:layout_width="@dimen/_90sdp"
                     android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/_24sdp"
                     android:adjustViewBounds="true"
                     android:background="@color/onPrimary"
                     android:scaleType="centerCrop"
                     app:layout_constraintDimensionRatio="1:1"
-                    app:layout_constraintEnd_toStartOf="@+id/btn_close"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/btn_close"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Circle.BabyBuy" />
 
                 <com.google.android.material.imageview.ShapeableImageView
@@ -88,12 +90,12 @@
                     android:adjustViewBounds="true"
                     android:background="@color/onBackground"
                     android:scaleType="centerCrop"
-                    app:editItemImage="@{viewModel.user.photoUrl.toString()}"
                     app:layout_constraintBottom_toBottomOf="@+id/shapeableImageView"
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintEnd_toEndOf="@+id/shapeableImageView"
                     app:layout_constraintStart_toStartOf="@+id/shapeableImageView"
                     app:layout_constraintTop_toTopOf="@+id/shapeableImageView"
+                    app:profileImage="@{viewModel.user.photoUrl.toString()}"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Circle.BabyBuy"
                     tools:src="@tools:sample/avatars" />
 
@@ -101,21 +103,24 @@
                     android:id="@+id/tv_display_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_16sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     android:text="@{viewModel.user.displayName}"
+                    android:textAlignment="center"
                     android:textColor="@color/onPrimary"
                     android:textSize="@dimen/_16ssp"
                     app:fontFamily="@font/space_grotesk_bold"
-                    app:layout_constraintEnd_toEndOf="@+id/shapeableImageView"
-                    app:layout_constraintStart_toStartOf="@+id/shapeableImageView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/shapeableImageView"
-                    tools:text="Samson\nAchiaga" />
+                    tools:text="Samson Achiaga" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_profile"
                     style="@style/Widget.Material3.Button.TextButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_16sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     android:fontFamily="@font/space_grotesk_semi_bold"
                     android:text="Profile"
@@ -123,11 +128,10 @@
                     android:textColor="@color/onPrimary"
                     android:textSize="@dimen/_14ssp"
                     app:icon="@drawable/ic_profile"
-                    app:iconGravity="start"
                     app:iconSize="@dimen/_20sdp"
                     app:iconTint="@color/onPrimary"
-                    app:layout_constraintEnd_toEndOf="@+id/btn_close"
-                    app:layout_constraintStart_toStartOf="@+id/tv_display_name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_display_name" />
 
                 <com.google.android.material.button.MaterialButton
@@ -135,6 +139,7 @@
                     style="@style/Widget.Material3.Button.TextButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_16sdp"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:fontFamily="@font/space_grotesk_semi_bold"
                     android:text="Settings"
@@ -142,11 +147,10 @@
                     android:textColor="@color/onPrimary"
                     android:textSize="@dimen/_14ssp"
                     app:icon="@drawable/ic_setting"
-                    app:iconGravity="start"
                     app:iconSize="@dimen/_20sdp"
                     app:iconTint="@color/onPrimary"
-                    app:layout_constraintEnd_toEndOf="@+id/btn_close"
-                    app:layout_constraintStart_toStartOf="@+id/tv_display_name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btn_profile" />
 
                 <com.google.android.material.button.MaterialButton
@@ -154,6 +158,7 @@
                     style="@style/Widget.Material3.Button.TextButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_16sdp"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:fontFamily="@font/space_grotesk_semi_bold"
                     android:text="About"
@@ -161,11 +166,10 @@
                     android:textColor="@color/onPrimary"
                     android:textSize="@dimen/_14ssp"
                     app:icon="@drawable/ic_info_circle"
-                    app:iconGravity="start"
                     app:iconSize="@dimen/_20sdp"
                     app:iconTint="@color/onPrimary"
-                    app:layout_constraintEnd_toEndOf="@+id/btn_close"
-                    app:layout_constraintStart_toStartOf="@+id/tv_display_name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btn_settings" />
 
                 <com.google.android.material.button.MaterialButton
@@ -173,6 +177,7 @@
                     style="@style/Widget.Material3.Button.TextButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_16sdp"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:fontFamily="@font/space_grotesk_semi_bold"
                     android:text="Support"
@@ -180,17 +185,17 @@
                     android:textColor="@color/onPrimary"
                     android:textSize="@dimen/_14ssp"
                     app:icon="@drawable/ic_shield"
-                    app:iconGravity="start"
                     app:iconSize="@dimen/_20sdp"
                     app:iconTint="@color/onPrimary"
-                    app:layout_constraintEnd_toEndOf="@+id/btn_close"
-                    app:layout_constraintStart_toStartOf="@+id/tv_display_name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btn_about" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_logout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_16sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     android:backgroundTint="@color/primaryContainer"
                     android:fontFamily="@font/space_grotesk_medium"
@@ -201,8 +206,8 @@
                     android:textColor="@color/onPrimaryContainer"
                     android:textSize="@dimen/_14ssp"
                     app:cornerRadius="@dimen/_14sdp"
-                    app:layout_constraintEnd_toEndOf="@+id/btn_close"
-                    app:layout_constraintStart_toStartOf="@+id/shapeableImageView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btn_support" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -216,7 +221,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="gone">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -389,6 +395,27 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_version"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            android:clickable="false"
+            android:elevation="0dp"
+            android:focusable="false"
+            android:fontFamily="@font/space_grotesk_semi_bold"
+            android:text="@string/version_name"
+            android:textAllCaps="false"
+            android:textColor="@color/onPrimary"
+            android:textSize="@dimen/_12ssp"
+            app:icon="@drawable/ic_app_icon_other"
+            app:iconSize="@dimen/_20sdp"
+            app:iconTint="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/appCompatImageView8"

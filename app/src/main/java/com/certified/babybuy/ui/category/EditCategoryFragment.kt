@@ -40,7 +40,7 @@ class EditCategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.uiState = viewModel.uiState
 
         viewLifecycleOwner.lifecycleScope.launch {

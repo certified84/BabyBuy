@@ -61,6 +61,7 @@
                     android:layout_marginTop="@dimen/_24sdp"
                     android:background="@null"
                     android:padding="@dimen/_4sdp"
+                    android:visibility="invisible"
                     android:src="@drawable/ic_close"
                     app:layout_constraintStart_toEndOf="@+id/shapeableImageView"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -87,7 +88,7 @@
                     android:adjustViewBounds="true"
                     android:background="@color/onBackground"
                     android:scaleType="centerCrop"
-                    app:editItemImage="@{viewModel.user.photoUrl.toString()}"
+                    app:profileImage="@{viewModel.user.photoUrl.toString()}"
                     app:layout_constraintBottom_toBottomOf="@+id/shapeableImageView"
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintEnd_toEndOf="@+id/shapeableImageView"
@@ -102,10 +103,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_16sdp"
                     android:text="@{viewModel.user.displayName}"
+                    android:textAlignment="center"
                     android:textColor="@color/onPrimary"
                     android:textSize="@dimen/_16ssp"
                     app:fontFamily="@font/space_grotesk_bold"
-                    app:layout_constraintEnd_toEndOf="@+id/shapeableImageView"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/shapeableImageView"
                     app:layout_constraintTop_toBottomOf="@+id/shapeableImageView"
                     tools:text="Samson\nAchiaga" />
@@ -204,6 +206,28 @@
                     app:layout_constraintStart_toStartOf="@+id/shapeableImageView"
                     app:layout_constraintTop_toBottomOf="@+id/btn_support" />
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_version"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_24sdp"
+                    android:alpha=".7"
+                    android:clickable="false"
+                    android:elevation="0dp"
+                    android:focusable="false"
+                    android:fontFamily="@font/space_grotesk_semi_bold"
+                    android:text="@string/version_name"
+                    android:textAllCaps="false"
+                    android:textColor="@color/onPrimary"
+                    android:textSize="@dimen/_12ssp"
+                    app:icon="@drawable/ic_app_icon_other"
+                    app:iconSize="@dimen/_20sdp"
+                    app:iconTint="@null"
+                    app:layout_constraintEnd_toEndOf="@+id/btn_close"
+                    app:layout_constraintStart_toStartOf="@+id/shapeableImageView"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_logout" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
@@ -211,6 +235,7 @@
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            tools:visibility="gone"
             android:background="@color/surface1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

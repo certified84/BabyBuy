@@ -50,7 +50,7 @@ class ItemRecyclerAdapter(private val which: String = "item") :
 
         init {
             itemView.setOnClickListener {
-                val position = adapterPosition
+                val position = absoluteAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     listener.onItemClick(getItem(position))
                 }
