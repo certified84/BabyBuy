@@ -25,7 +25,6 @@ import com.certified.babybuy.adapters.ItemRecyclerAdapter
 import com.certified.babybuy.data.model.Category
 import com.certified.babybuy.data.model.Item
 import com.certified.babybuy.databinding.FragmentHomeBinding
-import com.certified.babybuy.databinding.FragmentHomeOtherBinding
 import com.certified.babybuy.util.Extensions.showSnackbar
 import com.certified.babybuy.util.Extensions.showYesNoDialog
 import com.google.firebase.auth.FirebaseAuth
@@ -58,7 +57,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.uiState = viewModel.uiState
         binding.recentUIState = viewModel.recentUIState
         binding.viewModel = viewModel
@@ -89,9 +88,6 @@ class HomeFragment : Fragment() {
             btnLogout.setOnClickListener {
                 auth.signOut()
                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLoginFragment())
-            }
-            btnClose.setOnClickListener {
-
             }
 
             btnNotification.setOnClickListener {

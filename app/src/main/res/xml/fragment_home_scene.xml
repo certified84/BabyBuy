@@ -46,7 +46,33 @@
         <OnClick motion:targetId="@+id/btn_close" />
     </Transition>
 
-    <ConstraintSet android:id="@+id/start" />
+    <ConstraintSet android:id="@+id/start">
+        <Constraint android:id="@id/fab_add_category">
+            <PropertySet
+                motion:applyMotionScene="false"
+                motion:visibilityMode="ignore" />
+        </Constraint>
+        <Constraint android:id="@id/fab_add_item">
+            <PropertySet
+                motion:applyMotionScene="false"
+                motion:visibilityMode="ignore" />
+        </Constraint>
+        <Constraint android:id="@id/materialTextView20">
+            <PropertySet
+                motion:applyMotionScene="false"
+                motion:visibilityMode="ignore" />
+        </Constraint>
+        <Constraint android:id="@id/appCompatImageView8">
+            <PropertySet
+                motion:applyMotionScene="false"
+                motion:visibilityMode="ignore" />
+        </Constraint>
+        <Constraint android:id="@id/group_empty_design">
+            <PropertySet
+                motion:applyMotionScene="false"
+                motion:visibilityMode="ignore" />
+        </Constraint>
+    </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
         <Constraint
@@ -56,4 +82,29 @@
             motion:layout_constraintStart_toEndOf="@+id/guideline4"
             motion:layout_constraintTop_toTopOf="@+id/btn_close" />
     </ConstraintSet>
+    <Constraint android:id="@id/fab_add_category">
+        <PropertySet
+            motion:applyMotionScene="false"
+            motion:visibilityMode="ignore" />
+    </Constraint>
+    <Constraint android:id="@id/fab_add_item">
+        <PropertySet
+            motion:applyMotionScene="false"
+            motion:visibilityMode="ignore" />
+    </Constraint>
+    <Constraint android:id="@id/materialTextView20">
+        <PropertySet
+            motion:applyMotionScene="false"
+            motion:visibilityMode="ignore" />
+    </Constraint>
+    <Constraint android:id="@id/appCompatImageView8">
+        <PropertySet
+            motion:applyMotionScene="false"
+            motion:visibilityMode="ignore" />
+    </Constraint>
+    <Constraint android:id="@id/group_empty_design">
+        <PropertySet
+            motion:applyMotionScene="false"
+            motion:visibilityMode="ignore" />
+    </Constraint>
 </MotionScene>
