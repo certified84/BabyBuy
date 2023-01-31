@@ -65,7 +65,6 @@
                 android:paddingBottom="@dimen/_8sdp"
                 android:text="@{category.title}"
                 android:textColor="@color/onSurface"
-                android:textColorHint="@color/hintColor"
                 android:textSize="@dimen/_18ssp"
                 tools:text="Bags" />
 
@@ -177,7 +176,6 @@
                 android:paddingBottom="@dimen/_8sdp"
                 android:text="@{category.desc}"
                 android:textColor="@color/onSurface"
-                android:textColorHint="@color/hintColor"
                 android:textSize="@dimen/_15ssp"
                 tools:text="Collection of bags for my kids" />
 

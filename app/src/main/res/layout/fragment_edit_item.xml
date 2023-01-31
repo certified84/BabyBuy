@@ -175,7 +175,6 @@
                     android:paddingBottom="@dimen/_8sdp"
                     android:text="@{item.name}"
                     android:textColor="@color/onSurface"
-                    android:textColorHint="@color/hintColor"
                     android:textSize="@dimen/_15ssp"
                     tools:text="" />
 
@@ -212,7 +211,6 @@
                     android:paddingBottom="@dimen/_8sdp"
                     android:text="@{item.description}"
                     android:textColor="@color/onSurface"
-                    android:textColorHint="@color/hintColor"
                     android:textSize="@dimen/_15ssp"
                     tools:text="" />
 
@@ -251,7 +249,6 @@
                     android:paddingBottom="@dimen/_8sdp"
                     android:text="@{String.valueOf(item.price)}"
                     android:textColor="@color/onSurface"
-                    android:textColorHint="@color/hintColor"
                     android:textSize="@dimen/_15ssp"
                     tools:text="" />
 
@@ -289,7 +286,6 @@
                     android:paddingBottom="@dimen/_6sdp"
                     android:text="@{item.categoryTitle}"
                     android:textColor="@color/onSurface"
-                    android:textColorHint="@color/hintColor"
                     android:textSize="@dimen/_14ssp"
                     tools:text="Bags" />
 
