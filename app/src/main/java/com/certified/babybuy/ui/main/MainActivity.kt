@@ -5,8 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.core.view.WindowCompat
+import com.certified.babybuy.ui.theme.BabyBuyTheme
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -16,7 +16,9 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
         setContent {
+            BabyBuyTheme {
 
+            }
         }
     }
 
