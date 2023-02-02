@@ -1,7 +1,6 @@
 package com.certified.babybuy.ui.home
 
 import android.util.Log
-import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.certified.babybuy.data.model.Category
@@ -22,8 +21,11 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
-    val uiState = ObservableField(UIState.EMPTY)
-    val recentUIState = ObservableField(UIState.EMPTY)
+    val _uiState = MutableStateFlow(UIState.EMPTY)
+    val uiState = _uiState.asStateFlow()
+
+    private val _recentUIState = MutableStateFlow(UIState.EMPTY)
+    val recentUIState = _uiState.asStateFlow()
 
     private val _user = MutableStateFlow<FirebaseUser?>(null)
     val user = _user.asStateFlow()
@@ -54,9 +56,9 @@ class HomeViewModel @Inject constructor(private val repository: Repository) : Vi
             query.addSnapshotListener { value, error ->
                 if (value == null || value.isEmpty || error != null) {
                     _items.value = emptyList()
-                    recentUIState.set(UIState.EMPTY)
+                    _recentUIState.value = UIState.EMPTY
                 } else {
-                    recentUIState.set(UIState.HAS_DATA)
+                    _recentUIState.value = UIState.HAS_DATA
                     _items.value = value.toObjects(Item::class.java).take(10)
                 }
             }
@@ -71,9 +73,9 @@ class HomeViewModel @Inject constructor(private val repository: Repository) : Vi
                 Log.d("TAG", "getCategories: Value: $value")
                 if (value == null || value.isEmpty || error != null) {
                     _categories.value = emptyList()
-                    uiState.set(UIState.EMPTY)
+                    _uiState.value = UIState.EMPTY
                 } else {
-                    uiState.set(UIState.HAS_DATA)
+                    _uiState.value = UIState.HAS_DATA
                     _categories.value = value.toObjects(Category::class.java)
                 }
             }

@@ -1,7 +1,6 @@
 package com.certified.babybuy.ui.auth.signup
 
 import android.util.Log
-import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.certified.babybuy.data.model.User
@@ -18,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SignupViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
-    val uiState = ObservableField(UIState.EMPTY)
+    val _uiState = MutableStateFlow(UIState.EMPTY)
+    val uiState = _uiState.asStateFlow()
 
     val _message = MutableStateFlow<String?>(null)
     val message = _message.asStateFlow()
@@ -37,11 +37,11 @@ class SignupViewModel @Inject constructor(private val repository: Repository) : 
                 _success.value = response.isSuccessful
                 Log.d("TAG", "createUserWithEmailAndPassword: ${response.result}")
                 if (!response.isSuccessful) {
-                    uiState.set(UIState.FAILURE)
+                    _uiState.value = UIState.FAILURE
                     _message.value = "Registration failed: ${response.exception?.localizedMessage}"
                 }
             } catch (e: Exception) {
-                uiState.set(UIState.FAILURE)
+                _uiState.value = UIState.FAILURE
                 _message.value = "Registration failed: ${e.localizedMessage}"
                 _success.value = false
             }
@@ -56,11 +56,11 @@ class SignupViewModel @Inject constructor(private val repository: Repository) : 
                 _success.value = response.isSuccessful
                 Log.d("TAG", "signInWithCredential: ${response.result}")
                 if (!response.isSuccessful) {
-                    uiState.set(UIState.FAILURE)
+                    _uiState.value = UIState.FAILURE
                     _message.value = "Registration failed: ${response.exception?.localizedMessage}"
                 }
             } catch (e: Exception) {
-                uiState.set(UIState.FAILURE)
+                _uiState.value = UIState.FAILURE
                 _message.value = "Registration failed: ${e.localizedMessage}"
                 _success.value = false
             }
@@ -73,17 +73,17 @@ class SignupViewModel @Inject constructor(private val repository: Repository) : 
                 val response = repository.uploadDetails(user)
                 response.await()
                 if (response.isSuccessful) {
-                    uiState.set(UIState.SUCCESS)
+                    _uiState.value = UIState.SUCCESS
                     Log.d("TAG", "uploadDetails: Success: ${response.result}")
                 } else {
-                    uiState.set(UIState.FAILURE)
+                    _uiState.value = UIState.FAILURE
                     _message.value =
                         "Account creation failed: ${response.exception?.localizedMessage}"
                     Log.d("TAG", "uploadDetails: Failure: ${response.exception?.localizedMessage}")
                 }
                 _uploadSuccess.value = response.isSuccessful
             } catch (e: Exception) {
-                uiState.set(UIState.FAILURE)
+                _uiState.value = UIState.FAILURE
                 Log.d("TAG", "uploadDetails: Exception: ${e.localizedMessage}")
                 _uploadSuccess.value = false
             }

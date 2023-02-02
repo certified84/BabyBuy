@@ -1,7 +1,6 @@
 package com.certified.babybuy.ui.auth.login
 
 import android.util.Log
-import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.certified.babybuy.data.model.User
@@ -18,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
-    val uiState = ObservableField(UIState.EMPTY)
+    val _uiState = MutableStateFlow(UIState.EMPTY)
+    val uiState = _uiState.asStateFlow()
 
     val _message = MutableStateFlow<String?>(null)
     val message = _message.asStateFlow()
@@ -37,17 +37,17 @@ class LoginViewModel @Inject constructor(private val repository: Repository) : V
                 _success.value = response.isSuccessful
                 if (response.isSuccessful) {
                     Log.d("TAG", "signInWithEmailAndPassword: Success: Welcome $email")
-                    uiState.set(UIState.SUCCESS)
+                    _uiState.value = UIState.SUCCESS
                 } else {
                     _message.value = response.exception?.message
                     Log.d(
                         "TAG",
                         "signInWithEmailAndPassword: Failure: Welcome ${response.exception?.message}"
                     )
-                    uiState.set(UIState.FAILURE)
+                    _uiState.value = UIState.FAILURE
                 }
             } catch (e: Exception) {
-                uiState.set(UIState.FAILURE)
+                _uiState.value = UIState.FAILURE
                 _success.value = false
                 _message.value = "Authentication failed: ${e.localizedMessage}"
                 Log.d("TAG", "signInWithEmailAndPassword: Exception: ${e.localizedMessage}")
@@ -63,11 +63,11 @@ class LoginViewModel @Inject constructor(private val repository: Repository) : V
                 _success.value = response.isSuccessful
                 Log.d("TAG", "signInWithCredential: ${response.result}")
                 if (!response.isSuccessful) {
-                    uiState.set(UIState.FAILURE)
+                    _uiState.value = UIState.FAILURE
                     _message.value = "Login failed: ${response.exception?.localizedMessage}"
                 }
             } catch (e: Exception) {
-                uiState.set(UIState.FAILURE)
+                _uiState.value = UIState.FAILURE
                 _message.value = "Login failed: ${e.localizedMessage}"
                 _success.value = false
             }
@@ -80,17 +80,17 @@ class LoginViewModel @Inject constructor(private val repository: Repository) : V
                 val response = repository.uploadDetails(user)
                 response.await()
                 if (response.isSuccessful) {
-                    uiState.set(UIState.SUCCESS)
+                    _uiState.value = UIState.SUCCESS
                     Log.d("TAG", "uploadDetails: Success: ${response.result}")
                 } else {
-                    uiState.set(UIState.FAILURE)
+                    _uiState.value = UIState.FAILURE
                     _message.value =
                         "Account creation failed: ${response.exception?.localizedMessage}"
                     Log.d("TAG", "uploadDetails: Failure: ${response.exception?.localizedMessage}")
                 }
                 _uploadSuccess.value = response.isSuccessful
             } catch (e: Exception) {
-                uiState.set(UIState.FAILURE)
+                _uiState.value = UIState.FAILURE
                 Log.d("TAG", "uploadDetails: Exception: ${e.localizedMessage}")
                 _uploadSuccess.value = false
             }

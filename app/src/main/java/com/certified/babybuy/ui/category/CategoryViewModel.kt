@@ -1,7 +1,6 @@
 package com.certified.babybuy.ui.category
 
 import android.util.Log
-import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.certified.babybuy.data.model.Category
@@ -20,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CategoryViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
-    val uiState = ObservableField(UIState.EMPTY)
+    val _uiState = MutableStateFlow(UIState.EMPTY)
+    val uiState = _uiState.asStateFlow()
 
     val _uploadSuccess = MutableStateFlow(false)
     val uploadSuccess = _uploadSuccess.asStateFlow()
@@ -49,10 +49,10 @@ class CategoryViewModel @Inject constructor(private val repository: Repository) 
                 _uploadSuccess.value = response.isSuccessful
                 if (response.isSuccessful) {
                     _message.value = "Category added successfully"
-                    uiState.set(UIState.SUCCESS)
+                    _uiState.value = UIState.SUCCESS
                 } else {
                     _message.value = "Failed to add category"
-                    uiState.set(UIState.FAILURE)
+                    _uiState.value = UIState.FAILURE
                 }
             } catch (e: Exception) {
                 _message.value = "An error occurred: ${e.localizedMessage}"
@@ -85,10 +85,10 @@ class CategoryViewModel @Inject constructor(private val repository: Repository) 
             val query = repository.getItems(userId)
             query.addSnapshotListener { value, error ->
                 if (value == null || value.isEmpty || error != null) {
-                    uiState.set(UIState.EMPTY)
+                    _uiState.value = UIState.EMPTY
                     _items.value = emptyList()
                 } else {
-                    uiState.set(UIState.HAS_DATA)
+                    _uiState.value = UIState.HAS_DATA
                     _items.value =
                         value.toObjects(Item::class.java).filter { it.categoryId == categoryId }
                 }
@@ -132,10 +132,10 @@ class CategoryViewModel @Inject constructor(private val repository: Repository) 
                 _updateSuccess.value = response.isSuccessful
                 if (response.isSuccessful) {
                     _message.value = "Item marked as purchased"
-                    uiState.set(UIState.SUCCESS)
+                    _uiState.value = UIState.SUCCESS
                 } else {
                     _message.value = "Failed to mark item as purchased"
-                    uiState.set(UIState.FAILURE)
+                    _uiState.value = UIState.FAILURE
                 }
             } catch (e: Exception) {
                 _message.value = "An error occurred: ${e.localizedMessage}"

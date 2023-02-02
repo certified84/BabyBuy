@@ -2,7 +2,6 @@ package com.certified.babybuy.ui.item
 
 import android.net.Uri
 import android.util.Log
-import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.certified.babybuy.data.model.Category
@@ -23,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ItemViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
-    val uiState = ObservableField(UIState.EDITING)
+    val _uiState = MutableStateFlow(UIState.EDITING)
+    val uiState = _uiState.asStateFlow()
 
     val _message = MutableStateFlow<String?>(null)
     val message = _message.asStateFlow()
@@ -48,9 +48,9 @@ class ItemViewModel @Inject constructor(private val repository: Repository) : Vi
                 Log.d("TAG", "getCategories: Error: $error")
                 Log.d("TAG", "getCategories: Value: $value")
                 if (value == null || value.isEmpty || error != null)
-                    uiState.set(UIState.EMPTY)
+                    _uiState.value = UIState.EMPTY
                 else {
-                    uiState.set(UIState.HAS_DATA)
+                    _uiState.value = UIState.HAS_DATA
                     _categories.value = value.toObjects(Category::class.java)
                 }
             }
@@ -99,11 +99,11 @@ class ItemViewModel @Inject constructor(private val repository: Repository) : Vi
                 if (response.isSuccessful) {
                     _message.value =
                         if (isNew) "Item added successfully" else "Item updated successfully"
-                    uiState.set(UIState.SUCCESS)
+                    _uiState.value = UIState.SUCCESS
                 } else {
                     _message.value =
                         if (isNew) "Failed to add item" else "Failed to update item"
-                    uiState.set(UIState.FAILURE)
+                    _uiState.value = UIState.FAILURE
                 }
             } catch (e: Exception) {
                 _message.value = "An error occurred: ${e.localizedMessage}"
