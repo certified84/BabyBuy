@@ -1,17 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.BabyBuy" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.BabyBuy" parent="android:Theme.Material.Light.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
     <style name="Theme.BabyBuy" parent="Base.Theme.BabyBuy" />
 
-    <style name="ShapeAppearanceOverlay.BabyBuy" parent="">
-        <item name="cornerSize">15%</item>
-    </style>
+<!--    <style name="ShapeAppearanceOverlay.BabyBuy" parent="">-->
+<!--        <item name="cornerSize">15%</item>-->
+<!--    </style>-->
 
-    <style name="ShapeAppearanceOverlay.Circle.BabyBuy" parent="">
-        <item name="cornerSize">50%</item>
-    </style>
+<!--    <style name="ShapeAppearanceOverlay.Circle.BabyBuy" parent="">-->
+<!--        <item name="cornerSize">50%</item>-->
+<!--    </style>-->
 </resources>
