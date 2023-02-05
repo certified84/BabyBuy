@@ -1,11 +1,18 @@
 package com.certified.babybuy.ui.auth.login
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -31,15 +38,23 @@ fun LoginScreen() {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
+    val scrollState = rememberScrollState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .scrollable(
+                state = scrollState,
+                orientation = Orientation.Vertical
+            )
             .background(color = if (isSystemInDarkTheme()) Surface1Dark else Surface1)
             .padding(
                 top = dimensionResource(id = sdpR.dimen._24sdp).value.dp,
                 start = dimensionResource(id = sdpR.dimen._16sdp).value.dp,
                 end = dimensionResource(id = sdpR.dimen._16sdp).value.dp
+            )
+            .scrollable(
+                orientation = Orientation.Vertical, state = scrollState
             ), horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -128,8 +143,7 @@ fun LoginScreen() {
                 imeAction = ImeAction.Done, keyboardType = KeyboardType.Password
             ),
             trailingIcon = {
-                val image = if (passwordVisible)
-                    Icons.Filled.Visibility
+                val image = if (passwordVisible) Icons.Filled.Visibility
                 else Icons.Filled.VisibilityOff
                 val description = if (passwordVisible) "Hide password" else "Show password"
 
@@ -141,23 +155,93 @@ fun LoginScreen() {
             placeholder = { Text(text = stringResource(id = R.string.hint_password)) },
         )
 
-    }
-}
+        Spacer(
+            modifier = Modifier.padding(dimensionResource(id = sdpR.dimen._8sdp).value.dp)
+        )
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun InputField(hint: Int) {
-    var value by remember { mutableStateOf("") }
-    OutlinedTextField(
-        value = value, onValueChange = { value = it },
-        modifier = Modifier.fillMaxWidth(),
-        label = { Text(text = stringResource(id = hint)) },
-    )
+        Button(
+            onClick = { /*TODO*/ },
+            colors = ButtonDefaults.buttonColors(containerColor = if (isSystemInDarkTheme()) Surface1Dark else Surface1),
+            modifier = Modifier
+                .align(Alignment.End)
+                .padding(0.dp),
+        ) {
+            Text(
+                text = stringResource(id = R.string.forgot_password),
+                fontSize = dimensionResource(id = sspR.dimen._14ssp).value.sp,
+                fontWeight = FontWeight.Medium,
+                color = if (isSystemInDarkTheme()) PrimaryDark else Primary
+            )
+        }
+
+        Spacer(
+            modifier = Modifier.padding(dimensionResource(id = sdpR.dimen._12sdp).value.dp)
+        )
+
+        Button(
+            onClick = { /*TODO*/ },
+            colors = ButtonDefaults.buttonColors(containerColor = if (isSystemInDarkTheme()) PrimaryDark else Primary),
+            modifier = Modifier
+                .height(dimensionResource(id = sdpR.dimen._40sdp).value.dp)
+                .fillMaxWidth()
+                .padding(0.dp),
+        ) {
+            Text(
+                text = stringResource(id = R.string.login),
+                fontSize = dimensionResource(id = sspR.dimen._14ssp).value.sp,
+                fontWeight = FontWeight.Medium,
+                color = if (isSystemInDarkTheme()) OnPrimaryDark else OnPrimary
+            )
+        }
+
+        Spacer(
+            modifier = Modifier.padding(dimensionResource(id = sdpR.dimen._8sdp).value.dp)
+        )
+
+        Text(
+            text = stringResource(id = R.string.or),
+            fontSize = dimensionResource(id = sspR.dimen._14ssp).value.sp,
+            fontWeight = FontWeight.Normal,
+            color = if (isSystemInDarkTheme()) PrimaryDark else Primary
+        )
+
+        Spacer(
+            modifier = Modifier.padding(dimensionResource(id = sdpR.dimen._8sdp).value.dp)
+        )
+
+        Button(
+            onClick = { /*TODO*/ },
+            colors = ButtonDefaults.buttonColors(containerColor = if (isSystemInDarkTheme()) Surface1Dark else Surface1),
+            border = BorderStroke(
+                width = dimensionResource(id = sdpR.dimen._1sdp).value.dp,
+                color = if (isSystemInDarkTheme()) PrimaryDark else Primary,
+            ),
+            modifier = Modifier
+                .height(dimensionResource(id = sdpR.dimen._40sdp).value.dp)
+                .fillMaxWidth()
+                .padding(0.dp),
+        ) {
+            Text(
+                text = stringResource(id = R.string.sign_up),
+                fontSize = dimensionResource(id = sspR.dimen._14ssp).value.sp,
+                fontWeight = FontWeight.Medium,
+                color = if (isSystemInDarkTheme()) PrimaryDark else Primary
+            )
+        }
+    }
 }
 
 @Preview
 @Composable
 fun LoginScreenPreview() {
+    BabyBuyTheme {
+        LoginScreen()
+    }
+}
+
+@Preview(name = "Login Screen dark mode", uiMode = UI_MODE_NIGHT_YES)
+@Composable
+fun LoginScreenPreviewDark() {
     BabyBuyTheme {
         LoginScreen()
     }
