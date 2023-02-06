@@ -46,13 +46,10 @@ fun ForgotPasswordScreen() {
                 top = dimensionResource(id = sdpR.dimen._24sdp).value.dp,
                 start = dimensionResource(id = sdpR.dimen._16sdp).value.dp,
                 end = dimensionResource(id = sdpR.dimen._16sdp).value.dp
-            )
-            .scrollable(
-                orientation = Orientation.Vertical, state = scrollState
             ), horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Row(modifier = Modifier.fillMaxWidth()) {
+        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
 
             BackButton(
                 onClick = { /*TODO*/ }, modifier = Modifier.align(Alignment.CenterVertically)
@@ -127,7 +124,7 @@ fun ForgotPasswordScreen() {
             onClick = { /*TODO*/ },
             colors = ButtonDefaults.buttonColors(containerColor = if (isSystemInDarkTheme()) PrimaryDark else Primary),
             modifier = Modifier
-                .height(dimensionResource(id = sdpR.dimen._35sdp).value.dp)
+                .height(dimensionResource(id = sdpR.dimen._40sdp).value.dp)
                 .fillMaxWidth()
                 .padding(0.dp),
         ) {

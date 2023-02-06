@@ -58,4 +58,5 @@
     <string name="recently_added">Recently Added</string>
     <string name="save">Save</string>
     <string name="notification">Notification</string>
+    <string name="onboarding_summary">Create a comprehensive list of items your baby will need on-the-go.</string>
 </resources>
