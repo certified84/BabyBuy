@@ -209,7 +209,7 @@ fun SignupScreen() {
             onClick = { /*TODO*/ },
             colors = ButtonDefaults.buttonColors(containerColor = if (isSystemInDarkTheme()) PrimaryDark else Primary),
             modifier = Modifier
-                .height(dimensionResource(id = sdpR.dimen._40sdp).value.dp)
+                .height(dimensionResource(id = sdpR.dimen._35sdp).value.dp)
                 .fillMaxWidth()
                 .padding(0.dp),
         ) {
@@ -244,7 +244,7 @@ fun SignupScreen() {
                 color = if (isSystemInDarkTheme()) PrimaryDark else Primary,
             ),
             modifier = Modifier
-                .height(dimensionResource(id = sdpR.dimen._40sdp).value.dp)
+                .height(dimensionResource(id = sdpR.dimen._35sdp).value.dp)
                 .fillMaxWidth()
                 .padding(0.dp),
         ) {
