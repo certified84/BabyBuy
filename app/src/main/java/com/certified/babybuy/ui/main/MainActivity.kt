@@ -11,7 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.core.view.WindowCompat
-import com.certified.babybuy.ui.auth.OnBoardingScreen
+import com.certified.babybuy.navigation.Navigation
 import com.certified.babybuy.ui.custom_component.CustomLoader
 import com.certified.babybuy.ui.theme.BabyBuyTheme
 import com.certified.babybuy.util.UIState
@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
                     viewModel.uiState.collectAsState().value.let {
                         isLoading = it == UIState.LOADING
                     }
-                    OnBoardingScreen()
+                    Navigation()
                     CustomLoader(isLoading = isLoading)
                 }
             }

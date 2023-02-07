@@ -31,7 +31,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.certified.babybuy.R
+import com.certified.babybuy.navigation.Screen
 import com.certified.babybuy.ui.custom_component.CustomOutlinedTextField
 import com.certified.babybuy.ui.theme.*
 import com.intuit.sdp.R as sdpR
@@ -39,7 +42,7 @@ import com.intuit.ssp.R as sspR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavController) {
 
     var email by remember { mutableStateOf("") }
     var isEmailError by rememberSaveable { mutableStateOf(false) }
@@ -188,7 +191,11 @@ fun LoginScreen() {
         )
 
         Button(
-            onClick = { /*TODO*/ },
+            onClick = {
+                navController.navigate(route = Screen.PasswordRecovery.route) {
+
+                }
+            },
             colors = ButtonDefaults.buttonColors(containerColor = if (isSystemInDarkTheme()) Surface1Dark else Surface1),
             modifier = Modifier
                 .align(Alignment.End)
@@ -247,7 +254,11 @@ fun LoginScreen() {
         )
 
         Button(
-            onClick = { /*TODO*/ },
+            onClick = {
+                navController.navigate(route = Screen.Signup.route) {
+                    popUpTo(Screen.Signup.route) { inclusive = true }
+                }
+            },
             colors = ButtonDefaults.buttonColors(containerColor = if (isSystemInDarkTheme()) Surface1Dark else Surface1),
             border = BorderStroke(
                 width = dimensionResource(id = sdpR.dimen._1sdp).value.dp,
@@ -272,7 +283,7 @@ fun LoginScreen() {
 @Composable
 fun LoginScreenPreview() {
     BabyBuyTheme {
-        LoginScreen()
+        LoginScreen(rememberNavController())
     }
 }
 
@@ -280,6 +291,6 @@ fun LoginScreenPreview() {
 @Composable
 fun LoginScreenPreviewDark() {
     BabyBuyTheme {
-        LoginScreen()
+        LoginScreen(rememberNavController())
     }
 }

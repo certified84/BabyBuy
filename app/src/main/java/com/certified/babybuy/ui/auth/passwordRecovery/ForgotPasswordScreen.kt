@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -22,16 +24,18 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.certified.babybuy.R
+import com.certified.babybuy.navigation.Screen
 import com.certified.babybuy.ui.custom_component.BackButton
 import com.certified.babybuy.ui.custom_component.CustomOutlinedTextField
 import com.certified.babybuy.ui.theme.*
 import com.intuit.sdp.R as sdpR
 import com.intuit.ssp.R as sspR
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ForgotPasswordScreen() {
+fun ForgotPasswordScreen(navController: NavController) {
 
     var email by remember { mutableStateOf("") }
     var isError by rememberSaveable { mutableStateOf(false) }
@@ -54,7 +58,11 @@ fun ForgotPasswordScreen() {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
 
             BackButton(
-                onClick = { /*TODO*/ }, modifier = Modifier.align(Alignment.CenterVertically)
+                onClick = {
+                    navController.navigate(route = Screen.Login.route) {
+                        popUpTo(Screen.Login.route) { inclusive = true }
+                    }
+                }, modifier = Modifier.align(Alignment.CenterVertically)
             )
 
             Spacer(modifier = Modifier.size(dimensionResource(id = sdpR.dimen._10sdp).value.dp))
@@ -148,7 +156,7 @@ fun ForgotPasswordScreen() {
 @Composable
 fun ForgotPasswordScreenPreview() {
     BabyBuyTheme {
-        ForgotPasswordScreen()
+        ForgotPasswordScreen(rememberNavController())
     }
 }
 
@@ -156,6 +164,6 @@ fun ForgotPasswordScreenPreview() {
 @Composable
 fun ForgotPasswordScreenPreviewDark() {
     BabyBuyTheme {
-        ForgotPasswordScreen()
+        ForgotPasswordScreen(rememberNavController())
     }
 }

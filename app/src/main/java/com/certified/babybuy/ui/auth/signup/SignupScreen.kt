@@ -31,7 +31,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.certified.babybuy.R
+import com.certified.babybuy.navigation.Screen
 import com.certified.babybuy.ui.custom_component.CustomOutlinedTextField
 import com.certified.babybuy.ui.theme.*
 import com.intuit.sdp.R as sdpR
@@ -39,7 +42,7 @@ import com.intuit.ssp.R as sspR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignupScreen() {
+fun SignupScreen(navController: NavController) {
 
     var name by remember { mutableStateOf("") }
     var isNameError by rememberSaveable { mutableStateOf(false) }
@@ -274,8 +277,13 @@ fun SignupScreen() {
         )
 
         Button(
-            onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(containerColor = if (isSystemInDarkTheme()) Surface1Dark else Surface1),
+            onClick = {
+                navController.navigate(route = Screen.Login.route) {
+                    popUpTo(Screen.Login.route) { inclusive = true }
+                }
+            },
+            colors =
+            ButtonDefaults.buttonColors(containerColor = if (isSystemInDarkTheme()) Surface1Dark else Surface1),
             border = BorderStroke(
                 width = dimensionResource(id = sdpR.dimen._1sdp).value.dp,
                 color = if (isSystemInDarkTheme()) PrimaryDark else Primary,
@@ -299,7 +307,7 @@ fun SignupScreen() {
 @Composable
 fun SignupScreenPreview() {
     BabyBuyTheme {
-        SignupScreen()
+        SignupScreen(rememberNavController())
     }
 }
 
@@ -307,6 +315,6 @@ fun SignupScreenPreview() {
 @Composable
 fun SignupScreenPreviewDark() {
     BabyBuyTheme {
-        SignupScreen()
+        SignupScreen(rememberNavController())
     }
 }

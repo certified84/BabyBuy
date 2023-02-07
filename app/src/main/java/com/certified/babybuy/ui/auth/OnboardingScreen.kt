@@ -23,13 +23,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.certified.babybuy.R
+import com.certified.babybuy.navigation.Screen
 import com.certified.babybuy.ui.theme.*
 import com.intuit.sdp.R as sdpR
 import com.intuit.ssp.R as sspR
 
 @Composable
-fun OnBoardingScreen() {
+fun OnboardingScreen(navController: NavController) {
 
     val scrollState = rememberScrollState()
 
@@ -46,7 +49,7 @@ fun OnBoardingScreen() {
         verticalArrangement = Arrangement.SpaceAround
     ) {
 
-        Column() {
+        Column {
 
             Image(
                 painter = painterResource(id = R.drawable.ic_onboarding),
@@ -65,10 +68,14 @@ fun OnBoardingScreen() {
 
         }
 
-        Column() {
+        Column {
 
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    navController.navigate(route = Screen.Signup.route) {
+
+                    }
+                },
                 colors = ButtonDefaults.buttonColors(containerColor = if (isSystemInDarkTheme()) PrimaryContainerDark else PrimaryContainer),
                 modifier = Modifier
                     .height(dimensionResource(id = sdpR.dimen._40sdp).value.dp)
@@ -86,7 +93,11 @@ fun OnBoardingScreen() {
             Spacer(modifier = Modifier.size(dimensionResource(id = sdpR.dimen._12sdp).value.dp))
 
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    navController.navigate(route = Screen.Login.route) {
+
+                    }
+                },
                 colors = ButtonDefaults.buttonColors(containerColor = if (isSystemInDarkTheme()) OnSurfaceDark else OnSurface),
                 modifier = Modifier
                     .height(dimensionResource(id = sdpR.dimen._40sdp).value.dp)
@@ -154,11 +165,11 @@ fun OnBoardingScreen() {
 @Preview
 @Composable
 fun OnBoardingScreenPreview() {
-    OnBoardingScreen()
+    OnboardingScreen(rememberNavController())
 }
 
 @Preview(name = "Onboarding Screen Dark", uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun OnBoardingScreenPreviewDark() {
-    OnBoardingScreen()
+    OnboardingScreen(rememberNavController())
 }
