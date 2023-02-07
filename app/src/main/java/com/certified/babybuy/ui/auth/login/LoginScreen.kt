@@ -9,12 +9,15 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -23,10 +26,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.certified.babybuy.R
+import com.certified.babybuy.ui.custom_component.CustomOutlinedTextField
 import com.certified.babybuy.ui.theme.*
 import com.intuit.sdp.R as sdpR
 import com.intuit.ssp.R as sspR
@@ -36,8 +42,10 @@ import com.intuit.ssp.R as sspR
 fun LoginScreen() {
 
     var email by remember { mutableStateOf("") }
+    var isEmailError by rememberSaveable { mutableStateOf(false) }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
+    var isPasswordError by rememberSaveable { mutableStateOf(false) }
     val scrollState = rememberScrollState()
 
     Column(
@@ -92,21 +100,19 @@ fun LoginScreen() {
             modifier = Modifier.padding(dimensionResource(id = sdpR.dimen._4sdp).value.dp)
         )
 
-        OutlinedTextField(
-            value = email, onValueChange = { email = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = if (isSystemInDarkTheme()) SecondaryContainerDark else SecondaryContainer),
-            textStyle = TextStyle(
-                color = if (isSystemInDarkTheme()) OnSurfaceDark else OnSurface,
-                fontFamily = SpaceGrotesk,
-            ),
-            singleLine = true,
+        CustomOutlinedTextField(
+            value = email,
+            onValueChange = {
+                email = it
+                isEmailError = it.isBlank()
+            },
+            placeholder = stringResource(id = R.string.email_hint),
+            errorText = "Email is required *",
+            isError = isEmailError,
+            keyboardActions = KeyboardActions { isEmailError = email.isBlank() },
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next, keyboardType = KeyboardType.Email
             ),
-            shape = RoundedCornerShape(dimensionResource(id = sdpR.dimen._6sdp).value.dp),
-            placeholder = { Text(text = stringResource(id = R.string.email_hint)) },
         )
 
         Spacer(
@@ -127,7 +133,11 @@ fun LoginScreen() {
         )
 
         OutlinedTextField(
-            value = password, onValueChange = { password = it },
+            value = password,
+            onValueChange = {
+                password = it
+                isPasswordError = it.isBlank()
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = if (isSystemInDarkTheme()) SecondaryContainerDark else SecondaryContainer),
@@ -135,22 +145,43 @@ fun LoginScreen() {
                 color = if (isSystemInDarkTheme()) OnSurfaceDark else OnSurface,
                 fontFamily = SpaceGrotesk,
             ),
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(
+                '*'
+            ),
             singleLine = true,
+            keyboardActions = KeyboardActions { isPasswordError = password.isBlank() },
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done, keyboardType = KeyboardType.Password
             ),
             trailingIcon = {
-                val image = if (passwordVisible) Icons.Filled.Visibility
-                else Icons.Filled.VisibilityOff
+                val image = when {
+                    passwordVisible && !isPasswordError -> Icons.Filled.Visibility
+                    isPasswordError -> Icons.Filled.Error
+                    else -> Icons.Filled.VisibilityOff
+                }
                 val description = if (passwordVisible) "Hide password" else "Show password"
 
                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
                     Icon(imageVector = image, description)
                 }
             },
+            isError = isPasswordError,
             shape = RoundedCornerShape(dimensionResource(id = sdpR.dimen._6sdp).value.dp),
             placeholder = { Text(text = stringResource(id = R.string.hint_password)) },
         )
+
+        if (isPasswordError) {
+            Text(
+                text = "Password is required *",
+                color = if (isSystemInDarkTheme()) ErrorDark else Error,
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = FontWeight.Medium,
+                fontSize = dimensionResource(id = com.intuit.ssp.R.dimen._12ssp).value.sp,
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .align(Alignment.Start)
+            )
+        }
 
         Spacer(
             modifier = Modifier.padding(dimensionResource(id = sdpR.dimen._8sdp).value.dp)
@@ -176,7 +207,16 @@ fun LoginScreen() {
         )
 
         Button(
-            onClick = { /*TODO*/ },
+            onClick = {
+                if (email.isBlank()) {
+                    isEmailError = true
+                    return@Button
+                }
+                if (password.isBlank()) {
+                    isPasswordError = true
+                    return@Button
+                }
+            },
             colors = ButtonDefaults.buttonColors(containerColor = if (isSystemInDarkTheme()) PrimaryDark else Primary),
             modifier = Modifier
                 .height(dimensionResource(id = sdpR.dimen._40sdp).value.dp)

@@ -7,15 +7,15 @@ import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.certified.babybuy.R
 import com.certified.babybuy.ui.custom_component.BackButton
+import com.certified.babybuy.ui.custom_component.CustomOutlinedTextField
 import com.certified.babybuy.ui.theme.*
 import com.intuit.sdp.R as sdpR
 import com.intuit.ssp.R as sspR
@@ -33,6 +34,7 @@ import com.intuit.ssp.R as sspR
 fun ForgotPasswordScreen() {
 
     var email by remember { mutableStateOf("") }
+    var isError by rememberSaveable { mutableStateOf(false) }
     val scrollState = rememberScrollState()
 
     Column(
@@ -63,6 +65,7 @@ fun ForgotPasswordScreen() {
                 color = if (isSystemInDarkTheme()) OnSurfaceDark else OnSurface,
                 fontWeight = FontWeight.SemiBold,
                 fontFamily = SpaceGrotesk,
+                onTextLayout = { /*TODO*/ },
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .fillMaxWidth()
@@ -99,21 +102,19 @@ fun ForgotPasswordScreen() {
             modifier = Modifier.padding(dimensionResource(id = sdpR.dimen._4sdp).value.dp)
         )
 
-        OutlinedTextField(
-            value = email, onValueChange = { email = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = if (isSystemInDarkTheme()) SecondaryContainerDark else SecondaryContainer),
-            textStyle = TextStyle(
-                color = if (isSystemInDarkTheme()) OnSurfaceDark else OnSurface,
-                fontFamily = SpaceGrotesk,
-            ),
-            singleLine = true,
+        CustomOutlinedTextField(
+            value = email,
+            onValueChange = {
+                email = it
+                isError = it.isBlank()
+            },
+            placeholder = stringResource(id = R.string.email_hint),
+            errorText = "Email is required *",
+            isError = isError,
+            keyboardActions = KeyboardActions { isError = email.isBlank() },
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next, keyboardType = KeyboardType.Email
-            ),
-            shape = RoundedCornerShape(dimensionResource(id = sdpR.dimen._6sdp).value.dp),
-            placeholder = { Text(text = stringResource(id = R.string.email_hint)) },
+            )
         )
 
         Spacer(
@@ -121,7 +122,12 @@ fun ForgotPasswordScreen() {
         )
 
         Button(
-            onClick = { /*TODO*/ },
+            onClick = {
+                if (email.isBlank()) {
+                    isError = true
+                    return@Button
+                }
+            },
             colors = ButtonDefaults.buttonColors(containerColor = if (isSystemInDarkTheme()) PrimaryDark else Primary),
             modifier = Modifier
                 .height(dimensionResource(id = sdpR.dimen._40sdp).value.dp)
