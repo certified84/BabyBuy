@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 
 // General Colors
 val Black = Color(0xFF000000)
+val Black40 = Color(0xB3000000)
 val White = Color(0xFFFFFFFF)
 
 // Light mode colors
