@@ -34,11 +34,14 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.certified.babybuy.BuildConfig
 import com.certified.babybuy.R
 import com.certified.babybuy.data.model.User
 import com.certified.babybuy.navigation.Screen
 import com.certified.babybuy.ui.custom_component.CustomLoader
 import com.certified.babybuy.ui.custom_component.CustomOutlinedTextField
+import com.certified.babybuy.ui.custom_component.OneTapSignInWithGoogle
+import com.certified.babybuy.ui.custom_component.rememberOneTapSignInState
 import com.certified.babybuy.ui.theme.*
 import com.certified.babybuy.util.UIState
 import com.google.firebase.auth.ktx.auth
@@ -58,6 +61,7 @@ fun LoginScreen(navController: NavController) {
     var passwordVisible by remember { mutableStateOf(false) }
     var isPasswordError by rememberSaveable { mutableStateOf(false) }
     val scrollState = rememberScrollState()
+    val oneTapState = rememberOneTapSignInState()
 
     var isLoading by rememberSaveable { mutableStateOf(false) }
     viewModel.uiState.collectAsState().value.let {
@@ -330,6 +334,14 @@ fun LoginScreen(navController: NavController) {
             }
         }
         CustomLoader(isLoading = isLoading)
+        OneTapSignInWithGoogle(
+            state = oneTapState,
+            clientId = BuildConfig.CLIENT_ID,
+            onTokenIdReceived = { viewModel.signInWithCredential(it) },
+            onDialogDismissed = {
+
+            }
+        )
     }
 }
 
