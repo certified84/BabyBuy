@@ -12,7 +12,7 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @HiltViewModel
-class PasswordRecoveryViewModel @Inject constructor(private val repository: Repository) :
+class ForgotPasswordViewModel @Inject constructor(private val repository: Repository) :
     ViewModel() {
 
     val _uiState = MutableStateFlow(UIState.EMPTY)
@@ -25,6 +25,7 @@ class PasswordRecoveryViewModel @Inject constructor(private val repository: Repo
     val success = _success.asStateFlow()
 
     fun sendPasswordResetEmail(email: String) {
+        _uiState.value = UIState.LOADING
         viewModelScope.launch {
             try {
                 val response = repository.sendPasswordResetEmail(email)
