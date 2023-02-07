@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.certified.babybuy.data.model.User
 import com.certified.babybuy.data.repository.Repository
-import com.certified.babybuy.ui.main.MainViewModel
 import com.certified.babybuy.util.UIState
 import com.google.firebase.auth.AuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +15,10 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val repository: Repository) : MainViewModel() {
+class LoginViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(UIState.EMPTY)
+    val uiState = _uiState.asStateFlow()
 
     val _message = MutableStateFlow<String?>(null)
     val message = _message.asStateFlow()
@@ -28,6 +30,7 @@ class LoginViewModel @Inject constructor(private val repository: Repository) : M
     val uploadSuccess = _uploadSuccess.asStateFlow()
 
     fun signInWithEmailAndPassword(email: String, password: String) {
+        _uiState.value = UIState.LOADING
         viewModelScope.launch {
             try {
                 val response = repository.signInWithEmailAndPassword(email, password)
@@ -54,6 +57,7 @@ class LoginViewModel @Inject constructor(private val repository: Repository) : M
     }
 
     fun signInWithCredential(firebaseCredential: AuthCredential) {
+        _uiState.value = UIState.LOADING
         viewModelScope.launch {
             try {
                 val response = repository.signInWithCredential(firebaseCredential)
