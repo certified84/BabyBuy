@@ -30,6 +30,7 @@ class SignupViewModel @Inject constructor(private val repository: Repository) : 
     val uploadSuccess = _uploadSuccess.asStateFlow()
 
     fun createUserWithEmailAndPassword(email: String, password: String) {
+        _uiState.value = UIState.LOADING
         viewModelScope.launch {
             try {
                 val response = repository.createUserWithEmailAndPassword(email, password)
@@ -49,6 +50,7 @@ class SignupViewModel @Inject constructor(private val repository: Repository) : 
     }
 
     fun signInWithCredential(firebaseCredential: AuthCredential) {
+        _uiState.value = UIState.LOADING
         viewModelScope.launch {
             try {
                 val response = repository.signInWithCredential(firebaseCredential)

@@ -72,6 +72,7 @@ fun LoginScreen(navController: NavController) {
     viewModel.success.collectAsState().value.let {
         success = it
     }
+
     var uploadSuccess by rememberSaveable { mutableStateOf(false) }
     viewModel.uploadSuccess.collectAsState().value.let {
         uploadSuccess = it
