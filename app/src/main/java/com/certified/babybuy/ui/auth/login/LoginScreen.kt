@@ -1,6 +1,7 @@
 package com.certified.babybuy.ui.auth.login
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
@@ -78,6 +79,12 @@ fun LoginScreen(navController: NavController) {
         uploadSuccess = it
     }
 
+    var message by rememberSaveable { mutableStateOf<String?>(null) }
+    viewModel.message.collectAsState().value.let {
+        message = it
+        Log.d("TAG", "LoginScreen: $message")
+    }
+
     if (success) {
         LaunchedEffect(true) {
             viewModel._success.value = false
@@ -92,8 +99,10 @@ fun LoginScreen(navController: NavController) {
             )
             viewModel.uploadDetails(user)
         } else {
+            LaunchedEffect(true) {
+                viewModel._message.value = "Check your email for verification link"
+            }
             Firebase.auth.signOut()
-//            showSnackbar("Check your email for verification link")
         }
     }
 
@@ -248,7 +257,7 @@ fun LoginScreen(navController: NavController) {
             Button(
                 onClick = {
                     navController.navigate(route = Screen.PasswordRecovery.route) {
-
+                        popUpTo(Screen.Login.route) { inclusive = true }
                     }
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = if (isSystemInDarkTheme()) Surface1Dark else Surface1),
@@ -278,7 +287,7 @@ fun LoginScreen(navController: NavController) {
                         isPasswordError = true
                         return@Button
                     }
-
+                    Log.d("TAG", "LoginScreen: $email $password")
                     viewModel.signInWithEmailAndPassword(email, password)
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = if (isSystemInDarkTheme()) PrimaryDark else Primary),
@@ -313,7 +322,7 @@ fun LoginScreen(navController: NavController) {
             Button(
                 onClick = {
                     navController.navigate(route = Screen.Signup.route) {
-                        popUpTo(Screen.Signup.route) { inclusive = true }
+                        popUpTo(Screen.Login.route) { inclusive = true }
                     }
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = if (isSystemInDarkTheme()) Surface1Dark else Surface1),
@@ -335,14 +344,23 @@ fun LoginScreen(navController: NavController) {
             }
         }
         CustomLoader(isLoading = isLoading)
-        OneTapSignInWithGoogle(
-            state = oneTapState,
+        OneTapSignInWithGoogle(state = oneTapState,
             clientId = BuildConfig.CLIENT_ID,
             onTokenIdReceived = { viewModel.signInWithCredential(it) },
             onDialogDismissed = {
 
-            }
-        )
+            })
+        message?.let {
+            Snackbar(
+                action = {
+                    Button(onClick = { viewModel._message.value = null }) {
+                        Text("Dismiss")
+                    }
+                },
+                modifier = Modifier
+                    .padding(dimensionResource(id = sdpR.dimen._8sdp).value.dp)
+            ) { Text(text = it) }
+        }
     }
 }
 

@@ -59,19 +59,11 @@ fun OneTapSignInWithGoogle(
             }
         } catch (e: ApiException) {
             when (e.statusCode) {
-                CommonStatusCodes.CANCELED -> {
-                    onDialogDismissed("Dialog Canceled.")
-                    state.close()
-                }
-                CommonStatusCodes.NETWORK_ERROR -> {
-                    onDialogDismissed("Network Error.")
-                    state.close()
-                }
-                else -> {
-                    onDialogDismissed(e.message.toString())
-                    state.close()
-                }
+                CommonStatusCodes.CANCELED -> onDialogDismissed("Dialog Canceled.")
+                CommonStatusCodes.NETWORK_ERROR -> onDialogDismissed("Network Error.")
+                else -> onDialogDismissed(e.message.toString())
             }
+            state.close()
         }
     }
 

@@ -38,10 +38,7 @@ import com.certified.babybuy.BuildConfig
 import com.certified.babybuy.R
 import com.certified.babybuy.data.model.User
 import com.certified.babybuy.navigation.Screen
-import com.certified.babybuy.ui.custom_component.CustomLoader
-import com.certified.babybuy.ui.custom_component.CustomOutlinedTextField
-import com.certified.babybuy.ui.custom_component.OneTapSignInWithGoogle
-import com.certified.babybuy.ui.custom_component.rememberOneTapSignInState
+import com.certified.babybuy.ui.custom_component.*
 import com.certified.babybuy.ui.theme.*
 import com.certified.babybuy.util.UIState
 import com.google.firebase.auth.ktx.auth
@@ -55,6 +52,7 @@ import com.intuit.ssp.R as sspR
 fun SignupScreen(navController: NavController) {
 
     val viewModel = hiltViewModel<SignupViewModel>()
+    val auth = Firebase.auth
 
     var name by remember { mutableStateOf("") }
     var isNameError by rememberSaveable { mutableStateOf(false) }
@@ -63,6 +61,7 @@ fun SignupScreen(navController: NavController) {
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
     var isPasswordError by rememberSaveable { mutableStateOf(false) }
+    var openDialog by rememberSaveable { mutableStateOf(false) }
     val scrollState = rememberScrollState()
     val oneTapState = rememberOneTapSignInState()
 
@@ -81,11 +80,22 @@ fun SignupScreen(navController: NavController) {
         uploadSuccess = it
     }
 
+    var message by rememberSaveable { mutableStateOf("") }
+    viewModel.message.collectAsState().value.let {
+        it?.let { it1 -> message = it1 }
+    }
+
+    if (message.isNotBlank()) {
+        LaunchedEffect(true) {
+            viewModel._message.value = ""
+        }
+    }
+
     if (success) {
         LaunchedEffect(true) {
             viewModel._success.value = false
         }
-        val currentUser = Firebase.auth.currentUser!!
+        val currentUser = auth.currentUser!!
         val user = User(
             uid = currentUser.uid,
             name = name,
@@ -101,11 +111,11 @@ fun SignupScreen(navController: NavController) {
         }
         val profileChangeRequest =
             userProfileChangeRequest { if (name.isNotBlank()) displayName = name }
-        Firebase.auth.currentUser!!.apply {
+        auth.currentUser!!.apply {
             updateProfile(profileChangeRequest)
             sendEmailVerification()
         }
-        navController.navigate(route = Screen.Login.route)
+        openDialog = true
     }
 
     Surface {
@@ -340,8 +350,7 @@ fun SignupScreen(navController: NavController) {
                         popUpTo(Screen.Login.route) { inclusive = true }
                     }
                 },
-                colors =
-                ButtonDefaults.buttonColors(containerColor = if (isSystemInDarkTheme()) Surface1Dark else Surface1),
+                colors = ButtonDefaults.buttonColors(containerColor = if (isSystemInDarkTheme()) Surface1Dark else Surface1),
                 border = BorderStroke(
                     width = dimensionResource(id = sdpR.dimen._1sdp).value.dp,
                     color = if (isSystemInDarkTheme()) PrimaryDark else Primary,
@@ -360,14 +369,32 @@ fun SignupScreen(navController: NavController) {
             }
         }
         CustomLoader(isLoading = isLoading)
-        OneTapSignInWithGoogle(
-            state = oneTapState,
+        OneTapSignInWithGoogle(state = oneTapState,
             clientId = BuildConfig.CLIENT_ID,
             onTokenIdReceived = { viewModel.signInWithCredential(it) },
             onDialogDismissed = {
 
+            })
+        if (openDialog) {
+            ActionDialog(
+                "Success",
+                "Account created successfully. We sent a verification link to ${auth.currentUser?.email}. You can ignore the link if you used Google Sign In.",
+            ) {
+                openDialog = it
+                auth.signOut()
+                navController.navigate(route = Screen.Login.route)
             }
-        )
+        }
+        if (message.isNotBlank()) {
+            Snackbar(
+                action = {
+                    Button(onClick = {}) {
+                        Text("Dismiss")
+                    }
+                },
+                modifier = Modifier.padding(8.dp)
+            ) { Text(text = message) }
+        }
     }
 }
 
