@@ -23,6 +23,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         buildConfigField("String", "CLIENT_ID", CLIENT_ID)
+        buildConfigField("String", "MAPS_API_KEY", MAPS_API_KEY)
     }
 
     buildTypes {
