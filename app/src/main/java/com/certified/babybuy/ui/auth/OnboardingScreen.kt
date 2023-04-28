@@ -57,7 +57,7 @@ fun OnboardingScreen(navController: NavController) {
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
-            Spacer(modifier = Modifier.size(dimensionResource(id = sdpR.dimen._20sdp).value.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(id = sdpR.dimen._20sdp).value.dp))
 
             Text(
                 text = stringResource(id = R.string.onboarding_summary),
